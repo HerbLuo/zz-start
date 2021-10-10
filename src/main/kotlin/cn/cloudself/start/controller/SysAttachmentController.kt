@@ -1,6 +1,6 @@
 package cn.cloudself.start.controller
 
-import cn.cloudself.start.pojo.Attachment
+import cn.cloudself.start.entity.AttachmentEntity
 import cn.cloudself.start.service.IAttachmentService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -20,7 +20,7 @@ class SysAttachmentController @Autowired constructor(
 ) {
     @ApiOperation(value = "获取附件列表", notes = "获取附件列表")
     @GetMapping("/business/{business}/id/{businessId}")
-    fun listAttachment(@PathVariable business: String, @PathVariable businessId: Long): List<Attachment> {
+    fun listAttachment(@PathVariable business: String, @PathVariable businessId: Long): List<AttachmentEntity> {
         return attachmentService.getAttachments(business, businessId)
     }
 
@@ -38,7 +38,7 @@ class SysAttachmentController @Autowired constructor(
 
     @ApiOperation(value = "获取某业务的单个附件的url", notes = "获取某业务的单个附件的url")
     @GetMapping("/business/{business}/id/{businessId}/url-limit-1")
-    fun getAttachmentUrlLimit1(@PathVariable business: String, @PathVariable businessId: Long): String {
+    fun getAttachmentUrlLimit1(@PathVariable business: String, @PathVariable businessId: Long): String? {
         return attachmentService.getAttachmentUrlLimit1(business, businessId)
     }
 
@@ -50,7 +50,7 @@ class SysAttachmentController @Autowired constructor(
 
     @ApiOperation(value = "更新附件", notes = "更新附件", produces = "application/json")
     @PutMapping("")
-    fun updateAttachment(@RequestBody attachment: Attachment): Boolean {
+    fun updateAttachment(@RequestBody attachment: AttachmentEntity): Boolean {
         return attachmentService.update(attachment)
     }
 
@@ -66,7 +66,7 @@ class SysAttachmentController @Autowired constructor(
         @PathVariable business: String,
         @PathVariable businessId: Long,
         @RequestParam("file") file: MultipartFile
-    ): Attachment {
+    ): AttachmentEntity {
         return attachmentService.upload(business, businessId, file)
     }
 
@@ -76,7 +76,7 @@ class SysAttachmentController @Autowired constructor(
         @PathVariable business: String,
         @PathVariable businessId: Long,
         @RequestParam("file") file: MultipartFile
-    ): Attachment {
+    ): AttachmentEntity {
         return attachmentService.uploadOrReplace(business, businessId, file)
     }
 }

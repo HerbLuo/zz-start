@@ -2,10 +2,8 @@ package cn.cloudself.start.components
 
 import cn.cloudself.start.annotation.LoginRequired
 import cn.cloudself.start.exception.http.RequestBadException
-import cn.cloudself.start.service.IUserService
-import org.slf4j.Logger
+import cn.cloudself.start.service.ISysAuthService
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class AuthenticationInterceptor @Autowired constructor(
     private val env: Environment,
-    private val userService: IUserService,
+    private val authService: ISysAuthService,
 ) : HandlerInterceptor {
 
     private val log = LoggerFactory.getLogger(AuthenticationInterceptor::class.java)
@@ -57,6 +55,8 @@ class AuthenticationInterceptor @Autowired constructor(
             responseException(response, RequestBadException("需要登陆"))
             return false
         }
+
+        // TODO 这里还需验证Token是否正确
 
         return true
     }

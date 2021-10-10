@@ -10,6 +10,11 @@
       "name": "cloudself.default-login-required",
       "type": "java.lang.Boolean",
       "description": "默认是否对所有api验证登陆信息"
+    },
+    {
+      "name": "cloudself.jwt-secret",
+      "type": "java.lang.String",
+      "description": "用于jwt签名的密钥"
     }
   ]
 }

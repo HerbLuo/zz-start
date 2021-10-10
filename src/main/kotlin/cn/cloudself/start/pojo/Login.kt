@@ -1,7 +1,7 @@
 package cn.cloudself.start.pojo
 
-data class Login(
-    val id: Long?,
+data class UsernamePassword(
     val username: String,
     val password: String,
 )
+

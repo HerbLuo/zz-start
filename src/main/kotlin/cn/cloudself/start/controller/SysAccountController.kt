@@ -1,8 +1,8 @@
 package cn.cloudself.start.controller
 
 import cn.cloudself.start.annotation.LoginRequired
-import cn.cloudself.start.pojo.Login
 import cn.cloudself.start.pojo.Token
+import cn.cloudself.start.pojo.UsernamePassword
 import cn.cloudself.start.service.ISysAuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -15,7 +15,7 @@ class SysAccountController @Autowired constructor(
 
     @LoginRequired(false)
     @PostMapping("/login")
-    fun loginByPwd(@RequestBody login: Login): Token {
-        return authService.loginByPwd(login)
+    fun loginByPwd(@RequestBody login: UsernamePassword): Token {
+        return authService.loginByPwd(login.username, login.password)
     }
 }
