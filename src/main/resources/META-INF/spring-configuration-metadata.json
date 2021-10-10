@@ -1,0 +1,15 @@
+{
+  "properties": [
+    {
+      "name": "cloudself.cors.prod-site",
+      "type": "java.lang.String",
+      "default": "",
+      "description": "prod网址，用于cors, 可以包含*"
+    },
+    {
+      "name": "cloudself.default-login-required",
+      "type": "java.lang.Boolean",
+      "description": "默认是否对所有api验证登陆信息"
+    }
+  ]
+}
