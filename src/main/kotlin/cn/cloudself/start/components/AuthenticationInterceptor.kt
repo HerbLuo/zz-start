@@ -2,7 +2,9 @@ package cn.cloudself.start.components
 
 import cn.cloudself.start.annotation.LoginRequired
 import cn.cloudself.start.exception.http.RequestBadException
+import cn.cloudself.start.exception.http.RequestUnauthorizedException
 import cn.cloudself.start.service.ISysAuthService
+import cn.cloudself.start.util.WebUtil
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -28,7 +30,7 @@ class AuthenticationInterceptor @Autowired constructor(
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         if (handler !is HandlerMethod && handler !is ResourceHttpRequestHandler) {
             log.warn("未知的切面: {}", handler)
-            return false;
+            return false
         }
 
         // header中的token(dev环境允许使用url传输token)
@@ -56,7 +58,8 @@ class AuthenticationInterceptor @Autowired constructor(
             return false
         }
 
-        // TODO 这里还需验证Token是否正确
+        val tokenUser = authService.parseToken(token) ?: throw RequestUnauthorizedException("无法解析token")
+        WebUtil.setUser(tokenUser)
 
         return true
     }

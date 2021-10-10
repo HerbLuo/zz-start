@@ -11,4 +11,10 @@ class HttpTests {
         post(url("/account/login"), UsernamePassword("loo", "123456"))
             .also { println(it) }
     }
+
+    @Test
+    fun test() {
+        get(url("/db/test?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjMzODgwODg0LCJ1c2VybmFtZSI6ImxvbyJ9.mUmJACQcEjQVIaAqhtyEK5pBshD4bGrXwXQyfj6caxQ"))
+            .also { println(it) }
+    }
 }

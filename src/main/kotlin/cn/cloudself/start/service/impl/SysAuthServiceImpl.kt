@@ -37,4 +37,9 @@ class SysAuthServiceImpl : ISysAuthService {
             .sign(Algorithm.HMAC256(jwtSecret))
         return Token(token)
     }
+
+    override fun parseToken(token: String): TokenUser? {
+        val verify = JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(token)
+        return TokenUser(verify.getClaim("id").asLong(), verify.getClaim("username").asString())
+    }
 }

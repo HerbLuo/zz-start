@@ -7,4 +7,6 @@ interface ISysAuthService {
     fun loginByPwd(username: String, password: String): Token
 
     fun getToken(user: TokenUser): Token
+
+    fun parseToken(token: String): TokenUser?
 }
