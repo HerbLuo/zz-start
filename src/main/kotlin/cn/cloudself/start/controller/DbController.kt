@@ -2,6 +2,7 @@ package cn.cloudself.start.controller
 
 import cn.cloudself.start.pojo.Res
 import cn.cloudself.start.pojo.ok
+import cn.cloudself.start.util.WebUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +19,7 @@ class DbController @Autowired constructor(
     @GetMapping("/test")
     fun test(): Res<String> {
         log.warn("测试123")
+        log.info("{}", WebUtil.getUser())
         return ok("done")
     }
 }
