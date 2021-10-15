@@ -2,6 +2,7 @@ package cn.cloudself.start.service.impl
 
 import cn.cloudself.start.dao.SysUserQueryPro
 import cn.cloudself.start.service.ITestService
+import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.lang.RuntimeException
