@@ -28,23 +28,43 @@ class ImplSysUserQueryPro {
         private fun createWhereField(column: String) =
             QueryKeywords(createField(column), queryStructure, create_where_field)
 
+        private fun createWhereField(column: String, objs: Array<out Any>) =
+            createWhereField(column).let { if (objs.size == 1) it.equalsTo(objs[0]) else it.`in`(*objs) }
+
         val id = createWhereField("id")
+        fun id(vararg ids: Any) = createWhereField("id", ids)
         val userName = createWhereField("user_name")
+        fun userName(vararg userNames: Any) = createWhereField("user_name", userNames)
         val nickName = createWhereField("nick_name")
+        fun nickName(vararg nickNames: Any) = createWhereField("nick_name", nickNames)
         val email = createWhereField("email")
+        fun email(vararg emails: Any) = createWhereField("email", emails)
         val phone = createWhereField("phone")
+        fun phone(vararg phones: Any) = createWhereField("phone", phones)
         val sex = createWhereField("sex")
+        fun sex(vararg sexs: Any) = createWhereField("sex", sexs)
         val avatar = createWhereField("avatar")
+        fun avatar(vararg avatars: Any) = createWhereField("avatar", avatars)
         val password = createWhereField("password")
+        fun password(vararg passwords: Any) = createWhereField("password", passwords)
         val loginIp = createWhereField("login_ip")
+        fun loginIp(vararg loginIps: Any) = createWhereField("login_ip", loginIps)
         val loginDate = createWhereField("login_date")
+        fun loginDate(vararg loginDates: Any) = createWhereField("login_date", loginDates)
         val status = createWhereField("status")
+        fun status(vararg statuss: Any) = createWhereField("status", statuss)
         val createBy = createWhereField("create_by")
+        fun createBy(vararg createBys: Any) = createWhereField("create_by", createBys)
         val createTime = createWhereField("create_time")
+        fun createTime(vararg createTimes: Any) = createWhereField("create_time", createTimes)
         val updateBy = createWhereField("update_by")
+        fun updateBy(vararg updateBys: Any) = createWhereField("update_by", updateBys)
         val updateTime = createWhereField("update_time")
+        fun updateTime(vararg updateTimes: Any) = createWhereField("update_time", updateTimes)
         val deleted = createWhereField("deleted")
+        fun deleted(vararg deleteds: Any) = createWhereField("deleted", deleteds)
         val remark = createWhereField("remark")
+        fun remark(vararg remarks: Any) = createWhereField("remark", remarks)
     }
 
     class OrderByField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {

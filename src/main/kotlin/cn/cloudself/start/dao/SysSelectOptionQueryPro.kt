@@ -28,20 +28,39 @@ class ImplSysSelectOptionQueryPro {
         private fun createWhereField(column: String) =
             QueryKeywords(createField(column), queryStructure, create_where_field)
 
+        private fun createWhereField(column: String, objs: Array<out Any>) =
+            createWhereField(column).let { if (objs.size == 1) it.equalsTo(objs[0]) else it.`in`(*objs) }
+
         val id = createWhereField("id")
+        fun id(vararg ids: Any) = createWhereField("id", ids)
         val key = createWhereField("key")
+        fun key(vararg keys: Any) = createWhereField("key", keys)
         val table = createWhereField("table")
+        fun table(vararg tables: Any) = createWhereField("table", tables)
         val label = createWhereField("label")
+        fun label(vararg labels: Any) = createWhereField("label", labels)
         val value = createWhereField("value")
+        fun value(vararg values: Any) = createWhereField("value", values)
         val whereClause = createWhereField("where_clause")
+        fun whereClause(vararg whereClauses: Any) = createWhereField("where_clause", whereClauses)
+        val defaultClause = createWhereField("default_clause")
+        fun defaultClause(vararg defaultClauses: Any) = createWhereField("default_clause", defaultClauses)
         val orderByClause = createWhereField("order_by_clause")
+        fun orderByClause(vararg orderByClauses: Any) = createWhereField("order_by_clause", orderByClauses)
         val status = createWhereField("status")
+        fun status(vararg statuss: Any) = createWhereField("status", statuss)
         val createBy = createWhereField("create_by")
+        fun createBy(vararg createBys: Any) = createWhereField("create_by", createBys)
         val createTime = createWhereField("create_time")
+        fun createTime(vararg createTimes: Any) = createWhereField("create_time", createTimes)
         val updateBy = createWhereField("update_by")
+        fun updateBy(vararg updateBys: Any) = createWhereField("update_by", updateBys)
         val updateTime = createWhereField("update_time")
+        fun updateTime(vararg updateTimes: Any) = createWhereField("update_time", updateTimes)
         val deleted = createWhereField("deleted")
+        fun deleted(vararg deleteds: Any) = createWhereField("deleted", deleteds)
         val remark = createWhereField("remark")
+        fun remark(vararg remarks: Any) = createWhereField("remark", remarks)
     }
 
     class OrderByField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -56,6 +75,7 @@ class ImplSysSelectOptionQueryPro {
         fun label() = createOrderByField("label")
         fun value() = createOrderByField("value")
         fun whereClause() = createOrderByField("where_clause")
+        fun defaultClause() = createOrderByField("default_clause")
         fun orderByClause() = createOrderByField("order_by_clause")
         fun status() = createOrderByField("status")
         fun createBy() = createOrderByField("create_by")
@@ -75,6 +95,7 @@ class ImplSysSelectOptionQueryPro {
         fun label() = getColumn(createField("label"), String::class.java)
         fun value() = getColumn(createField("value"), String::class.java)
         fun whereClause() = getColumn(createField("where_clause"), String::class.java)
+        fun defaultClause() = getColumn(createField("default_clause"), String::class.java)
         fun orderByClause() = getColumn(createField("order_by_clause"), String::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
@@ -97,6 +118,7 @@ class ImplSysSelectOptionQueryPro {
         fun label() = createColumnsLimiterField("label")
         fun value() = createColumnsLimiterField("value")
         fun whereClause() = createColumnsLimiterField("where_clause")
+        fun defaultClause() = createColumnsLimiterField("default_clause")
         fun orderByClause() = createColumnsLimiterField("order_by_clause")
         fun status() = createColumnsLimiterField("status")
         fun createBy() = createColumnsLimiterField("create_by")
@@ -119,6 +141,7 @@ class ImplSysSelectOptionQueryPro {
         fun label(label: Any) = createUpdateSetField("label", label)
         fun value(value: Any) = createUpdateSetField("value", value)
         fun whereClause(whereClause: Any) = createUpdateSetField("where_clause", whereClause)
+        fun defaultClause(defaultClause: Any) = createUpdateSetField("default_clause", defaultClause)
         fun orderByClause(orderByClause: Any) = createUpdateSetField("order_by_clause", orderByClause)
         fun status(status: Any) = createUpdateSetField("status", status)
         fun createBy(createBy: Any) = createUpdateSetField("create_by", createBy)
@@ -139,6 +162,7 @@ class ImplSysSelectOptionQueryPro {
         fun label() = this.also { fields.add(createField("label")) }
         fun value() = this.also { fields.add(createField("value")) }
         fun whereClause() = this.also { fields.add(createField("where_clause")) }
+        fun defaultClause() = this.also { fields.add(createField("default_clause")) }
         fun orderByClause() = this.also { fields.add(createField("order_by_clause")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }

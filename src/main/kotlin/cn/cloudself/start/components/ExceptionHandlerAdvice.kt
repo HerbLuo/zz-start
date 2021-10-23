@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
+import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -16,6 +17,10 @@ import org.springframework.web.HttpMediaTypeNotSupportedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import javax.servlet.RequestDispatcher
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 data class PlainError(
@@ -25,7 +30,7 @@ data class PlainError(
 )
 
 val map = mapOf(
-    RequestBadException::class.java to HttpStatus.BAD_REQUEST,
+    RequestBadException::class.java as Class<out Throwable> to HttpStatus.BAD_REQUEST,
     RequestTooLargeException::class.java to HttpStatus.PAYLOAD_TOO_LARGE,
     RequestTooManyException::class.java to HttpStatus.TOO_MANY_REQUESTS,
     RequestUnauthorizedException::class.java to HttpStatus.UNAUTHORIZED,
@@ -44,7 +49,7 @@ val map = mapOf(
 
 val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
 
-fun exHandler(ex: Exception) {
+fun exHandler(ex: Throwable) {
     if (ex is HttpException) {
         logger.error(
             "HttpException: code {}, message {}, alert {}, Exception handled in ExceptionHandlerAdvice {}",
@@ -55,13 +60,13 @@ fun exHandler(ex: Exception) {
     }
 }
 
-fun exceptionToPlainError(exception: Exception): Pair<HttpStatus, Res<PlainError>> {
-    exHandler(exception)
-    val status: HttpStatus = map[exception.javaClass] ?: HttpStatus.INTERNAL_SERVER_ERROR
-    val pe = if (exception is HttpException) {
-        PlainError(exception.code, exception.message, exception.alert)
+fun exceptionToPlainError(throwable: Throwable): Pair<HttpStatus, Res<PlainError>> {
+    exHandler(throwable)
+    val status: HttpStatus = map[throwable.javaClass] ?: HttpStatus.INTERNAL_SERVER_ERROR
+    val pe = if (throwable is HttpException) {
+        PlainError(throwable.code, throwable.message, throwable.alert)
     } else {
-        PlainError(0x9000 + status.value(), exception.message)
+        PlainError(0x9000 + status.value(), throwable.message)
     }
     return Pair(status, err(pe))
 }
@@ -69,14 +74,30 @@ fun exceptionToPlainError(exception: Exception): Pair<HttpStatus, Res<PlainError
 @ControllerAdvice
 class ExceptionHandlerAdvice {
     @ExceptionHandler
-    fun exceptionAll(exception: Exception): ResponseEntity<Res<PlainError>> {
-        val (status, body) = exceptionToPlainError(exception)
+    fun exceptionAll(throwable: Throwable): ResponseEntity<Res<PlainError>> {
+        val (status, body) = exceptionToPlainError(throwable)
         return ResponseEntity(body, status)
     }
 }
 
-fun responseException(response: HttpServletResponse, exception: Exception) {
-    val (status, body) = exceptionToPlainError(exception)
+@RestController
+class ErrorPageController: ErrorController {
+    @RequestMapping("/error")
+    fun handleError(request: HttpServletRequest, throwableOri: Throwable): ResponseEntity<Res<PlainError>> {
+        val statusCodeMay = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE)
+        val throwable = if (statusCodeMay == 404) {
+            RequestNotFindException()
+        } else {
+            throwableOri
+        }
+        val (status, body) = exceptionToPlainError(throwable)
+        return ResponseEntity(body, status)
+    }
+}
+
+fun responseException(response: HttpServletResponse, throwable: Throwable) {
+    val (status, body) = exceptionToPlainError(throwable)
     response.status = status.value();
     response.outputStream.write(ObjectMapper().writeValueAsBytes(body))
+    response.contentType = "application/json; charset=utf-8;"
 }

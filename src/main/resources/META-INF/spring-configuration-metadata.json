@@ -15,6 +15,11 @@
       "name": "cloudself.jwt-secret",
       "type": "java.lang.String",
       "description": "用于jwt签名的密钥"
+    },
+    {
+      "name": "cloudself.auth.exclude-patterns",
+      "type": "java.lang.String[]",
+      "description": "无需认证的地址"
     }
   ]
 }

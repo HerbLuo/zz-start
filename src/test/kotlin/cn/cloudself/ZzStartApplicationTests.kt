@@ -7,13 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class ZzStartApplicationTests {
-
-    @Autowired
-    private lateinit var testService: ITestService;
-
     @Test
     fun contextLoads() {
-        testService.test();
-    }
 
+    }
 }

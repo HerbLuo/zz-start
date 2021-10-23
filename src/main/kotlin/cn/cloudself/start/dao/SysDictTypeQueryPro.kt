@@ -2,13 +2,13 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.AttachmentEntity
+import cn.cloudself.start.entity.SysDictTypeEntity
 import java.util.Date
 import cn.cloudself.query.*
 
-class ImplAttachmentQueryPro {
+class ImplSysDictTypeQueryPro {
     companion object {
-        const val TABLE_NAME = "attachment"
+        const val TABLE_NAME = "sys_dict_type"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -33,16 +33,10 @@ class ImplAttachmentQueryPro {
 
         val id = createWhereField("id")
         fun id(vararg ids: Any) = createWhereField("id", ids)
-        val business = createWhereField("business")
-        fun business(vararg businesss: Any) = createWhereField("business", businesss)
-        val businessId = createWhereField("business_id")
-        fun businessId(vararg businessIds: Any) = createWhereField("business_id", businessIds)
-        val hash = createWhereField("hash")
-        fun hash(vararg hashs: Any) = createWhereField("hash", hashs)
         val name = createWhereField("name")
         fun name(vararg names: Any) = createWhereField("name", names)
-        val size = createWhereField("size")
-        fun size(vararg sizes: Any) = createWhereField("size", sizes)
+        val type = createWhereField("type")
+        fun type(vararg types: Any) = createWhereField("type", types)
         val status = createWhereField("status")
         fun status(vararg statuss: Any) = createWhereField("status", statuss)
         val createBy = createWhereField("create_by")
@@ -66,11 +60,8 @@ class ImplAttachmentQueryPro {
             QueryOrderByKeywords(createField(column), queryStructure, create_order_by_field)
 
         fun id() = createOrderByField("id")
-        fun business() = createOrderByField("business")
-        fun businessId() = createOrderByField("business_id")
-        fun hash() = createOrderByField("hash")
         fun name() = createOrderByField("name")
-        fun size() = createOrderByField("size")
+        fun type() = createOrderByField("type")
         fun status() = createOrderByField("status")
         fun createBy() = createOrderByField("create_by")
         fun createTime() = createOrderByField("create_time")
@@ -84,11 +75,8 @@ class ImplAttachmentQueryPro {
         override val field_type = QueryFieldType.OTHER_FIELD
 
         fun id() = getColumn(createField("id"), Long::class.java)
-        fun business() = getColumn(createField("business"), String::class.java)
-        fun businessId() = getColumn(createField("business_id"), Long::class.java)
-        fun hash() = getColumn(createField("hash"), String::class.java)
         fun name() = getColumn(createField("name"), String::class.java)
-        fun size() = getColumn(createField("size"), Long::class.java)
+        fun type() = getColumn(createField("type"), String::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -105,11 +93,8 @@ class ImplAttachmentQueryPro {
             ColumnsLimiterField<T, RUN_RES>(queryStructure.copy(fields = queryStructure.fields + createField(column)), field_clazz)
 
         fun id() = createColumnsLimiterField("id")
-        fun business() = createColumnsLimiterField("business")
-        fun businessId() = createColumnsLimiterField("business_id")
-        fun hash() = createColumnsLimiterField("hash")
         fun name() = createColumnsLimiterField("name")
-        fun size() = createColumnsLimiterField("size")
+        fun type() = createColumnsLimiterField("type")
         fun status() = createColumnsLimiterField("status")
         fun createBy() = createColumnsLimiterField("create_by")
         fun createTime() = createColumnsLimiterField("create_time")
@@ -126,11 +111,8 @@ class ImplAttachmentQueryPro {
         }
 
         fun id(id: Any) = createUpdateSetField("id", id)
-        fun business(business: Any) = createUpdateSetField("business", business)
-        fun businessId(businessId: Any) = createUpdateSetField("business_id", businessId)
-        fun hash(hash: Any) = createUpdateSetField("hash", hash)
         fun name(name: Any) = createUpdateSetField("name", name)
-        fun size(size: Any) = createUpdateSetField("size", size)
+        fun type(type: Any) = createUpdateSetField("type", type)
         fun status(status: Any) = createUpdateSetField("status", status)
         fun createBy(createBy: Any) = createUpdateSetField("create_by", createBy)
         fun createTime(createTime: Any) = createUpdateSetField("create_time", createTime)
@@ -145,11 +127,8 @@ class ImplAttachmentQueryPro {
         override val tableName = TABLE_NAME
 
         fun id() = this.also { fields.add(createField("id")) }
-        fun business() = this.also { fields.add(createField("business")) }
-        fun businessId() = this.also { fields.add(createField("business_id")) }
-        fun hash() = this.also { fields.add(createField("hash")) }
         fun name() = this.also { fields.add(createField("name")) }
-        fun size() = this.also { fields.add(createField("size")) }
+        fun type() = this.also { fields.add(createField("type")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }
@@ -162,28 +141,28 @@ class ImplAttachmentQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            AttachmentEntity,
+            SysDictTypeEntity,
             Long,
-            ImplAttachmentQueryPro.WhereField<AttachmentEntity, List<AttachmentEntity>>,
-            ImplAttachmentQueryPro.OrderByField<AttachmentEntity, List<AttachmentEntity>>,
-            ImplAttachmentQueryPro.UpdateSetField,
-            ImplAttachmentQueryPro.WhereField<Boolean, Boolean>,
-            ImplAttachmentQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysDictTypeQueryPro.WhereField<SysDictTypeEntity, List<SysDictTypeEntity>>,
+            ImplSysDictTypeQueryPro.OrderByField<SysDictTypeEntity, List<SysDictTypeEntity>>,
+            ImplSysDictTypeQueryPro.UpdateSetField,
+            ImplSysDictTypeQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysDictTypeQueryPro.WhereField<Boolean, Boolean>,
     > (
-        AttachmentEntity::class.java,
+        SysDictTypeEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplAttachmentQueryPro.WhereField(qs, AttachmentEntity::class.java) },
-        { qs: QueryStructure -> ImplAttachmentQueryPro.OrderByField(qs, AttachmentEntity::class.java) },
-        { qs: QueryStructure -> ImplAttachmentQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplAttachmentQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplAttachmentQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField(qs, SysDictTypeEntity::class.java) },
+        { qs: QueryStructure -> ImplSysDictTypeQueryPro.OrderByField(qs, SysDictTypeEntity::class.java) },
+        { qs: QueryStructure -> ImplSysDictTypeQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val AttachmentQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplAttachmentQueryPro.TABLE_NAME)))
+val SysDictTypeQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysDictTypeQueryPro.TABLE_NAME)))
 
-val AttachmentQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplAttachmentQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplAttachmentQueryPro.WhereField<AttachmentEntity, List<AttachmentEntity>>(qs, AttachmentEntity::class.java) },
-    { ImplAttachmentQueryPro.FieldsGenerator() },
+val SysDictTypeQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysDictTypeQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField<SysDictTypeEntity, List<SysDictTypeEntity>>(qs, SysDictTypeEntity::class.java) },
+    { ImplSysDictTypeQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

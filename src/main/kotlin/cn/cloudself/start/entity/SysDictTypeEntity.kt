@@ -4,44 +4,24 @@ import java.util.Date
 import javax.persistence.*
 
 /**
- * 下拉列表
+ * 字典类型
  */
 @Entity
-@Table(name = "sys_select_option")
-data class SysSelectOptionEntity(
+@Table(name = "sys_dict_type")
+data class SysDictTypeEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Long? = null,
 
-    /** key */
-    @Column(name = "key")
-    var key: String? = null,
+    /** 名称 */
+    @Column(name = "name")
+    var name: String? = null,
 
-    /** 表 */
-    @Column(name = "table")
-    var table: String? = null,
-
-    /** 标签 */
-    @Column(name = "label")
-    var label: String? = null,
-
-    /** 列名 值 */
-    @Column(name = "value")
-    var value: String? = null,
-
-    /** where子句 */
-    @Column(name = "where_clause")
-    var whereClause: String? = null,
-
-    /** 获取默认值的子句 */
-    @Column(name = "default_clause")
-    var defaultClause: String? = null,
-
-    /** order by 子句 */
-    @Column(name = "order_by_clause")
-    var orderByClause: String? = null,
+    /** 类型 */
+    @Column(name = "type")
+    var type: String? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @Column(name = "status")
