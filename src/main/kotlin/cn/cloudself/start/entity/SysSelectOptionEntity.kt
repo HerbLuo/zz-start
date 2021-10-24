@@ -43,6 +43,10 @@ data class SysSelectOptionEntity(
     @Column(name = "order_by_clause")
     var orderByClause: String? = null,
 
+    /** 获取payload的子句 */
+    @Column(name = "payload")
+    var payload: String? = null,
+
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @Column(name = "status")
     var status: String? = null,

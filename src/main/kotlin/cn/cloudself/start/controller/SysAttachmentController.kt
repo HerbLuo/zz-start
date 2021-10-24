@@ -8,10 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
-/**
- * 附件接口
- * @author hb
- */
 @Api(tags = ["附件"])
 @RestController
 @RequestMapping("/attachment")

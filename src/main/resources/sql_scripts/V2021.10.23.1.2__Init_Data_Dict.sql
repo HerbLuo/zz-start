@@ -1,0 +1,11 @@
+truncate table sys_dict_type;
+truncate table sys_dict_data;
+INSERT INTO sys_dict_type (name, type, status, create_by, create_time) VALUES ('状态', 'status', 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '创建', 'init', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '审核中', 'wait', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '审核通过', 'success', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '撤消中', 'cancel_wait', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '撤消', 'cancel', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '作废中', 'invalid_wait', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '作废', 'invalid', 0, null, 'success', 'initializer', now());
+INSERT INTO sys_dict_data (type, label, value, sort, is_default, status, create_by, create_time) VALUES ('status', '拒绝', 'reject', 0, null, 'success', 'initializer', now());

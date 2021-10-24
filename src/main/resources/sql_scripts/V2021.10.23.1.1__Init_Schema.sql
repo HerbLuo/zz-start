@@ -30,8 +30,9 @@ create table if not exists sys_select_option (
     label           varchar(55)  null comment '标签',
     value           varchar(55)  null comment '列名 值',
     where_clause    varchar(255) null comment 'where子句',
-    default_clause  varchar(55)  null comment '获取默认值的子句',
+    default_clause  varchar(255) null comment '获取默认值的子句',
     order_by_clause varchar(255) null comment 'order by 子句',
+    payload         varchar(255) null comment '获取payload的子句',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
     create_by   varchar(64)  null comment '创建者',

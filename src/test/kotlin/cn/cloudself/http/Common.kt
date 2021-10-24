@@ -1,6 +1,7 @@
 package cn.cloudself.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.logging.log4j.Level
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -10,7 +11,11 @@ val client = HttpClient.newHttpClient()!!
 
 fun get(url: String): String {
     val request = HttpRequest.newBuilder(URI.create(url)).build()
-    return client.send(request, HttpResponse.BodyHandlers.ofString()).body()
+    return client.send(request, HttpResponse.BodyHandlers.ofString()).let {
+        val body = it.body()
+        println("get request url: $url, code: ${it.statusCode()}, body: $body")
+        body
+    }
 }
 
 fun <T> get(url: String, clazz: Class<T>): T {

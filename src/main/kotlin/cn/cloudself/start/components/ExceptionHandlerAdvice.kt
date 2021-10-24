@@ -5,6 +5,7 @@ import cn.cloudself.start.pojo.Res
 import cn.cloudself.start.pojo.err
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.JWTVerificationException
+import com.auth0.jwt.exceptions.TokenExpiredException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.servlet.error.ErrorController
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.lang.Exception
 import javax.servlet.RequestDispatcher
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -44,7 +46,8 @@ val map = mapOf(
     HttpMessageNotWritableException::class.java to HttpStatus.INTERNAL_SERVER_ERROR,
     HttpRequestMethodNotSupportedException::class.java to HttpStatus.METHOD_NOT_ALLOWED,
     JWTVerificationException::class.java to HttpStatus.UNAUTHORIZED,
-    JWTDecodeException::class.java to HttpStatus.UNAUTHORIZED
+    JWTDecodeException::class.java to HttpStatus.UNAUTHORIZED,
+    TokenExpiredException::class.java to HttpStatus.UNAUTHORIZED,
 )
 
 val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
@@ -74,8 +77,8 @@ fun exceptionToPlainError(throwable: Throwable): Pair<HttpStatus, Res<PlainError
 @ControllerAdvice
 class ExceptionHandlerAdvice {
     @ExceptionHandler
-    fun exceptionAll(throwable: Throwable): ResponseEntity<Res<PlainError>> {
-        val (status, body) = exceptionToPlainError(throwable)
+    fun exceptionAll(exception: Exception): ResponseEntity<Res<PlainError>> {
+        val (status, body) = exceptionToPlainError(exception)
         return ResponseEntity(body, status)
     }
 }
