@@ -47,7 +47,7 @@ class SelectOptionServiceImpl : ISelectOptionService {
         }
         val payload = selectOptionConfig.payload
         if (payload?.isNotBlank() == true) {
-            sqlBuilder.append(", ", payload, " AS `payload`")
+            sqlBuilder.append(", ", payload)
         }
         sqlBuilder.append(" FROM ", selectOptionConfig.table, " WHERE deleted = false AND status = 'success'")
         val whereClause = selectOptionConfig.whereClause

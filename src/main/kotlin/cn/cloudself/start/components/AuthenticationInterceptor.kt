@@ -5,6 +5,7 @@ import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.RequestUnauthorizedException
 import cn.cloudself.start.service.ISysAuthService
 import cn.cloudself.start.util.WebUtil
+import com.auth0.jwt.exceptions.TokenExpiredException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -58,7 +59,12 @@ class AuthenticationInterceptor @Autowired constructor(
             return false
         }
 
-        val tokenUser = authService.parseToken(token) ?: throw RequestUnauthorizedException("无法解析token")
+        val tokenUser = try {
+            authService.parseToken(token)
+        } catch (e: Exception) {
+            responseException(response, e)
+            return false
+        } ?: return false.also { responseException(response, RequestUnauthorizedException("无法解析token")) }
         WebUtil.setUser(tokenUser)
 
         return true

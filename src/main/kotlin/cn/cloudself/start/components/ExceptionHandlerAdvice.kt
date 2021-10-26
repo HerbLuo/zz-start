@@ -58,6 +58,8 @@ fun exHandler(ex: Throwable) {
             "HttpException: code {}, message {}, alert {}, Exception handled in ExceptionHandlerAdvice {}",
             ex.code, ex.message, ex.alert, ex
         )
+    } else if (ex is JWTVerificationException) {
+        logger.error("ex", ex)
     } else {
         logger.error("Exception handled in ExceptionHandlerAdvice", ex)
     }
