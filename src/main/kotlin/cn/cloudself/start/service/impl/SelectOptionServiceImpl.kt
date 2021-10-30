@@ -59,6 +59,18 @@ class SelectOptionServiceImpl : ISelectOptionService {
             sqlBuilder.append(" ORDER BY ", orderByClause)
         }
 
-        return QueryProSql.create(sqlBuilder.toString()).query(SelectOptionRes::class.java)
+        return if (payload?.isNotBlank() == true) {
+            val payloadList = QueryProSql.create(sqlBuilder.toString()).query(mutableMapOf<String, Any?>().javaClass)
+            payloadList.map {
+                SelectOptionRes(
+                    label = it.remove("label") as String?,
+                    value = it.remove("value") as String?,
+                    default = it.remove("default") as Boolean? ?: false,
+                    payload = it
+                )
+            }
+        } else {
+            QueryProSql.create(sqlBuilder.toString()).query(SelectOptionRes::class.java)
+        }
     }
 }
