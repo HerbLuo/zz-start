@@ -47,27 +47,46 @@ object RandomUtil {
         val idBuilder = StringBuilder()
 
         for (i in 1..loopTimes) {
-            idBuilder.append(ss4(withSymbols))
+            ss4(idBuilder, withSymbols)
         }
 
         return idBuilder.substring(0, len).toString()
     }
 
-    private fun ss4(sb: StringBuilder, withSymbols: CharArray) =
+    private fun ss4(sb: StringBuilder, withSymbols: CharArray) {
+        val randomInt = ((Math.random() + 1) * ((CHARSET62.size + withSymbols.size).toDouble().pow(4) - 1)).toInt()
+        val ss4Reversed = baseXXEncodeReversed(randomInt, *withSymbols)
+        for (c in 0 until ss4Reversed.size - 1) {
+            sb.append(ss4Reversed[c])
+        }
+    }
 
-        baseXXEncode(sb, ((Math.random() + 1) * (4.0.pow(CHARSET62.size + withSymbols.size) - 1)).toInt(), *withSymbols).substring(1)
 
     /**
      * 给Int进行 baseXX编码
      * XX = 62 + withSymbols.size
      */
-    private fun baseXXEncode(sb: StringBuilder, num: Int, vararg withSymbols: Char) {
+    private fun baseXXEncodeReversed(num: Int, vararg withSymbols: Char): MutableList<Char> {
         if (num == 0) {
-            CHARSET62[0].toString()
-
-            return
+            return mutableListOf(CHARSET62[0])
         }
 
+        val charset62len = CHARSET62.size
+        val otherSymbolsLen = withSymbols.size
+        val totalLen = charset62len + otherSymbolsLen
+
+        var remainder = num
+        val chars = mutableListOf<Char>()
+        while (remainder > 0) {
+            val index = remainder % totalLen
+            if (index < charset62len) {
+                chars.add(CHARSET62[index])
+            } else {
+                chars.add(withSymbols[index - charset62len])
+            }
+            remainder /= totalLen
+        }
+        return chars
     }
 
     private val badStrRegex = "[IlO04]".toRegex()
