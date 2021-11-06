@@ -3,6 +3,7 @@ package cn.cloudself.start.components
 import cn.cloudself.start.exception.http.*
 import cn.cloudself.start.pojo.Res
 import cn.cloudself.start.pojo.err
+import cn.cloudself.start.util.RandomUtil
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.lang.Exception
+import java.util.*
 import javax.servlet.RequestDispatcher
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 data class PlainError(
+    val serial: String,
     val code: Int,
     val message: String?,
     val alert: String? = ""
@@ -52,26 +55,32 @@ val map = mapOf(
 
 val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
 
-fun exHandler(ex: Throwable) {
-    if (ex is HttpException) {
-        logger.error(
-            "HttpException: code {}, message {}, alert {}, Exception handled in ExceptionHandlerAdvice {}",
-            ex.code, ex.message, ex.alert, ex
-        )
-    } else if (ex is JWTVerificationException) {
-        logger.error("ex", ex)
-    } else {
-        logger.error("Exception handled in ExceptionHandlerAdvice", ex)
+fun exHandler(ex: Throwable): String {
+    val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" +
+            RandomUtil.base64Encode(Random().nextLong(Long.MAX_VALUE))
+
+    when (ex) {
+        is HttpException -> {
+            logger.error(
+                "HttpException: serial: {} code {}, message {}, alert {}, Exception handled in ExceptionHandlerAdvice {}",
+                serial, ex.code, ex.message, ex.alert, ex
+            )
+        }
+        else -> {
+            logger.error("Exception handled in ExceptionHandlerAdvice, serial: {}, error: {}", serial, ex)
+        }
     }
+
+    return serial
 }
 
 fun exceptionToPlainError(throwable: Throwable): Pair<HttpStatus, Res<PlainError>> {
-    exHandler(throwable)
+    val serial = exHandler(throwable)
     val status: HttpStatus = map[throwable.javaClass] ?: HttpStatus.INTERNAL_SERVER_ERROR
     val pe = if (throwable is HttpException) {
-        PlainError(throwable.code, throwable.message, throwable.alert)
+        PlainError(serial, throwable.code, throwable.message, throwable.alert)
     } else {
-        PlainError(0x9000 + status.value(), throwable.message)
+        PlainError(serial, 0x9000 + status.value(), throwable.message)
     }
     return Pair(status, err(pe))
 }

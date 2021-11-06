@@ -54,20 +54,24 @@ object RandomUtil {
     }
 
     private fun ss4(sb: StringBuilder, withSymbols: CharArray) {
-        val randomInt = ((Math.random() + 1) * ((CHARSET62.size + withSymbols.size).toDouble().pow(4) - 1)).toInt()
-        val ss4Reversed = baseXXEncodeReversed(randomInt, *withSymbols)
+        val randomNum = ((Math.random() + 1) * ((CHARSET62.size + withSymbols.size).toDouble().pow(4) - 1)).toLong()
+
+        val ss4Reversed = baseXXEncodeReversed(randomNum, *withSymbols)
         for (c in 0 until ss4Reversed.size - 1) {
             sb.append(ss4Reversed[c])
         }
     }
 
+    fun base64Encode(num: Long): String {
+        return baseXXEncodeReversed(num, '_', '-').also { println(it) }.reversed().joinToString("")
+    }
 
     /**
      * 给Int进行 baseXX编码
      * XX = 62 + withSymbols.size
      */
-    private fun baseXXEncodeReversed(num: Int, vararg withSymbols: Char): MutableList<Char> {
-        if (num == 0) {
+    private fun baseXXEncodeReversed(num: Long, vararg withSymbols: Char): MutableList<Char> {
+        if (num == 0L) {
             return mutableListOf(CHARSET62[0])
         }
 
@@ -78,7 +82,7 @@ object RandomUtil {
         var remainder = num
         val chars = mutableListOf<Char>()
         while (remainder > 0) {
-            val index = remainder % totalLen
+            val index = (remainder % totalLen).toInt()
             if (index < charset62len) {
                 chars.add(CHARSET62[index])
             } else {
