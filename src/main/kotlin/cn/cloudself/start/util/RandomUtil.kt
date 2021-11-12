@@ -63,7 +63,7 @@ object RandomUtil {
     }
 
     fun base64Encode(num: Long): String {
-        return baseXXEncodeReversed(num, '_', '-').also { println(it) }.reversed().joinToString("")
+        return baseXXEncodeReversed(num, '_', '-').reversed().joinToString("")
     }
 
     /**

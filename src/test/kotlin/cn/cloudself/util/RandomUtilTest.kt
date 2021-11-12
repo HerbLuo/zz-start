@@ -18,9 +18,7 @@ class RandomUtilTest {
 
     @Test
     fun serial() {
-        val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" + RandomUtil.base64Encode(Random().nextLong(
-            Long.MAX_VALUE
-        ))
+        val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" + RandomUtil.base64Encode(Random().nextLong(Long.MAX_VALUE))
         println(serial)
     }
 }

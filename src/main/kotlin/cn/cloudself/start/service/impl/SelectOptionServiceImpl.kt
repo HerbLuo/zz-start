@@ -9,8 +9,6 @@ import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.pojo.SelectOptionRes
 import cn.cloudself.start.service.ISelectOptionService
 import org.springframework.stereotype.Service
-import org.springframework.util.ObjectUtils
-import org.springframework.util.StringUtils
 
 @AutoLog
 @Service
@@ -42,20 +40,23 @@ class SelectOptionServiceImpl : ISelectOptionService {
         sqlBuilder.append(selectOptionConfig.value, " AS `value`")
 
         val defaultClause = selectOptionConfig.defaultClause
-        if (defaultClause?.isNotBlank() == true) {
+        if (!defaultClause.isNullOrBlank()) {
             sqlBuilder.append(", ", defaultClause, " AS `default`")
         }
         val payload = selectOptionConfig.payload
-        if (payload?.isNotBlank() == true) {
+        if (!payload.isNullOrBlank()) {
             sqlBuilder.append(", ", payload)
         }
-        sqlBuilder.append(" FROM ", selectOptionConfig.table, " WHERE deleted = false AND status = 'success'")
+        // 不要在where后添加 'deleted = false',  因为有时候我们需要搜索历史数据
+        sqlBuilder.append(" FROM", selectOptionConfig.table)
+        sqlBuilder.append(" WHERE true")
+
         val whereClause = selectOptionConfig.whereClause
-        if (!ObjectUtils.isEmpty(whereClause)) {
+        if (!whereClause.isNullOrBlank()) {
             sqlBuilder.append(" AND ", whereClause)
         }
         val orderByClause = selectOptionConfig.orderByClause
-        if (orderByClause != null) {
+        if (!orderByClause.isNullOrBlank()) {
             sqlBuilder.append(" ORDER BY ", orderByClause)
         }
 
