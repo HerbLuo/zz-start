@@ -91,3 +91,59 @@ create table if not exists sys_dict_data (
     deleted     tinyint(1)   not null default false comment '删除标志',
     remark      varchar(500) null comment '备注'
 ) comment '字典值';
+
+create table if not exists sys_search_config (
+    id          bigint auto_increment comment 'ID' primary key,
+    name        varchar(128) comment '方案名',
+    `sql`       text         comment 'sql',
+
+    status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by   varchar(64)  null comment '创建者',
+    create_time datetime     null comment '创建时间',
+    update_by   varchar(64)  null comment '更新者',
+    update_time datetime     null comment '更新时间',
+    deleted     tinyint(1)   not null default false comment '删除标志',
+    remark      varchar(500) null comment '备注'
+) comment '查询方案配置';
+
+create table if not exists sys_search_config_info (
+    id                   bigint auto_increment comment 'ID' primary key,
+    sys_search_config_id bigint        comment '主键ID',
+    property_name        varchar(128)  comment '属性名',
+    property_sql         text          comment '属性sql',
+    type                 varchar(64)   comment '类型(text, select, number, time, date, date-time, month, year)',
+    conditions           varchar(255)  comment '允许的搜索条件',
+    limit_type           varchar(255)  comment '限定类型(values, dictionary, select_option, url)',
+    sort                 int default 0 comment '排序',
+    hidden               tinyint(1)    comment '隐藏',
+    order_by             tinyint(1)    comment '排序字段',
+    order_by_desc        tinyint(1)    comment '倒序排序字段',
+    limit_values         varchar(255)  comment '限定值',
+
+    status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by   varchar(64)  null comment '创建者',
+    create_time datetime     null comment '创建时间',
+    update_by   varchar(64)  null comment '更新者',
+    update_time datetime     null comment '更新时间',
+    deleted     tinyint(1)   not null default false comment '删除标志',
+    remark      varchar(500) null comment '备注'
+) comment '查询方案字段配置';
+
+create table if not exists sys_user_search_config (
+    id bigint auto_increment comment 'ID' primary key,
+
+    sys_user_id          bigint      comment '用户ID',
+    sys_search_config_id bigint      comment '查询方案',
+    name                 varchar(64) comment '用户定义的查询方案名称',
+    sort                 int         comment '排序',
+
+    status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by   varchar(64)  null comment '创建者',
+    create_time datetime     null comment '创建时间',
+    update_by   varchar(64)  null comment '更新者',
+    update_time datetime     null comment '更新时间',
+    deleted     tinyint(1)   not null default false comment '删除标志',
+    remark      varchar(500) null comment '备注'
+) comment '用户保存的查询方案';
+
+
