@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/react-action")
+@RequestMapping("/interactive")
 class ReactResponseController {
-    @GetMapping("/run")
+    @GetMapping("/callback")
     fun run() {
 
     }

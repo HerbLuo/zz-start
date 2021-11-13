@@ -56,9 +56,9 @@ fun invoke(serializedMethodStr: String, vararg args: Any?): Any? {
 }
 
 fun toUrlPart(serializedMethodStr: String): String {
-    return sha256WithRsa.encrypt(serializedMethodStr)
+    return sha256WithRsa.encrypt(serializedMethodStr).replace("/", "-")
 }
 
 fun parseUrlPartToSerializedStr(encryptMethodStr: String): String {
-    return sha256WithRsa.decrypt(encryptMethodStr)
+    return sha256WithRsa.decrypt(encryptMethodStr.replace("-", "/"))
 }

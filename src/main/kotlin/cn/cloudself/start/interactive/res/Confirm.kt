@@ -23,7 +23,7 @@ class Confirm constructor(
      */
     override fun toRes(): Any {
         val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
-        val url = URL(request.scheme, request.serverName, request.serverPort, request.contextPath).toString() + "/"
+        val url = URL(request.scheme, request.serverName, request.serverPort, request.contextPath).toString() + "/interactive/callback/"
         val okUrl = url + toUrlPart(onOk.serialize())
         val noUrl = onNo.let { if (it == null) null else url + toUrlPart(it.serialize()) }
         return Res(confirm, okText, okUrl, noText, noUrl)
