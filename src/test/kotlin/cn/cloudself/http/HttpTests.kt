@@ -15,15 +15,21 @@ class HttpTests {
     }
 
     @Test
-    fun test() {
-        val tokenRes = post(url("/account/login"), UsernamePassword("loo", "123456"))
-        val token = JSONObject(tokenRes).getJSONObject("data").getString("token")
-
-        println(token)
-
-        get(url("/db/test?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNjMzODgwODg0LCJ1c2VybmFtZSI6ImxvbyJ9.mUmJACQcEjQVIaAqhtyEK5pBshD4bGrXwXQyfj6caxQ"))
+    fun testLogin() {
+        get(withTokenUrl("/db/test"))
             .also { println(it) }
     }
 
-//    fun
+    @Test
+    fun testConfirm() {
+        get(withTokenUrl("/confirm/foo"))
+            .also { println(it) }
+    }
+
+    private fun withTokenUrl(part: String): String {
+        val tokenRes = post(url("/account/login"), UsernamePassword("loo", "123456"))
+        val token = JSONObject(tokenRes).getJSONObject("data").getString("token")
+        println(token)
+        return url("$part?token=$token")
+    }
 }
