@@ -55,6 +55,12 @@ fun invoke(serializedMethodStr: String, vararg args: Any?): Any? {
     return callableFunc(args)
 }
 
+fun runMethod(encryptMethodStr: String, argsBody: Map<String, Any?>): Any? {
+    val parsed = parseUrlPartToSerializedStr(encryptMethodStr)
+    println(parsed)
+    return invoke()
+}
+
 fun toUrlPart(serializedMethodStr: String): String {
     return sha256WithRsa.encrypt(serializedMethodStr).replace("/", "-")
 }

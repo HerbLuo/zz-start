@@ -1,14 +1,15 @@
 package cn.cloudself.start.interactive
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import cn.cloudself.start.interactive.util.invoke
+import cn.cloudself.start.interactive.util.parseUrlPartToSerializedStr
+import cn.cloudself.start.interactive.util.runMethod
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/interactive")
 class ReactResponseController {
-    @GetMapping("/callback")
-    fun run() {
-
+    @GetMapping("/callback/{methodInfo}")
+    fun run(@PathVariable methodInfo: String, @RequestBody body: Map<String, Any?>): Any? {
+        return runMethod(methodInfo, body)
     }
 }
