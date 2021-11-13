@@ -1,42 +1,54 @@
 package cn.cloudself.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.apache.logging.log4j.Level
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
+import org.apache.commons.io.IOUtils
+import java.net.HttpURLConnection
+import java.net.URL
 
-val client = HttpClient.newHttpClient()!!
-
-fun get(url: String): String {
-    val request = HttpRequest.newBuilder(URI.create(url)).build()
-    return client.send(request, HttpResponse.BodyHandlers.ofString()).let {
-        val body = it.body()
-        println("get request url: $url, code: ${it.statusCode()}, body: $body")
-        body
+fun get(httpUrl: String): String {
+    val url = URL(httpUrl)
+    val connection = (url.openConnection() as HttpURLConnection).also {
+        it.requestMethod = "GET"
+        it.connect()
     }
+    val inputStream = connection.inputStream
+    val body = IOUtils.toString(inputStream, "UTF-8")
+    println("get request url: $url, code: ${connection.responseCode}, body: $body")
+    return body
 }
 
-fun <T> get(url: String, clazz: Class<T>): T {
-    val request = HttpRequest.newBuilder(URI.create(url)).build()
-    val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
-    return ObjectMapper().readValue(response.body(), clazz)
+fun <T> get(httpUrl: String, clazz: Class<T>): T {
+    val url = URL(httpUrl)
+    val connection = (url.openConnection() as HttpURLConnection).also {
+        it.requestMethod = "GET"
+        it.connect()
+    }
+    val inputStream = connection.inputStream
+    return ObjectMapper().readValue(inputStream, clazz)
 }
 
-fun post(url: String, body: Any): String {
-    val request = HttpRequest.newBuilder(URI.create(url))
-        .headers("Content-Type", "application/json;")
-        .POST(HttpRequest.BodyPublishers.ofString(ObjectMapper().writeValueAsString(body)))
-        .build()
-    return client.send(request, HttpResponse.BodyHandlers.ofString()).body()
+fun post(httpUrl: String, requestBody: Any): String {
+    val url = URL(httpUrl)
+    val connection = (url.openConnection() as HttpURLConnection).also {
+        it.requestMethod = "POST"
+        it.doOutput = true
+        it.setRequestProperty("Content-Type", "application/json;")
+        it.outputStream.write(ObjectMapper().writeValueAsBytes(requestBody))
+    }
+    val inputStream = connection.inputStream
+    val responseBody = IOUtils.toString(inputStream, "UTF-8")
+    println("get request url: $url, code: ${connection.responseCode}, body: $responseBody")
+    return responseBody
 }
 
-fun <T> post(url: String, body: Any, clazz: Class<T>): T {
-    val request = HttpRequest.newBuilder(URI.create(url))
-        .headers("Content-Type", "application/json;")
-        .POST(HttpRequest.BodyPublishers.ofString(ObjectMapper().writeValueAsString(body)))
-        .build()
-    val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
-    return ObjectMapper().readValue(response.body(), clazz)
+fun <T> post(httpUrl: String, requestBody: Any, clazz: Class<T>): T {
+    val url = URL(httpUrl)
+    val connection = (url.openConnection() as HttpURLConnection).also {
+        it.requestMethod = "POST"
+        it.doOutput = true
+        it.setRequestProperty("Content-Type", "application/json;")
+        it.outputStream.write(ObjectMapper().writeValueAsBytes(requestBody))
+    }
+    val inputStream = connection.inputStream
+    return ObjectMapper().readValue(inputStream, clazz)
 }

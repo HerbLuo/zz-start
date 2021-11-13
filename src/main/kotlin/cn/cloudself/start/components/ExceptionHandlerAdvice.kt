@@ -57,7 +57,7 @@ val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
 
 fun exHandler(ex: Throwable): String {
     val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" +
-            RandomUtil.base64Encode(Random().nextLong(Long.MAX_VALUE))
+            RandomUtil.base64Encode(Random().nextLong())
 
     when (ex) {
         is HttpException -> {
