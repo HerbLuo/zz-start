@@ -24,7 +24,9 @@ fun <T> get(httpUrl: String, clazz: Class<T>): T {
         it.connect()
     }
     val inputStream = connection.inputStream
-    return ObjectMapper().readValue(inputStream, clazz)
+    val result = ObjectMapper().readValue(inputStream, clazz)
+    println("get request url: $url, code: ${connection.responseCode}, body: $result")
+    return result
 }
 
 fun post(httpUrl: String, requestBody: Any): String {
@@ -35,9 +37,9 @@ fun post(httpUrl: String, requestBody: Any): String {
         it.setRequestProperty("Content-Type", "application/json;")
         it.outputStream.write(ObjectMapper().writeValueAsBytes(requestBody))
     }
-    val inputStream = connection.inputStream
+    val inputStream = if (connection.responseCode == 200) connection.inputStream else connection.errorStream
     val responseBody = IOUtils.toString(inputStream, "UTF-8")
-    println("get request url: $url, code: ${connection.responseCode}, body: $responseBody")
+    println("post request url: $url, code: ${connection.responseCode}, body: $responseBody")
     return responseBody
 }
 
@@ -50,5 +52,7 @@ fun <T> post(httpUrl: String, requestBody: Any, clazz: Class<T>): T {
         it.outputStream.write(ObjectMapper().writeValueAsBytes(requestBody))
     }
     val inputStream = connection.inputStream
-    return ObjectMapper().readValue(inputStream, clazz)
+    val result = ObjectMapper().readValue(inputStream, clazz)
+    println("post request url: $url, code: ${connection.responseCode}, body: $result")
+    return result
 }

@@ -1,6 +1,6 @@
-package cn.cloudself.start.react
+package cn.cloudself.start.interactive
 
-import cn.cloudself.start.react.res.ReactRes
+import cn.cloudself.start.interactive.res.ReactRes
 import org.springframework.core.MethodParameter
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
@@ -30,7 +30,6 @@ class ReactResponseAdvice: ResponseBodyAdvice<Any> {
         response: ServerHttpResponse
     ): Any? {
         val reactRes = body as ReactRes
-        println(reactRes)
         return reactRes.toRes()
     }
 }

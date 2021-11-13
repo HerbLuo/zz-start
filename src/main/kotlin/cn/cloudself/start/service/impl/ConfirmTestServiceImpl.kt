@@ -1,6 +1,6 @@
 package cn.cloudself.start.service.impl
 
-import cn.cloudself.start.react.res.Confirm
+import cn.cloudself.start.interactive.res.Confirm
 import cn.cloudself.start.service.IConfirmTestService
 import org.springframework.stereotype.Service
 
@@ -9,12 +9,12 @@ class ConfirmTestServiceImpl: IConfirmTestService {
     override fun testConfirm(): Confirm {
         return Confirm(
             "确认删除？",
-            this::deleteAll,
-            null
+            onOk = ConfirmTestServiceImpl::deleteById,
+            onNo = null
         )
     }
 
-    fun deleteAll() {
+    fun deleteById(id: Long) {
         println("deleting")
     }
 }
