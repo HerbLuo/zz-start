@@ -22,14 +22,19 @@ class HttpTests {
 
     @Test
     fun testConfirm() {
-        get(withTokenUrl("/confirm/foo"))
-            .also { println(it) }
+        val confirmRes = get(withTokenUrl("/zz/test/interactive/confirm"))
+        val url = JSONObject(confirmRes).getJSONObject("data").getJSONObject("okUrl").getString("url")
+        println(url)
+        val body = mapOf("id" to 1L)
+        val confirmedRes = post(withToken(url), body)
+        println(confirmedRes)
     }
 
-    private fun withTokenUrl(part: String): String {
+    private fun withTokenUrl(urlPart: String) = url(withToken(urlPart))
+
+    private fun withToken(urlPart: String): String {
         val tokenRes = post(url("/account/login"), UsernamePassword("loo", "123456"))
         val token = JSONObject(tokenRes).getJSONObject("data").getString("token")
-        println(token)
-        return url("$part?token=$token")
+        return "$urlPart?token=$token"
     }
 }

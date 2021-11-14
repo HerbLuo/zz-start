@@ -26,7 +26,7 @@ class ResponseConfig : WebMvcConfigurer {
 class ResponseAdvice: ResponseBodyAdvice<Any> {
     override fun supports(returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>): Boolean {
         val packageName = returnType.declaringClass.`package`.name
-        if (packageName == "cn.cloudself.start.controller" || packageName == "cn.cloudself.controller") {
+        if (packageName.startsWith("cn.cloudself.")) {
             return true
         }
         return false

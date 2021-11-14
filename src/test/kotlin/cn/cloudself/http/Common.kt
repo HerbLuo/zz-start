@@ -11,7 +11,7 @@ fun get(httpUrl: String): String {
         it.requestMethod = "GET"
         it.connect()
     }
-    val inputStream = connection.inputStream
+    val inputStream = if (connection.responseCode == 200) connection.inputStream else connection.errorStream
     val body = IOUtils.toString(inputStream, "UTF-8")
     println("get request url: $url, code: ${connection.responseCode}, body: $body")
     return body
@@ -23,7 +23,7 @@ fun <T> get(httpUrl: String, clazz: Class<T>): T {
         it.requestMethod = "GET"
         it.connect()
     }
-    val inputStream = connection.inputStream
+    val inputStream = if (connection.responseCode == 200) connection.inputStream else connection.errorStream
     val result = ObjectMapper().readValue(inputStream, clazz)
     println("get request url: $url, code: ${connection.responseCode}, body: $result")
     return result
@@ -51,7 +51,7 @@ fun <T> post(httpUrl: String, requestBody: Any, clazz: Class<T>): T {
         it.setRequestProperty("Content-Type", "application/json;")
         it.outputStream.write(ObjectMapper().writeValueAsBytes(requestBody))
     }
-    val inputStream = connection.inputStream
+    val inputStream = if (connection.responseCode == 200) connection.inputStream else connection.errorStream
     val result = ObjectMapper().readValue(inputStream, clazz)
     println("post request url: $url, code: ${connection.responseCode}, body: $result")
     return result

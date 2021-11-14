@@ -26,6 +26,7 @@ import java.util.*
 import javax.servlet.RequestDispatcher
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import kotlin.math.abs
 
 data class PlainError(
     val serial: String,
@@ -57,7 +58,7 @@ val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
 
 fun exHandler(ex: Throwable): String {
     val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" +
-            RandomUtil.base64Encode(Random().nextLong())
+            RandomUtil.base64Encode(abs(Random().nextLong()))
 
     when (ex) {
         is HttpException -> {
@@ -111,7 +112,7 @@ class ErrorPageController: ErrorController {
 
 fun responseException(response: HttpServletResponse, throwable: Throwable) {
     val (status, body) = exceptionToPlainError(throwable)
-    response.status = status.value();
+    response.status = status.value()
     response.outputStream.write(ObjectMapper().writeValueAsBytes(body))
     response.contentType = "application/json; charset=utf-8;"
 }

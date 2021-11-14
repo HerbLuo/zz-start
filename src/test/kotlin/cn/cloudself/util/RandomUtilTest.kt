@@ -3,6 +3,7 @@ package cn.cloudself.util
 import cn.cloudself.start.util.RandomUtil
 import org.junit.jupiter.api.Test
 import java.util.*
+import kotlin.math.absoluteValue
 
 class RandomUtilTest {
     @Test
@@ -18,7 +19,7 @@ class RandomUtilTest {
 
     @Test
     fun serial() {
-        val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" + RandomUtil.base64Encode(Random().nextLong())
+        val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" + RandomUtil.base64Encode(Random().nextLong().absoluteValue)
         println(serial)
     }
 }

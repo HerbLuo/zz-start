@@ -10,6 +10,5 @@ class ZzStartApplicationTests {
     fun contextLoads() {
         val x = 1L
         x.toString(1)
-
     }
 }
