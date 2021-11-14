@@ -1,6 +1,5 @@
 package cn.cloudself.http
 
-import cn.cloudself.start.exception.http.RequestUnauthorizedException
 import cn.cloudself.start.pojo.UsernamePassword
 import org.json.JSONObject
 import org.junit.jupiter.api.Test
@@ -23,11 +22,11 @@ class HttpTests {
     @Test
     fun testConfirm() {
         val confirmRes = get(withTokenUrl("/zz/test/interactive/confirm"))
+        println("res: $confirmRes")
         val url = JSONObject(confirmRes).getJSONObject("data").getJSONObject("okUrl").getString("url")
-        println(url)
         val body = mapOf("id" to 1L)
         val confirmedRes = post(withToken(url), body)
-        println(confirmedRes)
+        println("res: $confirmedRes")
     }
 
     private fun withTokenUrl(urlPart: String) = url(withToken(urlPart))

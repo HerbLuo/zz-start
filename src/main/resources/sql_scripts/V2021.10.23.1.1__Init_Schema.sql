@@ -106,11 +106,12 @@ create table if not exists sys_search_config (
     remark      varchar(500) null comment '备注'
 ) comment '查询方案配置';
 
-create table if not exists sys_search_config_info (
+create table if not exists sys_search_config_column (
     id                   bigint auto_increment comment 'ID' primary key,
     sys_search_config_id bigint        comment '主键ID',
-    property_name        varchar(128)  comment '属性名',
-    property_sql         text          comment '属性sql',
+    `column`             varchar(128)  comment '属性名(作为字段)',
+    column_name          varchar(128)  comment '属性名(显示用)',
+    column_sql           text          comment '属性sql',
     type                 varchar(64)   comment '类型(text, select, number, time, date, date-time, month, year)',
     conditions           varchar(255)  comment '允许的搜索条件',
     limit_type           varchar(255)  comment '限定类型(values, dictionary, select_option, url)',
@@ -127,15 +128,16 @@ create table if not exists sys_search_config_info (
     update_time datetime     null comment '更新时间',
     deleted     tinyint(1)   not null default false comment '删除标志',
     remark      varchar(500) null comment '备注'
-) comment '查询方案字段配置';
+) comment '查询方案配置列';
 
-create table if not exists sys_user_search_config (
+create table if not exists sys_user_search_plan (
     id bigint auto_increment comment 'ID' primary key,
 
     sys_user_id          bigint      comment '用户ID',
     sys_search_config_id bigint      comment '查询方案',
     name                 varchar(64) comment '用户定义的查询方案名称',
     sort                 int         comment '排序',
+    readonly             tinyint(1)  comment '只读（针对公用方案, 只能拷贝不能修改）',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
     create_by   varchar(64)  null comment '创建者',
@@ -146,4 +148,39 @@ create table if not exists sys_user_search_config (
     remark      varchar(500) null comment '备注'
 ) comment '用户保存的查询方案';
 
+create table if not exists sys_user_search_plan_item (
+    id bigint auto_increment comment 'ID' primary key,
 
+    sys_user_id               bigint       comment '用户ID',
+    sys_search_config_id      bigint       comment '查询方案ID',
+    sys_search_config_column_id bigint     comment '用户保存的查询方案主表ID',
+    search_condition          varchar(255) comment '条件',
+    search_value              varchar(255) comment '值',
+    sort                      int          comment '排序',
+
+    status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by   varchar(64)  null comment '创建者',
+    create_time datetime     null comment '创建时间',
+    update_by   varchar(64)  null comment '更新者',
+    update_time datetime     null comment '更新时间',
+    deleted     tinyint(1)   not null default false comment '删除标志',
+    remark      varchar(500) null comment '备注'
+) comment '用户保存的查询方案明细';
+
+create table if not exists sys_user_search_config_column (
+    id bigint auto_increment comment 'ID' primary key,
+
+    sys_user_id                            bigint     comment '用户ID',
+    sys_search_config_column_property_name bigint     comment '对应的查询方案列ID',
+    hidden                                 tinyint(1) comment '是否隐藏',
+    sort                                   int        comment '排序信息',
+    sortable                               tinyint(1) comment '是否允许排序(对于操作列，是不能排序的)',
+
+    status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by   varchar(64)  null comment '创建者',
+    create_time datetime     null comment '创建时间',
+    update_by   varchar(64)  null comment '更新者',
+    update_time datetime     null comment '更新时间',
+    deleted     tinyint(1)   not null default false comment '删除标志',
+    remark      varchar(500) null comment '备注'
+) comment '用户定义字段信息(排序,隐藏)';

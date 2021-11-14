@@ -30,5 +30,5 @@ class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
         onNo = null
     )
 
-    override fun deleteById(id: Long) = "id $id deleted"
+    override fun deleteById(id: Long) = "已删除, id: $id"
 }
