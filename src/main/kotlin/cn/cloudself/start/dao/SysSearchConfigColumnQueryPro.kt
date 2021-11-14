@@ -2,13 +2,13 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysDictDataEntity
+import cn.cloudself.start.entity.SysSearchConfigColumnEntity
 import java.util.Date
 import cn.cloudself.query.*
 
-class ImplSysDictDataQueryPro {
+class ImplSysSearchConfigColumnQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_dict_data"
+        const val TABLE_NAME = "sys_search_config_column"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -34,21 +34,42 @@ class ImplSysDictDataQueryPro {
         val id = createWhereField("id")
         fun id(idList: List<Long>) = createWhereField("id", idList.toTypedArray())
         fun id(vararg ids: Long) = createWhereField("id", ids.toTypedArray())
+        val sysSearchConfigId = createWhereField("sys_search_config_id")
+        fun sysSearchConfigId(sysSearchConfigIdList: List<Long>) = createWhereField("sys_search_config_id", sysSearchConfigIdList.toTypedArray())
+        fun sysSearchConfigId(vararg sysSearchConfigIds: Long) = createWhereField("sys_search_config_id", sysSearchConfigIds.toTypedArray())
+        val column = createWhereField("column")
+        fun column(columnList: List<String>) = createWhereField("column", columnList.toTypedArray())
+        fun column(vararg columns: String) = createWhereField("column", columns)
+        val columnName = createWhereField("column_name")
+        fun columnName(columnNameList: List<String>) = createWhereField("column_name", columnNameList.toTypedArray())
+        fun columnName(vararg columnNames: String) = createWhereField("column_name", columnNames)
+        val columnSql = createWhereField("column_sql")
+        fun columnSql(columnSqlList: List<String>) = createWhereField("column_sql", columnSqlList.toTypedArray())
+        fun columnSql(vararg columnSqls: String) = createWhereField("column_sql", columnSqls)
         val type = createWhereField("type")
         fun type(typeList: List<String>) = createWhereField("type", typeList.toTypedArray())
         fun type(vararg types: String) = createWhereField("type", types)
-        val label = createWhereField("label")
-        fun label(labelList: List<String>) = createWhereField("label", labelList.toTypedArray())
-        fun label(vararg labels: String) = createWhereField("label", labels)
-        val value = createWhereField("value")
-        fun value(valueList: List<String>) = createWhereField("value", valueList.toTypedArray())
-        fun value(vararg values: String) = createWhereField("value", values)
+        val conditions = createWhereField("conditions")
+        fun conditions(conditionsList: List<String>) = createWhereField("conditions", conditionsList.toTypedArray())
+        fun conditions(vararg conditionss: String) = createWhereField("conditions", conditionss)
+        val limitType = createWhereField("limit_type")
+        fun limitType(limitTypeList: List<String>) = createWhereField("limit_type", limitTypeList.toTypedArray())
+        fun limitType(vararg limitTypes: String) = createWhereField("limit_type", limitTypes)
         val sort = createWhereField("sort")
         fun sort(sortList: List<Int>) = createWhereField("sort", sortList.toTypedArray())
         fun sort(vararg sorts: Int) = createWhereField("sort", sorts.toTypedArray())
-        val isDefault = createWhereField("is_default")
-        fun isDefault(isDefaultList: List<Boolean>) = createWhereField("is_default", isDefaultList.toTypedArray())
-        fun isDefault(vararg isDefaults: Boolean) = createWhereField("is_default", isDefaults.toTypedArray())
+        val hidden = createWhereField("hidden")
+        fun hidden(hiddenList: List<Boolean>) = createWhereField("hidden", hiddenList.toTypedArray())
+        fun hidden(vararg hiddens: Boolean) = createWhereField("hidden", hiddens.toTypedArray())
+        val orderByColumn = createWhereField("order_by")
+        fun orderByColumn(orderByColumnList: List<Boolean>) = createWhereField("order_by", orderByColumnList.toTypedArray())
+        fun orderByColumn(vararg orderByColumns: Boolean) = createWhereField("order_by", orderByColumns.toTypedArray())
+        val orderByDesc = createWhereField("order_by_desc")
+        fun orderByDesc(orderByDescList: List<Boolean>) = createWhereField("order_by_desc", orderByDescList.toTypedArray())
+        fun orderByDesc(vararg orderByDescs: Boolean) = createWhereField("order_by_desc", orderByDescs.toTypedArray())
+        val limitValues = createWhereField("limit_values")
+        fun limitValues(limitValuesList: List<String>) = createWhereField("limit_values", limitValuesList.toTypedArray())
+        fun limitValues(vararg limitValuess: String) = createWhereField("limit_values", limitValuess)
         val status = createWhereField("status")
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
         fun status(vararg statuss: String) = createWhereField("status", statuss)
@@ -79,11 +100,18 @@ class ImplSysDictDataQueryPro {
             QueryOrderByKeywords(createField(column), queryStructure, create_order_by_field)
 
         fun id() = createOrderByField("id")
+        fun sysSearchConfigId() = createOrderByField("sys_search_config_id")
+        fun column() = createOrderByField("column")
+        fun columnName() = createOrderByField("column_name")
+        fun columnSql() = createOrderByField("column_sql")
         fun type() = createOrderByField("type")
-        fun label() = createOrderByField("label")
-        fun value() = createOrderByField("value")
+        fun conditions() = createOrderByField("conditions")
+        fun limitType() = createOrderByField("limit_type")
         fun sort() = createOrderByField("sort")
-        fun isDefault() = createOrderByField("is_default")
+        fun hidden() = createOrderByField("hidden")
+        fun orderByColumn() = createOrderByField("order_by")
+        fun orderByDesc() = createOrderByField("order_by_desc")
+        fun limitValues() = createOrderByField("limit_values")
         fun status() = createOrderByField("status")
         fun createBy() = createOrderByField("create_by")
         fun createTime() = createOrderByField("create_time")
@@ -97,11 +125,18 @@ class ImplSysDictDataQueryPro {
         override val field_type = QueryFieldType.OTHER_FIELD
 
         fun id() = getColumn(createField("id"), Long::class.java)
+        fun sysSearchConfigId() = getColumn(createField("sys_search_config_id"), Long::class.java)
+        fun column() = getColumn(createField("column"), String::class.java)
+        fun columnName() = getColumn(createField("column_name"), String::class.java)
+        fun columnSql() = getColumn(createField("column_sql"), String::class.java)
         fun type() = getColumn(createField("type"), String::class.java)
-        fun label() = getColumn(createField("label"), String::class.java)
-        fun value() = getColumn(createField("value"), String::class.java)
+        fun conditions() = getColumn(createField("conditions"), String::class.java)
+        fun limitType() = getColumn(createField("limit_type"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
-        fun isDefault() = getColumn(createField("is_default"), Boolean::class.java)
+        fun hidden() = getColumn(createField("hidden"), Boolean::class.java)
+        fun orderByColumn() = getColumn(createField("order_by"), Boolean::class.java)
+        fun orderByDesc() = getColumn(createField("order_by_desc"), Boolean::class.java)
+        fun limitValues() = getColumn(createField("limit_values"), String::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -118,11 +153,18 @@ class ImplSysDictDataQueryPro {
             ColumnsLimiterField<T, RUN_RES>(queryStructure.copy(fields = queryStructure.fields + createField(column)), field_clazz)
 
         fun id() = createColumnsLimiterField("id")
+        fun sysSearchConfigId() = createColumnsLimiterField("sys_search_config_id")
+        fun column() = createColumnsLimiterField("column")
+        fun columnName() = createColumnsLimiterField("column_name")
+        fun columnSql() = createColumnsLimiterField("column_sql")
         fun type() = createColumnsLimiterField("type")
-        fun label() = createColumnsLimiterField("label")
-        fun value() = createColumnsLimiterField("value")
+        fun conditions() = createColumnsLimiterField("conditions")
+        fun limitType() = createColumnsLimiterField("limit_type")
         fun sort() = createColumnsLimiterField("sort")
-        fun isDefault() = createColumnsLimiterField("is_default")
+        fun hidden() = createColumnsLimiterField("hidden")
+        fun orderByColumn() = createColumnsLimiterField("order_by")
+        fun orderByDesc() = createColumnsLimiterField("order_by_desc")
+        fun limitValues() = createColumnsLimiterField("limit_values")
         fun status() = createColumnsLimiterField("status")
         fun createBy() = createColumnsLimiterField("create_by")
         fun createTime() = createColumnsLimiterField("create_time")
@@ -139,11 +181,18 @@ class ImplSysDictDataQueryPro {
         }
 
         fun id(id: Any) = createUpdateSetField("id", id)
+        fun sysSearchConfigId(sysSearchConfigId: Any) = createUpdateSetField("sys_search_config_id", sysSearchConfigId)
+        fun column(column: Any) = createUpdateSetField("column", column)
+        fun columnName(columnName: Any) = createUpdateSetField("column_name", columnName)
+        fun columnSql(columnSql: Any) = createUpdateSetField("column_sql", columnSql)
         fun type(type: Any) = createUpdateSetField("type", type)
-        fun label(label: Any) = createUpdateSetField("label", label)
-        fun value(value: Any) = createUpdateSetField("value", value)
+        fun conditions(conditions: Any) = createUpdateSetField("conditions", conditions)
+        fun limitType(limitType: Any) = createUpdateSetField("limit_type", limitType)
         fun sort(sort: Any) = createUpdateSetField("sort", sort)
-        fun isDefault(isDefault: Any) = createUpdateSetField("is_default", isDefault)
+        fun hidden(hidden: Any) = createUpdateSetField("hidden", hidden)
+        fun orderByColumn(orderByColumn: Any) = createUpdateSetField("order_by", orderByColumn)
+        fun orderByDesc(orderByDesc: Any) = createUpdateSetField("order_by_desc", orderByDesc)
+        fun limitValues(limitValues: Any) = createUpdateSetField("limit_values", limitValues)
         fun status(status: Any) = createUpdateSetField("status", status)
         fun createBy(createBy: Any) = createUpdateSetField("create_by", createBy)
         fun createTime(createTime: Any) = createUpdateSetField("create_time", createTime)
@@ -158,11 +207,18 @@ class ImplSysDictDataQueryPro {
         override val tableName = TABLE_NAME
 
         fun id() = this.also { fields.add(createField("id")) }
+        fun sysSearchConfigId() = this.also { fields.add(createField("sys_search_config_id")) }
+        fun column() = this.also { fields.add(createField("column")) }
+        fun columnName() = this.also { fields.add(createField("column_name")) }
+        fun columnSql() = this.also { fields.add(createField("column_sql")) }
         fun type() = this.also { fields.add(createField("type")) }
-        fun label() = this.also { fields.add(createField("label")) }
-        fun value() = this.also { fields.add(createField("value")) }
+        fun conditions() = this.also { fields.add(createField("conditions")) }
+        fun limitType() = this.also { fields.add(createField("limit_type")) }
         fun sort() = this.also { fields.add(createField("sort")) }
-        fun isDefault() = this.also { fields.add(createField("is_default")) }
+        fun hidden() = this.also { fields.add(createField("hidden")) }
+        fun orderByColumn() = this.also { fields.add(createField("order_by")) }
+        fun orderByDesc() = this.also { fields.add(createField("order_by_desc")) }
+        fun limitValues() = this.also { fields.add(createField("limit_values")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }
@@ -175,28 +231,28 @@ class ImplSysDictDataQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysDictDataEntity,
+            SysSearchConfigColumnEntity,
             Long,
-            ImplSysDictDataQueryPro.WhereField<SysDictDataEntity, List<SysDictDataEntity>>,
-            ImplSysDictDataQueryPro.OrderByField<SysDictDataEntity, List<SysDictDataEntity>>,
-            ImplSysDictDataQueryPro.UpdateSetField,
-            ImplSysDictDataQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysDictDataQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSearchConfigColumnQueryPro.WhereField<SysSearchConfigColumnEntity, List<SysSearchConfigColumnEntity>>,
+            ImplSysSearchConfigColumnQueryPro.OrderByField<SysSearchConfigColumnEntity, List<SysSearchConfigColumnEntity>>,
+            ImplSysSearchConfigColumnQueryPro.UpdateSetField,
+            ImplSysSearchConfigColumnQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSearchConfigColumnQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysDictDataEntity::class.java,
+        SysSearchConfigColumnEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysDictDataQueryPro.WhereField(qs, SysDictDataEntity::class.java) },
-        { qs: QueryStructure -> ImplSysDictDataQueryPro.OrderByField(qs, SysDictDataEntity::class.java) },
-        { qs: QueryStructure -> ImplSysDictDataQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysDictDataQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysDictDataQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSearchConfigColumnQueryPro.WhereField(qs, SysSearchConfigColumnEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSearchConfigColumnQueryPro.OrderByField(qs, SysSearchConfigColumnEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSearchConfigColumnQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysSearchConfigColumnQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSearchConfigColumnQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysDictDataQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysDictDataQueryPro.TABLE_NAME)))
+val SysSearchConfigColumnQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSearchConfigColumnQueryPro.TABLE_NAME)))
 
-val SysDictDataQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysDictDataQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysDictDataQueryPro.WhereField<SysDictDataEntity, List<SysDictDataEntity>>(qs, SysDictDataEntity::class.java) },
-    { ImplSysDictDataQueryPro.FieldsGenerator() },
+val SysSearchConfigColumnQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysSearchConfigColumnQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysSearchConfigColumnQueryPro.WhereField<SysSearchConfigColumnEntity, List<SysSearchConfigColumnEntity>>(qs, SysSearchConfigColumnEntity::class.java) },
+    { ImplSysSearchConfigColumnQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

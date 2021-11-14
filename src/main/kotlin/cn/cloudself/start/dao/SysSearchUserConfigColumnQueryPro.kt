@@ -2,13 +2,13 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysDictTypeEntity
+import cn.cloudself.start.entity.SysSearchUserConfigColumnEntity
 import java.util.Date
 import cn.cloudself.query.*
 
-class ImplSysDictTypeQueryPro {
+class ImplSysSearchUserConfigColumnQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_dict_type"
+        const val TABLE_NAME = "sys_search_user_config_column"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -34,12 +34,21 @@ class ImplSysDictTypeQueryPro {
         val id = createWhereField("id")
         fun id(idList: List<Long>) = createWhereField("id", idList.toTypedArray())
         fun id(vararg ids: Long) = createWhereField("id", ids.toTypedArray())
-        val name = createWhereField("name")
-        fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
-        fun name(vararg names: String) = createWhereField("name", names)
-        val type = createWhereField("type")
-        fun type(typeList: List<String>) = createWhereField("type", typeList.toTypedArray())
-        fun type(vararg types: String) = createWhereField("type", types)
+        val sysUserId = createWhereField("sys_user_id")
+        fun sysUserId(sysUserIdList: List<Long>) = createWhereField("sys_user_id", sysUserIdList.toTypedArray())
+        fun sysUserId(vararg sysUserIds: Long) = createWhereField("sys_user_id", sysUserIds.toTypedArray())
+        val sysSearchConfigColumnPropertyName = createWhereField("sys_search_config_column_property_name")
+        fun sysSearchConfigColumnPropertyName(sysSearchConfigColumnPropertyNameList: List<Long>) = createWhereField("sys_search_config_column_property_name", sysSearchConfigColumnPropertyNameList.toTypedArray())
+        fun sysSearchConfigColumnPropertyName(vararg sysSearchConfigColumnPropertyNames: Long) = createWhereField("sys_search_config_column_property_name", sysSearchConfigColumnPropertyNames.toTypedArray())
+        val hidden = createWhereField("hidden")
+        fun hidden(hiddenList: List<Boolean>) = createWhereField("hidden", hiddenList.toTypedArray())
+        fun hidden(vararg hiddens: Boolean) = createWhereField("hidden", hiddens.toTypedArray())
+        val sort = createWhereField("sort")
+        fun sort(sortList: List<Int>) = createWhereField("sort", sortList.toTypedArray())
+        fun sort(vararg sorts: Int) = createWhereField("sort", sorts.toTypedArray())
+        val sortable = createWhereField("sortable")
+        fun sortable(sortableList: List<Boolean>) = createWhereField("sortable", sortableList.toTypedArray())
+        fun sortable(vararg sortables: Boolean) = createWhereField("sortable", sortables.toTypedArray())
         val status = createWhereField("status")
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
         fun status(vararg statuss: String) = createWhereField("status", statuss)
@@ -70,8 +79,11 @@ class ImplSysDictTypeQueryPro {
             QueryOrderByKeywords(createField(column), queryStructure, create_order_by_field)
 
         fun id() = createOrderByField("id")
-        fun name() = createOrderByField("name")
-        fun type() = createOrderByField("type")
+        fun sysUserId() = createOrderByField("sys_user_id")
+        fun sysSearchConfigColumnPropertyName() = createOrderByField("sys_search_config_column_property_name")
+        fun hidden() = createOrderByField("hidden")
+        fun sort() = createOrderByField("sort")
+        fun sortable() = createOrderByField("sortable")
         fun status() = createOrderByField("status")
         fun createBy() = createOrderByField("create_by")
         fun createTime() = createOrderByField("create_time")
@@ -85,8 +97,11 @@ class ImplSysDictTypeQueryPro {
         override val field_type = QueryFieldType.OTHER_FIELD
 
         fun id() = getColumn(createField("id"), Long::class.java)
-        fun name() = getColumn(createField("name"), String::class.java)
-        fun type() = getColumn(createField("type"), String::class.java)
+        fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
+        fun sysSearchConfigColumnPropertyName() = getColumn(createField("sys_search_config_column_property_name"), Long::class.java)
+        fun hidden() = getColumn(createField("hidden"), Boolean::class.java)
+        fun sort() = getColumn(createField("sort"), Int::class.java)
+        fun sortable() = getColumn(createField("sortable"), Boolean::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -103,8 +118,11 @@ class ImplSysDictTypeQueryPro {
             ColumnsLimiterField<T, RUN_RES>(queryStructure.copy(fields = queryStructure.fields + createField(column)), field_clazz)
 
         fun id() = createColumnsLimiterField("id")
-        fun name() = createColumnsLimiterField("name")
-        fun type() = createColumnsLimiterField("type")
+        fun sysUserId() = createColumnsLimiterField("sys_user_id")
+        fun sysSearchConfigColumnPropertyName() = createColumnsLimiterField("sys_search_config_column_property_name")
+        fun hidden() = createColumnsLimiterField("hidden")
+        fun sort() = createColumnsLimiterField("sort")
+        fun sortable() = createColumnsLimiterField("sortable")
         fun status() = createColumnsLimiterField("status")
         fun createBy() = createColumnsLimiterField("create_by")
         fun createTime() = createColumnsLimiterField("create_time")
@@ -121,8 +139,11 @@ class ImplSysDictTypeQueryPro {
         }
 
         fun id(id: Any) = createUpdateSetField("id", id)
-        fun name(name: Any) = createUpdateSetField("name", name)
-        fun type(type: Any) = createUpdateSetField("type", type)
+        fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
+        fun sysSearchConfigColumnPropertyName(sysSearchConfigColumnPropertyName: Any) = createUpdateSetField("sys_search_config_column_property_name", sysSearchConfigColumnPropertyName)
+        fun hidden(hidden: Any) = createUpdateSetField("hidden", hidden)
+        fun sort(sort: Any) = createUpdateSetField("sort", sort)
+        fun sortable(sortable: Any) = createUpdateSetField("sortable", sortable)
         fun status(status: Any) = createUpdateSetField("status", status)
         fun createBy(createBy: Any) = createUpdateSetField("create_by", createBy)
         fun createTime(createTime: Any) = createUpdateSetField("create_time", createTime)
@@ -137,8 +158,11 @@ class ImplSysDictTypeQueryPro {
         override val tableName = TABLE_NAME
 
         fun id() = this.also { fields.add(createField("id")) }
-        fun name() = this.also { fields.add(createField("name")) }
-        fun type() = this.also { fields.add(createField("type")) }
+        fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
+        fun sysSearchConfigColumnPropertyName() = this.also { fields.add(createField("sys_search_config_column_property_name")) }
+        fun hidden() = this.also { fields.add(createField("hidden")) }
+        fun sort() = this.also { fields.add(createField("sort")) }
+        fun sortable() = this.also { fields.add(createField("sortable")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }
@@ -151,28 +175,28 @@ class ImplSysDictTypeQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysDictTypeEntity,
+            SysSearchUserConfigColumnEntity,
             Long,
-            ImplSysDictTypeQueryPro.WhereField<SysDictTypeEntity, List<SysDictTypeEntity>>,
-            ImplSysDictTypeQueryPro.OrderByField<SysDictTypeEntity, List<SysDictTypeEntity>>,
-            ImplSysDictTypeQueryPro.UpdateSetField,
-            ImplSysDictTypeQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysDictTypeQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSearchUserConfigColumnQueryPro.WhereField<SysSearchUserConfigColumnEntity, List<SysSearchUserConfigColumnEntity>>,
+            ImplSysSearchUserConfigColumnQueryPro.OrderByField<SysSearchUserConfigColumnEntity, List<SysSearchUserConfigColumnEntity>>,
+            ImplSysSearchUserConfigColumnQueryPro.UpdateSetField,
+            ImplSysSearchUserConfigColumnQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSearchUserConfigColumnQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysDictTypeEntity::class.java,
+        SysSearchUserConfigColumnEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField(qs, SysDictTypeEntity::class.java) },
-        { qs: QueryStructure -> ImplSysDictTypeQueryPro.OrderByField(qs, SysDictTypeEntity::class.java) },
-        { qs: QueryStructure -> ImplSysDictTypeQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField(qs, SysSearchUserConfigColumnEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.OrderByField(qs, SysSearchUserConfigColumnEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysDictTypeQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysDictTypeQueryPro.TABLE_NAME)))
+val SysSearchUserConfigColumnQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSearchUserConfigColumnQueryPro.TABLE_NAME)))
 
-val SysDictTypeQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysDictTypeQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysDictTypeQueryPro.WhereField<SysDictTypeEntity, List<SysDictTypeEntity>>(qs, SysDictTypeEntity::class.java) },
-    { ImplSysDictTypeQueryPro.FieldsGenerator() },
+val SysSearchUserConfigColumnQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysSearchUserConfigColumnQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField<SysSearchUserConfigColumnEntity, List<SysSearchUserConfigColumnEntity>>(qs, SysSearchUserConfigColumnEntity::class.java) },
+    { ImplSysSearchUserConfigColumnQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )
