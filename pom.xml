@@ -89,7 +89,7 @@
         <dependency>
             <groupId>cn.cloudself</groupId>
             <artifactId>query-pro</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
