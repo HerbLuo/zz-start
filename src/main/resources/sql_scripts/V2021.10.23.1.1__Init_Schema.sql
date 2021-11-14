@@ -130,7 +130,7 @@ create table if not exists sys_search_config_column (
     remark      varchar(500) null comment '备注'
 ) comment '查询方案配置列';
 
-create table if not exists sys_user_search_plan (
+create table if not exists sys_search_user_plan (
     id bigint auto_increment comment 'ID' primary key,
 
     sys_user_id          bigint      comment '用户ID',
@@ -148,7 +148,7 @@ create table if not exists sys_user_search_plan (
     remark      varchar(500) null comment '备注'
 ) comment '用户保存的查询方案';
 
-create table if not exists sys_user_search_plan_item (
+create table if not exists sys_search_user_plan_item (
     id bigint auto_increment comment 'ID' primary key,
 
     sys_user_id               bigint       comment '用户ID',
@@ -167,7 +167,7 @@ create table if not exists sys_user_search_plan_item (
     remark      varchar(500) null comment '备注'
 ) comment '用户保存的查询方案明细';
 
-create table if not exists sys_user_search_config_column (
+create table if not exists sys_search_user_config_column (
     id bigint auto_increment comment 'ID' primary key,
 
     sys_user_id                            bigint     comment '用户ID',
