@@ -10,16 +10,21 @@ import kotlin.reflect.jvm.javaMethod
 private val logger = LoggerFactory.getLogger(CouldSerializeMethod::class.java)
 private val sha256WithRsa = Sha256WithRsa.create("zz-interactive")
 
-typealias Callable = (args: Array<out Any?>) -> Any?
-val serializeCache = LRUMap<KFunction<*>, String?>(100, 1000)
-val deserializeCache = LRUMap<String, Callable?>(100, 1000)
+typealias SerializedMethod = String
+typealias MethodUrlPart = String
+typealias ArgNames = List<String>
+typealias SerializedMethodWithArgNames = Pair<SerializedMethod, ArgNames>
+typealias MyCallable = (args: Map<String, Any?>) -> Any?
+
+val serializeCache = LRUMap<KFunction<*>, Pair<SerializedMethod, ArgNames>?>(100, 1000)
+val deserializeCache = LRUMap<String, MyCallable?>(100, 1000)
 
 data class CouldSerializeMethod(
     val className: String,
     val methodName: String,
 )
 
-fun KFunction<*>.serialize(): String {
+fun KFunction<*>.serialize(): SerializedMethodWithArgNames {
     val cache = serializeCache.get(this)
     if (cache != null) {
         return cache
@@ -28,14 +33,16 @@ fun KFunction<*>.serialize(): String {
     logger.info("缓存中不存在KFunction {}对应的序列化后的对象，序列化中", this)
     val methodName = this.name
     val className = this.javaMethod?.declaringClass?.name ?: throw RuntimeException("无法获取${this}的类信息")
-    val serialized = ObjectMapper().writeValueAsString(CouldSerializeMethod(className, methodName))
-    serializeCache.put(this, serialized)
-    return serialized
+    val serializedMethod = ObjectMapper().writeValueAsString(CouldSerializeMethod(className, methodName))
+    val argNames = this.typeParameters.map { it.name }
+    val serializedMethodWithArgNames = serializedMethod to argNames
+    serializeCache.put(this, serializedMethodWithArgNames)
+    return serializedMethodWithArgNames
 }
 
-fun invoke(serializedMethodStr: String, vararg args: Any?): Any? {
-    val callableFunc = deserializeCache.get(serializedMethodStr)
-        ?: ObjectMapper().readValue(serializedMethodStr, CouldSerializeMethod::class.java)
+fun invoke(serializedMethod: SerializedMethod, argsMap: Map<String, Any?>): Any? {
+    val callableFunc = deserializeCache.get(serializedMethod)
+        ?: ObjectMapper().readValue(serializedMethod, CouldSerializeMethod::class.java)
             .let {
                 logger.info("缓存中不存在{}对应的方法, 生成中", it)
 
@@ -44,27 +51,30 @@ fun invoke(serializedMethodStr: String, vararg args: Any?): Any? {
                 val methodName = it.methodName
                 val method = clazz.methods.find { method -> method.name == methodName }
                     ?: throw RuntimeException("${className}中找不到对应的方法$methodName")
+                val parameterTypes = method.parameterTypes
 
                 val obj = RSUtils.getBean(clazz) ?: clazz.getDeclaredConstructor().newInstance()
 
-                val func: Callable = { args -> method.invoke(obj, *args) }
-                deserializeCache.put(serializedMethodStr, func)
+                val func: MyCallable = { relArgsMap ->
+                    val args = parameterTypes.map { param -> relArgsMap[param.name] }.toTypedArray()
+                    method.invoke(obj, *args)
+                }
+                deserializeCache.put(serializedMethod, func)
                 func
             }
 
-    return callableFunc(args)
+    return callableFunc(argsMap)
 }
 
-fun runMethod(encryptMethodStr: String, argsBody: Map<String, Any?>): Any? {
-    val parsed = parseUrlPartToSerializedStr(encryptMethodStr)
-    println(parsed)
-    return invoke()
+fun runMethod(urlPart: String, argMap: Map<String, Any?>): Any? {
+    val serializedMethod = urlPartToSerializedMethodWithArgMap(urlPart)
+    return invoke(serializedMethod, argMap)
 }
 
-fun toUrlPart(serializedMethodStr: String): String {
-    return sha256WithRsa.encrypt(serializedMethodStr).replace("/", "-")
+fun serializedMethodToMethodUrlPart(serializedMethod: SerializedMethod): MethodUrlPart {
+    return sha256WithRsa.encrypt(serializedMethod).replace("/", "-")
 }
 
-fun parseUrlPartToSerializedStr(encryptMethodStr: String): String {
-    return sha256WithRsa.decrypt(encryptMethodStr.replace("-", "/"))
+fun urlPartToSerializedMethodWithArgMap(urlPart: MethodUrlPart): SerializedMethod {
+    return sha256WithRsa.decrypt(urlPart.replace("-", "/"))
 }

@@ -1,7 +1,7 @@
 package cn.cloudself.start.interactive.res
 
 import cn.cloudself.start.interactive.util.serialize
-import cn.cloudself.start.interactive.util.toUrlPart
+import cn.cloudself.start.interactive.util.serializedMethodToMethodUrlPart
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 import java.net.URL
@@ -23,17 +23,29 @@ class Confirm constructor(
      */
     override fun toRes(): Any {
         val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
-        val url = URL(request.scheme, request.serverName, request.serverPort, request.contextPath).toString() + "/interactive/callback/"
-        val okUrl = url + toUrlPart(onOk.serialize())
-        val noUrl = onNo.let { if (it == null) null else url + toUrlPart(it.serialize()) }
+        val baseUrl = URL(request.scheme, request.serverName, request.serverPort, request.contextPath).toString() + "/interactive/callback/"
+        val (onOkUrlPart, onOkArgNames) = onOk.serialize()
+        val okUrl = Url(baseUrl + serializedMethodToMethodUrlPart(onOkUrlPart), onOkArgNames)
+        val noUrl = onNo.let {
+            if (it == null) null
+            else {
+                val (onNoUrlPart, onNoArgNames) = it.serialize()
+                Url(baseUrl + serializedMethodToMethodUrlPart(onNoUrlPart), onNoArgNames)
+            }
+        }
         return Res(confirm, okText, okUrl, noText, noUrl)
     }
+
+    data class Url(
+        val url: String,
+        val argNames: List<String>,
+    )
 
     data class Res (
         val confirm: String,
         val okText: String,
-        val okUrl: String,
+        val okUrl: Url,
         val noText: String?,
-        val noUrl: String?,
+        val noUrl: Url?,
     )
 }
