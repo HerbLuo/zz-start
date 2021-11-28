@@ -1,6 +1,6 @@
 package cn.cloudself.start.interactive
 
-import cn.cloudself.start.interactive.res.ReactRes
+import cn.cloudself.start.interactive.util.ReactRes
 import org.springframework.core.MethodParameter
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order

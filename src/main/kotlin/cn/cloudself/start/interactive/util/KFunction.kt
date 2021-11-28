@@ -35,7 +35,7 @@ fun KFunction<*>.serialize(): SerializedMethodWithArgNames {
     val className = this.javaMethod?.declaringClass?.name ?: throw RuntimeException("无法获取${this}的类信息")
     val serializedMethod = ObjectMapper().writeValueAsString(CouldSerializeMethod(className, methodName))
     val argNames = this.parameters
-        .filterIndexed{ index, _ -> index != 0 }
+        .filterIndexed { index, _ -> index != 0 }
         .mapIndexed { index, param -> param.name ?: index.toString() }
     val serializedMethodWithArgNames = serializedMethod to argNames
     serializeCache.put(this, serializedMethodWithArgNames)

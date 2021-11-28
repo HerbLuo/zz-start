@@ -1,5 +1,6 @@
 package cn.cloudself.start.interactive.res
 
+import cn.cloudself.start.interactive.util.ReactRes
 import cn.cloudself.start.interactive.util.serialize
 import cn.cloudself.start.interactive.util.serializedMethodToMethodUrlPart
 import org.springframework.web.context.request.RequestContextHolder
