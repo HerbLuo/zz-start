@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-class ReactResponseAdvice: ResponseBodyAdvice<Any> {
+class InteractiveResponseAdvice: ResponseBodyAdvice<Any> {
     override fun supports(returnType: MethodParameter, converterType: Class<out HttpMessageConverter<*>>): Boolean {
         val responseType = returnType.method?.returnType ?: return false
         return ReactRes::class.java.isAssignableFrom(responseType)

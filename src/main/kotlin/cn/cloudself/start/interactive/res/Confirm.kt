@@ -24,6 +24,7 @@ class Confirm constructor(
      */
     override fun toRes(): Any {
         val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
+        // TODO 这里多半需要注意 nginx 等软件的转发
         val baseUrl = URL(request.scheme, request.serverName, request.serverPort, request.contextPath).toString() + "/interactive/callback/"
         val (onOkUrlPart, onOkArgNames) = onOk.serialize()
         val okUrl = Url(baseUrl + serializedMethodToMethodUrlPart(onOkUrlPart), onOkArgNames)

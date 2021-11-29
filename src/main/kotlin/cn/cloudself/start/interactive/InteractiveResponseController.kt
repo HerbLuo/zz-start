@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/interactive")
-class ReactResponseController {
+class InteractiveResponseController {
     @PostMapping("/callback/{methodInfo}", produces = ["application/json;charset=utf-8"])
     fun run(@PathVariable methodInfo: String, @RequestBody body: Map<String, Any?>): Any? {
         return runMethod(methodInfo, body)
