@@ -15,17 +15,17 @@ data class SysSearchUserPlanItemEntity(
     @Column(name = "id")
     var id: Long? = null,
 
-    /** 用户ID */
-    @Column(name = "sys_user_id")
-    var sysUserId: Long? = null,
+    /** 表头ID */
+    @Column(name = "sys_search_user_plan_id")
+    var sysSearchUserPlanId: Long? = null,
 
-    /** 查询方案ID */
-    @Column(name = "sys_search_config_id")
-    var sysSearchConfigId: Long? = null,
+    /** 用户ID(冗余) */
+    @Column(name = "sys_user_id_redundant")
+    var sysUserIdRedundant: Long? = null,
 
-    /** 用户保存的查询方案主表ID */
-    @Column(name = "sys_search_config_column_id")
-    var sysSearchConfigColumnId: Long? = null,
+    /** 查询方案配置名(冗余) */
+    @Column(name = "sys_search_config_name_cn_redundant")
+    var sysSearchConfigNameCnRedundant: Long? = null,
 
     /** 条件 */
     @Column(name = "search_condition")

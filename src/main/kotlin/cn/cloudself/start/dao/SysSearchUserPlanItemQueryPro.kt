@@ -34,15 +34,15 @@ class ImplSysSearchUserPlanItemQueryPro {
         val id = createWhereField("id")
         fun id(idList: List<Long>) = createWhereField("id", idList.toTypedArray())
         fun id(vararg ids: Long) = createWhereField("id", ids.toTypedArray())
-        val sysUserId = createWhereField("sys_user_id")
-        fun sysUserId(sysUserIdList: List<Long>) = createWhereField("sys_user_id", sysUserIdList.toTypedArray())
-        fun sysUserId(vararg sysUserIds: Long) = createWhereField("sys_user_id", sysUserIds.toTypedArray())
-        val sysSearchConfigId = createWhereField("sys_search_config_id")
-        fun sysSearchConfigId(sysSearchConfigIdList: List<Long>) = createWhereField("sys_search_config_id", sysSearchConfigIdList.toTypedArray())
-        fun sysSearchConfigId(vararg sysSearchConfigIds: Long) = createWhereField("sys_search_config_id", sysSearchConfigIds.toTypedArray())
-        val sysSearchConfigColumnId = createWhereField("sys_search_config_column_id")
-        fun sysSearchConfigColumnId(sysSearchConfigColumnIdList: List<Long>) = createWhereField("sys_search_config_column_id", sysSearchConfigColumnIdList.toTypedArray())
-        fun sysSearchConfigColumnId(vararg sysSearchConfigColumnIds: Long) = createWhereField("sys_search_config_column_id", sysSearchConfigColumnIds.toTypedArray())
+        val sysSearchUserPlanId = createWhereField("sys_search_user_plan_id")
+        fun sysSearchUserPlanId(sysSearchUserPlanIdList: List<Long>) = createWhereField("sys_search_user_plan_id", sysSearchUserPlanIdList.toTypedArray())
+        fun sysSearchUserPlanId(vararg sysSearchUserPlanIds: Long) = createWhereField("sys_search_user_plan_id", sysSearchUserPlanIds.toTypedArray())
+        val sysUserIdRedundant = createWhereField("sys_user_id_redundant")
+        fun sysUserIdRedundant(sysUserIdRedundantList: List<Long>) = createWhereField("sys_user_id_redundant", sysUserIdRedundantList.toTypedArray())
+        fun sysUserIdRedundant(vararg sysUserIdRedundants: Long) = createWhereField("sys_user_id_redundant", sysUserIdRedundants.toTypedArray())
+        val sysSearchConfigNameCnRedundant = createWhereField("sys_search_config_name_cn_redundant")
+        fun sysSearchConfigNameCnRedundant(sysSearchConfigNameCnRedundantList: List<Long>) = createWhereField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundantList.toTypedArray())
+        fun sysSearchConfigNameCnRedundant(vararg sysSearchConfigNameCnRedundants: Long) = createWhereField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundants.toTypedArray())
         val searchCondition = createWhereField("search_condition")
         fun searchCondition(searchConditionList: List<String>) = createWhereField("search_condition", searchConditionList.toTypedArray())
         fun searchCondition(vararg searchConditions: String) = createWhereField("search_condition", searchConditions)
@@ -82,9 +82,9 @@ class ImplSysSearchUserPlanItemQueryPro {
             QueryOrderByKeywords(createField(column), queryStructure, create_order_by_field)
 
         fun id() = createOrderByField("id")
-        fun sysUserId() = createOrderByField("sys_user_id")
-        fun sysSearchConfigId() = createOrderByField("sys_search_config_id")
-        fun sysSearchConfigColumnId() = createOrderByField("sys_search_config_column_id")
+        fun sysSearchUserPlanId() = createOrderByField("sys_search_user_plan_id")
+        fun sysUserIdRedundant() = createOrderByField("sys_user_id_redundant")
+        fun sysSearchConfigNameCnRedundant() = createOrderByField("sys_search_config_name_cn_redundant")
         fun searchCondition() = createOrderByField("search_condition")
         fun searchValue() = createOrderByField("search_value")
         fun sort() = createOrderByField("sort")
@@ -101,9 +101,9 @@ class ImplSysSearchUserPlanItemQueryPro {
         override val field_type = QueryFieldType.OTHER_FIELD
 
         fun id() = getColumn(createField("id"), Long::class.java)
-        fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
-        fun sysSearchConfigId() = getColumn(createField("sys_search_config_id"), Long::class.java)
-        fun sysSearchConfigColumnId() = getColumn(createField("sys_search_config_column_id"), Long::class.java)
+        fun sysSearchUserPlanId() = getColumn(createField("sys_search_user_plan_id"), Long::class.java)
+        fun sysUserIdRedundant() = getColumn(createField("sys_user_id_redundant"), Long::class.java)
+        fun sysSearchConfigNameCnRedundant() = getColumn(createField("sys_search_config_name_cn_redundant"), Long::class.java)
         fun searchCondition() = getColumn(createField("search_condition"), String::class.java)
         fun searchValue() = getColumn(createField("search_value"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
@@ -123,9 +123,9 @@ class ImplSysSearchUserPlanItemQueryPro {
             ColumnsLimiterField<T, RUN_RES>(queryStructure.copy(fields = queryStructure.fields + createField(column)), field_clazz)
 
         fun id() = createColumnsLimiterField("id")
-        fun sysUserId() = createColumnsLimiterField("sys_user_id")
-        fun sysSearchConfigId() = createColumnsLimiterField("sys_search_config_id")
-        fun sysSearchConfigColumnId() = createColumnsLimiterField("sys_search_config_column_id")
+        fun sysSearchUserPlanId() = createColumnsLimiterField("sys_search_user_plan_id")
+        fun sysUserIdRedundant() = createColumnsLimiterField("sys_user_id_redundant")
+        fun sysSearchConfigNameCnRedundant() = createColumnsLimiterField("sys_search_config_name_cn_redundant")
         fun searchCondition() = createColumnsLimiterField("search_condition")
         fun searchValue() = createColumnsLimiterField("search_value")
         fun sort() = createColumnsLimiterField("sort")
@@ -145,9 +145,9 @@ class ImplSysSearchUserPlanItemQueryPro {
         }
 
         fun id(id: Any) = createUpdateSetField("id", id)
-        fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
-        fun sysSearchConfigId(sysSearchConfigId: Any) = createUpdateSetField("sys_search_config_id", sysSearchConfigId)
-        fun sysSearchConfigColumnId(sysSearchConfigColumnId: Any) = createUpdateSetField("sys_search_config_column_id", sysSearchConfigColumnId)
+        fun sysSearchUserPlanId(sysSearchUserPlanId: Any) = createUpdateSetField("sys_search_user_plan_id", sysSearchUserPlanId)
+        fun sysUserIdRedundant(sysUserIdRedundant: Any) = createUpdateSetField("sys_user_id_redundant", sysUserIdRedundant)
+        fun sysSearchConfigNameCnRedundant(sysSearchConfigNameCnRedundant: Any) = createUpdateSetField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundant)
         fun searchCondition(searchCondition: Any) = createUpdateSetField("search_condition", searchCondition)
         fun searchValue(searchValue: Any) = createUpdateSetField("search_value", searchValue)
         fun sort(sort: Any) = createUpdateSetField("sort", sort)
@@ -165,9 +165,9 @@ class ImplSysSearchUserPlanItemQueryPro {
         override val tableName = TABLE_NAME
 
         fun id() = this.also { fields.add(createField("id")) }
-        fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
-        fun sysSearchConfigId() = this.also { fields.add(createField("sys_search_config_id")) }
-        fun sysSearchConfigColumnId() = this.also { fields.add(createField("sys_search_config_column_id")) }
+        fun sysSearchUserPlanId() = this.also { fields.add(createField("sys_search_user_plan_id")) }
+        fun sysUserIdRedundant() = this.also { fields.add(createField("sys_user_id_redundant")) }
+        fun sysSearchConfigNameCnRedundant() = this.also { fields.add(createField("sys_search_config_name_cn_redundant")) }
         fun searchCondition() = this.also { fields.add(createField("search_condition")) }
         fun searchValue() = this.also { fields.add(createField("search_value")) }
         fun sort() = this.also { fields.add(createField("sort")) }

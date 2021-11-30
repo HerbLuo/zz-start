@@ -156,9 +156,10 @@ create table if not exists sys_search_user_plan (
 create table if not exists sys_search_user_plan_item (
     id bigint auto_increment comment 'ID' primary key,
 
-    sys_user_id               bigint       comment '用户ID',
-    sys_search_config_id      bigint       comment '查询方案ID',
-    sys_search_config_column_id bigint     comment '用户保存的查询方案主表ID',
+    sys_search_user_plan_id                  bigint       comment '表头ID',
+    sys_user_id_redundant                    bigint       comment '用户ID(冗余)',
+    sys_search_config_name_cn_redundant      bigint       comment '查询方案配置名(冗余)',
+
     search_condition          varchar(255) comment '条件',
     search_value              varchar(255) comment '值',
     sort                      int          comment '排序',
