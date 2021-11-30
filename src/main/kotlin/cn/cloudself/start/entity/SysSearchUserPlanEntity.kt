@@ -23,6 +23,10 @@ data class SysSearchUserPlanEntity(
     @Column(name = "sys_search_config_id")
     var sysSearchConfigId: Long? = null,
 
+    /** 方案配置名(冗余字段) */
+    @Column(name = "sys_search_config_name_cn_redundant")
+    var sysSearchConfigNameCnRedundant: String? = null,
+
     /** 用户定义的查询方案名称 */
     @Column(name = "name")
     var name: String? = null,

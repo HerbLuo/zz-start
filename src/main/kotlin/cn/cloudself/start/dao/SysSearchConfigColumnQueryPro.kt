@@ -37,6 +37,9 @@ class ImplSysSearchConfigColumnQueryPro {
         val sysSearchConfigId = createWhereField("sys_search_config_id")
         fun sysSearchConfigId(sysSearchConfigIdList: List<Long>) = createWhereField("sys_search_config_id", sysSearchConfigIdList.toTypedArray())
         fun sysSearchConfigId(vararg sysSearchConfigIds: Long) = createWhereField("sys_search_config_id", sysSearchConfigIds.toTypedArray())
+        val sysSearchConfigNameCnRedundant = createWhereField("sys_search_config_name_cn_redundant")
+        fun sysSearchConfigNameCnRedundant(sysSearchConfigNameCnRedundantList: List<String>) = createWhereField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundantList.toTypedArray())
+        fun sysSearchConfigNameCnRedundant(vararg sysSearchConfigNameCnRedundants: String) = createWhereField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundants)
         val column = createWhereField("column")
         fun column(columnList: List<String>) = createWhereField("column", columnList.toTypedArray())
         fun column(vararg columns: String) = createWhereField("column", columns)
@@ -101,6 +104,7 @@ class ImplSysSearchConfigColumnQueryPro {
 
         fun id() = createOrderByField("id")
         fun sysSearchConfigId() = createOrderByField("sys_search_config_id")
+        fun sysSearchConfigNameCnRedundant() = createOrderByField("sys_search_config_name_cn_redundant")
         fun column() = createOrderByField("column")
         fun columnName() = createOrderByField("column_name")
         fun columnSql() = createOrderByField("column_sql")
@@ -126,6 +130,7 @@ class ImplSysSearchConfigColumnQueryPro {
 
         fun id() = getColumn(createField("id"), Long::class.java)
         fun sysSearchConfigId() = getColumn(createField("sys_search_config_id"), Long::class.java)
+        fun sysSearchConfigNameCnRedundant() = getColumn(createField("sys_search_config_name_cn_redundant"), String::class.java)
         fun column() = getColumn(createField("column"), String::class.java)
         fun columnName() = getColumn(createField("column_name"), String::class.java)
         fun columnSql() = getColumn(createField("column_sql"), String::class.java)
@@ -154,6 +159,7 @@ class ImplSysSearchConfigColumnQueryPro {
 
         fun id() = createColumnsLimiterField("id")
         fun sysSearchConfigId() = createColumnsLimiterField("sys_search_config_id")
+        fun sysSearchConfigNameCnRedundant() = createColumnsLimiterField("sys_search_config_name_cn_redundant")
         fun column() = createColumnsLimiterField("column")
         fun columnName() = createColumnsLimiterField("column_name")
         fun columnSql() = createColumnsLimiterField("column_sql")
@@ -182,6 +188,7 @@ class ImplSysSearchConfigColumnQueryPro {
 
         fun id(id: Any) = createUpdateSetField("id", id)
         fun sysSearchConfigId(sysSearchConfigId: Any) = createUpdateSetField("sys_search_config_id", sysSearchConfigId)
+        fun sysSearchConfigNameCnRedundant(sysSearchConfigNameCnRedundant: Any) = createUpdateSetField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundant)
         fun column(column: Any) = createUpdateSetField("column", column)
         fun columnName(columnName: Any) = createUpdateSetField("column_name", columnName)
         fun columnSql(columnSql: Any) = createUpdateSetField("column_sql", columnSql)
@@ -208,6 +215,7 @@ class ImplSysSearchConfigColumnQueryPro {
 
         fun id() = this.also { fields.add(createField("id")) }
         fun sysSearchConfigId() = this.also { fields.add(createField("sys_search_config_id")) }
+        fun sysSearchConfigNameCnRedundant() = this.also { fields.add(createField("sys_search_config_name_cn_redundant")) }
         fun column() = this.also { fields.add(createField("column")) }
         fun columnName() = this.also { fields.add(createField("column_name")) }
         fun columnSql() = this.also { fields.add(createField("column_sql")) }

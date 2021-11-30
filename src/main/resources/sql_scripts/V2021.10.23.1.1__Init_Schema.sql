@@ -95,6 +95,8 @@ create table if not exists sys_dict_data (
 create table if not exists sys_search_config (
     id          bigint auto_increment comment 'ID' primary key,
     name        varchar(128) comment '方案名',
+    name_cn     varchar(128) comment '方案名',
+
     `sql`       text         comment 'sql',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
@@ -107,19 +109,20 @@ create table if not exists sys_search_config (
 ) comment '查询方案配置';
 
 create table if not exists sys_search_config_column (
-    id                   bigint auto_increment comment 'ID' primary key,
-    sys_search_config_id bigint        comment '主键ID',
-    `column`             varchar(128)  comment '属性名(作为字段)',
-    column_name          varchar(128)  comment '属性名(显示用)',
-    column_sql           text          comment '属性sql',
-    type                 varchar(64)   comment '类型(text, select, number, time, date, date-time, month, year)',
-    conditions           varchar(255)  comment '允许的搜索条件',
-    limit_type           varchar(255)  comment '限定类型(values, dictionary, select_option, url)',
-    sort                 int default 0 comment '排序',
-    hidden               tinyint(1)    comment '隐藏',
-    order_by             tinyint(1)    comment '排序字段',
-    order_by_desc        tinyint(1)    comment '倒序排序字段',
-    limit_values         varchar(255)  comment '限定值',
+    id                                  bigint auto_increment comment 'ID' primary key,
+    sys_search_config_id                bigint        comment '主键ID',
+    sys_search_config_name_cn_redundant varchar(128)  comment '方案名(冗余字段)',
+    `column`                            varchar(128)  comment '属性名(作为字段)',
+    column_name                         varchar(128)  comment '属性名(显示用)',
+    column_sql                          text          comment '属性sql',
+    type                                varchar(64)   comment '类型(text, select, number, time, date, date-time, month, year)',
+    conditions                          varchar(255)  comment '允许的搜索条件',
+    limit_type                          varchar(255)  comment '限定类型(values, dictionary, select_option, url)',
+    sort                                int default 0 comment '排序',
+    hidden                              tinyint(1)    comment '隐藏',
+    order_by                            tinyint(1)    comment '排序字段',
+    order_by_desc                       tinyint(1)    comment '倒序排序字段',
+    limit_values                        varchar(255)  comment '限定值',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
     create_by   varchar(64)  null comment '创建者',
@@ -133,8 +136,10 @@ create table if not exists sys_search_config_column (
 create table if not exists sys_search_user_plan (
     id bigint auto_increment comment 'ID' primary key,
 
-    sys_user_id          bigint      comment '用户ID',
-    sys_search_config_id bigint      comment '查询方案',
+    sys_user_id                      bigint       comment '用户ID',
+    sys_search_config_id             bigint       comment '查询方案',
+    sys_search_config_name_cn_redundant varchar(128) comment '方案配置名(冗余字段)',
+
     name                 varchar(64) comment '用户定义的查询方案名称',
     sort                 int         comment '排序',
     readonly             tinyint(1)  comment '只读（针对公用方案, 只能拷贝不能修改）',

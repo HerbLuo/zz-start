@@ -40,6 +40,9 @@ class ImplSysSearchUserPlanQueryPro {
         val sysSearchConfigId = createWhereField("sys_search_config_id")
         fun sysSearchConfigId(sysSearchConfigIdList: List<Long>) = createWhereField("sys_search_config_id", sysSearchConfigIdList.toTypedArray())
         fun sysSearchConfigId(vararg sysSearchConfigIds: Long) = createWhereField("sys_search_config_id", sysSearchConfigIds.toTypedArray())
+        val sysSearchConfigNameCnRedundant = createWhereField("sys_search_config_name_cn_redundant")
+        fun sysSearchConfigNameCnRedundant(sysSearchConfigNameCnRedundantList: List<String>) = createWhereField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundantList.toTypedArray())
+        fun sysSearchConfigNameCnRedundant(vararg sysSearchConfigNameCnRedundants: String) = createWhereField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundants)
         val name = createWhereField("name")
         fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
         fun name(vararg names: String) = createWhereField("name", names)
@@ -81,6 +84,7 @@ class ImplSysSearchUserPlanQueryPro {
         fun id() = createOrderByField("id")
         fun sysUserId() = createOrderByField("sys_user_id")
         fun sysSearchConfigId() = createOrderByField("sys_search_config_id")
+        fun sysSearchConfigNameCnRedundant() = createOrderByField("sys_search_config_name_cn_redundant")
         fun name() = createOrderByField("name")
         fun sort() = createOrderByField("sort")
         fun readonly() = createOrderByField("readonly")
@@ -99,6 +103,7 @@ class ImplSysSearchUserPlanQueryPro {
         fun id() = getColumn(createField("id"), Long::class.java)
         fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
         fun sysSearchConfigId() = getColumn(createField("sys_search_config_id"), Long::class.java)
+        fun sysSearchConfigNameCnRedundant() = getColumn(createField("sys_search_config_name_cn_redundant"), String::class.java)
         fun name() = getColumn(createField("name"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
         fun readonly() = getColumn(createField("readonly"), Boolean::class.java)
@@ -120,6 +125,7 @@ class ImplSysSearchUserPlanQueryPro {
         fun id() = createColumnsLimiterField("id")
         fun sysUserId() = createColumnsLimiterField("sys_user_id")
         fun sysSearchConfigId() = createColumnsLimiterField("sys_search_config_id")
+        fun sysSearchConfigNameCnRedundant() = createColumnsLimiterField("sys_search_config_name_cn_redundant")
         fun name() = createColumnsLimiterField("name")
         fun sort() = createColumnsLimiterField("sort")
         fun readonly() = createColumnsLimiterField("readonly")
@@ -141,6 +147,7 @@ class ImplSysSearchUserPlanQueryPro {
         fun id(id: Any) = createUpdateSetField("id", id)
         fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
         fun sysSearchConfigId(sysSearchConfigId: Any) = createUpdateSetField("sys_search_config_id", sysSearchConfigId)
+        fun sysSearchConfigNameCnRedundant(sysSearchConfigNameCnRedundant: Any) = createUpdateSetField("sys_search_config_name_cn_redundant", sysSearchConfigNameCnRedundant)
         fun name(name: Any) = createUpdateSetField("name", name)
         fun sort(sort: Any) = createUpdateSetField("sort", sort)
         fun readonly(readonly: Any) = createUpdateSetField("readonly", readonly)
@@ -160,6 +167,7 @@ class ImplSysSearchUserPlanQueryPro {
         fun id() = this.also { fields.add(createField("id")) }
         fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
         fun sysSearchConfigId() = this.also { fields.add(createField("sys_search_config_id")) }
+        fun sysSearchConfigNameCnRedundant() = this.also { fields.add(createField("sys_search_config_name_cn_redundant")) }
         fun name() = this.also { fields.add(createField("name")) }
         fun sort() = this.also { fields.add(createField("sort")) }
         fun readonly() = this.also { fields.add(createField("readonly")) }

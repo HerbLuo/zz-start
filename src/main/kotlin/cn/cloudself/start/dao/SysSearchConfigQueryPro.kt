@@ -37,6 +37,9 @@ class ImplSysSearchConfigQueryPro {
         val name = createWhereField("name")
         fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
         fun name(vararg names: String) = createWhereField("name", names)
+        val nameCn = createWhereField("name_cn")
+        fun nameCn(nameCnList: List<String>) = createWhereField("name_cn", nameCnList.toTypedArray())
+        fun nameCn(vararg nameCns: String) = createWhereField("name_cn", nameCns)
         val sql = createWhereField("sql")
         fun sql(sqlList: List<String>) = createWhereField("sql", sqlList.toTypedArray())
         fun sql(vararg sqls: String) = createWhereField("sql", sqls)
@@ -71,6 +74,7 @@ class ImplSysSearchConfigQueryPro {
 
         fun id() = createOrderByField("id")
         fun name() = createOrderByField("name")
+        fun nameCn() = createOrderByField("name_cn")
         fun sql() = createOrderByField("sql")
         fun status() = createOrderByField("status")
         fun createBy() = createOrderByField("create_by")
@@ -86,6 +90,7 @@ class ImplSysSearchConfigQueryPro {
 
         fun id() = getColumn(createField("id"), Long::class.java)
         fun name() = getColumn(createField("name"), String::class.java)
+        fun nameCn() = getColumn(createField("name_cn"), String::class.java)
         fun sql() = getColumn(createField("sql"), String::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
@@ -104,6 +109,7 @@ class ImplSysSearchConfigQueryPro {
 
         fun id() = createColumnsLimiterField("id")
         fun name() = createColumnsLimiterField("name")
+        fun nameCn() = createColumnsLimiterField("name_cn")
         fun sql() = createColumnsLimiterField("sql")
         fun status() = createColumnsLimiterField("status")
         fun createBy() = createColumnsLimiterField("create_by")
@@ -122,6 +128,7 @@ class ImplSysSearchConfigQueryPro {
 
         fun id(id: Any) = createUpdateSetField("id", id)
         fun name(name: Any) = createUpdateSetField("name", name)
+        fun nameCn(nameCn: Any) = createUpdateSetField("name_cn", nameCn)
         fun sql(sql: Any) = createUpdateSetField("sql", sql)
         fun status(status: Any) = createUpdateSetField("status", status)
         fun createBy(createBy: Any) = createUpdateSetField("create_by", createBy)
@@ -138,6 +145,7 @@ class ImplSysSearchConfigQueryPro {
 
         fun id() = this.also { fields.add(createField("id")) }
         fun name() = this.also { fields.add(createField("name")) }
+        fun nameCn() = this.also { fields.add(createField("name_cn")) }
         fun sql() = this.also { fields.add(createField("sql")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
