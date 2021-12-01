@@ -11,6 +11,11 @@ data class Promise<T>(
 
         @JvmStatic
         fun <T> create(func: () -> T): Promise<T> {
+            Runnable {
+                val res = func()
+
+            }
+
             return Promise("TODO ", null, PROMISE_OBJECT_WITH_URL)
         }
         @JvmStatic

@@ -46,10 +46,9 @@ class AnotherService {
 
 对应的前端自动处理工具已完成, 参考: 
 
-#### 1. Promise：`interactive.res.Promise`
+#### 2. Promise：`interactive.res.Promise`
 `Promise` 用于立刻返回一个需要较长时间执行的操作。
-##### 1) 使用方法：
-
+##### 1) 例子：
 ```java
 import cn.cloudself.start.interactive.res.Promise;
 
@@ -59,9 +58,9 @@ import java.util.ArrayList;
 class PageData {
     private List<Map<String, Object>> rows;
     private Boolean hasNext;
-    private Promise<Int> totalCount;
+    private Promise<Integer> totalCount;
 
-    public PageData(List<Map<String, Object>> rows, Boolean hasNext, Promise<Int> totalCount) {
+    public PageData(List<Map<String, Object>> rows, Boolean hasNext, Promise<Integer> totalCount) {
         this.rows = rows;
         this.hasNext = hasNext;
         this.totalCount;
@@ -80,7 +79,7 @@ class Service {
             hasNext = false;
         }
 
-        final Promise<Int> totalCountPromise = hasNext
+        final Promise<Integer> totalCountPromise = hasNext
                 ? Promise.create(this::getTotalCount)
                 : Promise.resolve(page * pageSize + rows.size());
         return new PageData(rows, hasNext, totalCountPromise);
