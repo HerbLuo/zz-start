@@ -20,10 +20,10 @@ data class SysSearchConfigColumnEntity(
     var sysSearchConfigId: Long? = null,
 
     /** 方案名(冗余字段) */
-    @Column(name = "sys_search_config_name_cn_redundant")
-    var sysSearchConfigNameCnRedundant: String? = null,
+    @Column(name = "sys_search_config_name_redundant")
+    var sysSearchConfigNameRedundant: String? = null,
 
-    /** 属性名(作为字段) */
+    /** 属性名(作为字段名) */
     @Column(name = "column")
     var column: String? = null,
 

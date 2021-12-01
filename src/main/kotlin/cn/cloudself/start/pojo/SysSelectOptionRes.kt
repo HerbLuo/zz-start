@@ -1,6 +1,6 @@
 package cn.cloudself.start.pojo
 
-data class SelectOptionRes(
+data class SysSelectOptionRes(
     val label: String?,
     val value: String?,
     val default: Boolean = false,

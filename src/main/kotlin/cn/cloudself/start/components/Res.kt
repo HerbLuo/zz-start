@@ -1,4 +1,4 @@
-package cn.cloudself.start.pojo
+package cn.cloudself.start.components
 
 data class Res<T> constructor(
   val ok: Byte,

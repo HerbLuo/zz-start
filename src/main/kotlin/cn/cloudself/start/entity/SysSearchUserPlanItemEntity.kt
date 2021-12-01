@@ -24,8 +24,12 @@ data class SysSearchUserPlanItemEntity(
     var sysUserIdRedundant: Long? = null,
 
     /** 查询方案配置名(冗余) */
-    @Column(name = "sys_search_config_name_cn_redundant")
-    var sysSearchConfigNameCnRedundant: Long? = null,
+    @Column(name = "sys_search_config_name_redundant")
+    var sysSearchConfigNameRedundant: Long? = null,
+
+    /** 字段sql */
+    @Column(name = "column_sql")
+    var columnSql: String? = null,
 
     /** 条件 */
     @Column(name = "search_condition")

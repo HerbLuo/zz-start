@@ -1,19 +1,19 @@
 package cn.cloudself.start.util
 
 import cn.cloudself.start.exception.http.RequestUnauthorizedException
-import cn.cloudself.start.pojo.TokenUser
+import cn.cloudself.start.pojo.TokenWithUser
 import org.springframework.web.context.request.RequestAttributes
 import org.springframework.web.context.request.RequestContextHolder
 
 object WebUtil {
     @JvmStatic
-    fun setUser(user: TokenUser) {
+    fun setUser(user: TokenWithUser) {
         RequestContextHolder.currentRequestAttributes().setAttribute("user", user, RequestAttributes.SCOPE_REQUEST)
     }
 
     @JvmStatic
-    fun getUser(): TokenUser? {
-        return RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_REQUEST) as TokenUser?
+    fun getUser(): TokenWithUser? {
+        return RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_REQUEST) as TokenWithUser?
     }
 
     @JvmStatic

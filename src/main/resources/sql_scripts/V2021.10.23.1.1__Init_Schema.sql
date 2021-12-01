@@ -94,8 +94,8 @@ create table if not exists sys_dict_data (
 
 create table if not exists sys_search_config (
     id          bigint auto_increment comment 'ID' primary key,
-    name        varchar(128) comment '方案名',
-    name_cn     varchar(128) comment '方案名',
+    tag         varchar(128) comment '方案名(可用于查询，唯一)',
+    name        varchar(128) comment '方案名(备注, 可为中文)',
 
     `sql`       text         comment 'sql',
 
@@ -111,8 +111,8 @@ create table if not exists sys_search_config (
 create table if not exists sys_search_config_column (
     id                                  bigint auto_increment comment 'ID' primary key,
     sys_search_config_id                bigint        comment '主键ID',
-    sys_search_config_name_cn_redundant varchar(128)  comment '方案名(冗余字段)',
-    `column`                            varchar(128)  comment '属性名(作为字段)',
+    sys_search_config_name_redundant    varchar(128)  comment '方案名(冗余字段)',
+    `column`                            varchar(128)  comment '属性名(作为字段名)',
     column_name                         varchar(128)  comment '属性名(显示用)',
     column_sql                          text          comment '属性sql',
     type                                varchar(64)   comment '类型(text, select, number, time, date, date-time, month, year)',
@@ -138,7 +138,7 @@ create table if not exists sys_search_user_plan (
 
     sys_user_id                      bigint       comment '用户ID',
     sys_search_config_id             bigint       comment '查询方案',
-    sys_search_config_name_cn_redundant varchar(128) comment '方案配置名(冗余字段)',
+    sys_search_config_name_redundant varchar(128) comment '方案配置名(冗余字段)',
 
     name                 varchar(64) comment '用户定义的查询方案名称',
     sort                 int         comment '排序',
@@ -158,11 +158,12 @@ create table if not exists sys_search_user_plan_item (
 
     sys_search_user_plan_id                  bigint       comment '表头ID',
     sys_user_id_redundant                    bigint       comment '用户ID(冗余)',
-    sys_search_config_name_cn_redundant      bigint       comment '查询方案配置名(冗余)',
+    sys_search_config_name_redundant         bigint       comment '查询方案配置名(冗余)',
 
-    search_condition          varchar(255) comment '条件',
-    search_value              varchar(255) comment '值',
-    sort                      int          comment '排序',
+    column_sql       varchar(255) comment '字段sql',
+    search_condition varchar(255) comment '条件',
+    search_value     varchar(255) comment '值',
+    sort             int          comment '排序',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
     create_by   varchar(64)  null comment '创建者',

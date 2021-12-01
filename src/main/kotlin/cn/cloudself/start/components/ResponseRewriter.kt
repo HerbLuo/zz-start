@@ -1,7 +1,5 @@
 package cn.cloudself.start.components
 
-import cn.cloudself.start.pojo.Res
-import cn.cloudself.start.pojo.ok
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType

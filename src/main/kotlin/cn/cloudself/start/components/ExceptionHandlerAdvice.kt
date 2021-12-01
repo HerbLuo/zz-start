@@ -1,8 +1,6 @@
 package cn.cloudself.start.components
 
 import cn.cloudself.start.exception.http.*
-import cn.cloudself.start.pojo.Res
-import cn.cloudself.start.pojo.err
 import cn.cloudself.start.util.RandomUtil
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.JWTVerificationException

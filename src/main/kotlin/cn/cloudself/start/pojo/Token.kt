@@ -4,7 +4,7 @@ data class Token(
     val token: String,
 )
 
-data class TokenUser (
+data class TokenWithUser (
     val id: Long,
     val username: String,
 )

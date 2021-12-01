@@ -1,7 +1,7 @@
 package cn.cloudself.start.controller
 
-import cn.cloudself.start.pojo.SelectOptionRes
-import cn.cloudself.start.service.ISelectOptionService
+import cn.cloudself.start.pojo.SysSelectOptionRes
+import cn.cloudself.start.service.ISysSelectOptionService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/select-option/")
 class SysSelectOptionController @Autowired constructor(
-    private val selectOptionService: ISelectOptionService
+    private val selectOptionService: ISysSelectOptionService
 ) {
 
     @ApiOperation("使用key获取下拉列表", notes = "对应表sys_select_option")
     @GetMapping("/{key}")
-    fun getByKey(@PathVariable key: String): List<SelectOptionRes> =
+    fun getByKey(@PathVariable key: String): List<SysSelectOptionRes> =
         selectOptionService.getSelectOptions(key)
 
     @ApiOperation("使用key获取下拉列表", notes = "对应表sys_select_option")

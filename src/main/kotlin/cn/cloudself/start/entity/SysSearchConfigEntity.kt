@@ -15,13 +15,13 @@ data class SysSearchConfigEntity(
     @Column(name = "id")
     var id: Long? = null,
 
-    /** 方案名 */
+    /** 方案名(可用于查询，唯一) */
+    @Column(name = "tag")
+    var tag: String? = null,
+
+    /** 方案名(备注, 可为中文) */
     @Column(name = "name")
     var name: String? = null,
-
-    /** 方案名 */
-    @Column(name = "name_cn")
-    var nameCn: String? = null,
 
     /** sql */
     @Column(name = "sql")

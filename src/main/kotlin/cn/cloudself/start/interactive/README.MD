@@ -45,3 +45,53 @@ class AnotherService {
 ```
 
 对应的前端自动处理工具已完成, 参考: 
+
+#### 1. Promise：`interactive.res.Promise`
+`Promise` 用于立刻返回一个需要较长时间执行的操作。
+##### 1) 使用方法：
+
+```java
+import cn.cloudself.start.interactive.res.Promise;
+
+import java.util.List;
+import java.util.ArrayList;
+
+class PageData {
+    private List<Map<String, Object>> rows;
+    private Boolean hasNext;
+    private Promise<Int> totalCount;
+
+    public PageData(List<Map<String, Object>> rows, Boolean hasNext, Promise<Int> totalCount) {
+        this.rows = rows;
+        this.hasNext = hasNext;
+        this.totalCount;
+    }
+}
+
+class Service {
+    public PageData getPage(Integer page, Integer pageSize) {
+        final Integer start = (page - 1) * pageSize;
+        List<Map<String, Object>> rows = selectRows(start, pageSize + 1);
+        final boolean hasNext;
+        if (rows.size() > pageSize) {
+            hasNext = true;
+            rows = rows.subList(0, pageSize);
+        } else {
+            hasNext = false;
+        }
+
+        final Promise<Int> totalCountPromise = hasNext
+                ? Promise.create(this::getTotalCount)
+                : Promise.resolve(page * pageSize + rows.size());
+        return new PageData(rows, hasNext, totalCountPromise);
+    }
+
+    private List<Map<String, Object>> selectRows(Integer start, Integer limit) {
+        // some sql query
+    }
+
+    private Integer getTotalCount() {
+        // some sql query
+    }
+}
+```

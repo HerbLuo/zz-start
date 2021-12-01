@@ -5,6 +5,7 @@ package cn.cloudself.start.dao
 import cn.cloudself.start.entity.SysDictTypeEntity
 import java.util.Date
 import cn.cloudself.query.*
+import org.jetbrains.annotations.Contract;
 
 class ImplSysDictTypeQueryPro {
     companion object {
@@ -32,34 +33,54 @@ class ImplSysDictTypeQueryPro {
             createWhereField(column).let { if (objs.size == 1) it.equalsTo(objs[0]) else it.`in`(*objs) }
 
         val id = createWhereField("id")
+        @Contract(pure = true)
         fun id(idList: List<Long>) = createWhereField("id", idList.toTypedArray())
+        @Contract(pure = true)
         fun id(vararg ids: Long) = createWhereField("id", ids.toTypedArray())
         val name = createWhereField("name")
+        @Contract(pure = true)
         fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
+        @Contract(pure = true)
         fun name(vararg names: String) = createWhereField("name", names)
         val type = createWhereField("type")
+        @Contract(pure = true)
         fun type(typeList: List<String>) = createWhereField("type", typeList.toTypedArray())
+        @Contract(pure = true)
         fun type(vararg types: String) = createWhereField("type", types)
         val status = createWhereField("status")
+        @Contract(pure = true)
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
+        @Contract(pure = true)
         fun status(vararg statuss: String) = createWhereField("status", statuss)
         val createBy = createWhereField("create_by")
+        @Contract(pure = true)
         fun createBy(createByList: List<String>) = createWhereField("create_by", createByList.toTypedArray())
+        @Contract(pure = true)
         fun createBy(vararg createBys: String) = createWhereField("create_by", createBys)
         val createTime = createWhereField("create_time")
+        @Contract(pure = true)
         fun createTime(createTimeList: List<Date>) = createWhereField("create_time", createTimeList.toTypedArray())
+        @Contract(pure = true)
         fun createTime(vararg createTimes: Date) = createWhereField("create_time", createTimes)
         val updateBy = createWhereField("update_by")
+        @Contract(pure = true)
         fun updateBy(updateByList: List<String>) = createWhereField("update_by", updateByList.toTypedArray())
+        @Contract(pure = true)
         fun updateBy(vararg updateBys: String) = createWhereField("update_by", updateBys)
         val updateTime = createWhereField("update_time")
+        @Contract(pure = true)
         fun updateTime(updateTimeList: List<Date>) = createWhereField("update_time", updateTimeList.toTypedArray())
+        @Contract(pure = true)
         fun updateTime(vararg updateTimes: Date) = createWhereField("update_time", updateTimes)
         val deleted = createWhereField("deleted")
+        @Contract(pure = true)
         fun deleted(deletedList: List<Boolean>) = createWhereField("deleted", deletedList.toTypedArray())
+        @Contract(pure = true)
         fun deleted(vararg deleteds: Boolean) = createWhereField("deleted", deleteds.toTypedArray())
         val remark = createWhereField("remark")
+        @Contract(pure = true)
         fun remark(remarkList: List<String>) = createWhereField("remark", remarkList.toTypedArray())
+        @Contract(pure = true)
         fun remark(vararg remarks: String) = createWhereField("remark", remarks)
     }
 
@@ -69,15 +90,25 @@ class ImplSysDictTypeQueryPro {
         private fun createOrderByField(column: String) =
             QueryOrderByKeywords(createField(column), queryStructure, create_order_by_field)
 
+        @Contract(pure = true)
         fun id() = createOrderByField("id")
+        @Contract(pure = true)
         fun name() = createOrderByField("name")
+        @Contract(pure = true)
         fun type() = createOrderByField("type")
+        @Contract(pure = true)
         fun status() = createOrderByField("status")
+        @Contract(pure = true)
         fun createBy() = createOrderByField("create_by")
+        @Contract(pure = true)
         fun createTime() = createOrderByField("create_time")
+        @Contract(pure = true)
         fun updateBy() = createOrderByField("update_by")
+        @Contract(pure = true)
         fun updateTime() = createOrderByField("update_time")
+        @Contract(pure = true)
         fun deleted() = createOrderByField("deleted")
+        @Contract(pure = true)
         fun remark() = createOrderByField("remark")
     }
 
@@ -102,15 +133,25 @@ class ImplSysDictTypeQueryPro {
         private fun createColumnsLimiterField(column: String) =
             ColumnsLimiterField<T, RUN_RES>(queryStructure.copy(fields = queryStructure.fields + createField(column)), field_clazz)
 
+        @Contract(pure = true)
         fun id() = createColumnsLimiterField("id")
+        @Contract(pure = true)
         fun name() = createColumnsLimiterField("name")
+        @Contract(pure = true)
         fun type() = createColumnsLimiterField("type")
+        @Contract(pure = true)
         fun status() = createColumnsLimiterField("status")
+        @Contract(pure = true)
         fun createBy() = createColumnsLimiterField("create_by")
+        @Contract(pure = true)
         fun createTime() = createColumnsLimiterField("create_time")
+        @Contract(pure = true)
         fun updateBy() = createColumnsLimiterField("update_by")
+        @Contract(pure = true)
         fun updateTime() = createColumnsLimiterField("update_time")
+        @Contract(pure = true)
         fun deleted() = createColumnsLimiterField("deleted")
+        @Contract(pure = true)
         fun remark() = createColumnsLimiterField("remark")
     }
 
@@ -120,15 +161,25 @@ class ImplSysDictTypeQueryPro {
             map[key] = value
         }
 
+        @Contract(pure = true)
         fun id(id: Any) = createUpdateSetField("id", id)
+        @Contract(pure = true)
         fun name(name: Any) = createUpdateSetField("name", name)
+        @Contract(pure = true)
         fun type(type: Any) = createUpdateSetField("type", type)
+        @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
+        @Contract(pure = true)
         fun createBy(createBy: Any) = createUpdateSetField("create_by", createBy)
+        @Contract(pure = true)
         fun createTime(createTime: Any) = createUpdateSetField("create_time", createTime)
+        @Contract(pure = true)
         fun updateBy(updateBy: Any) = createUpdateSetField("update_by", updateBy)
+        @Contract(pure = true)
         fun updateTime(updateTime: Any) = createUpdateSetField("update_time", updateTime)
+        @Contract(pure = true)
         fun deleted(deleted: Any) = createUpdateSetField("deleted", deleted)
+        @Contract(pure = true)
         fun remark(remark: Any) = createUpdateSetField("remark", remark)
     }
 

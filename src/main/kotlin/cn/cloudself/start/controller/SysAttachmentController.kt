@@ -1,7 +1,7 @@
 package cn.cloudself.start.controller
 
 import cn.cloudself.start.entity.AttachmentEntity
-import cn.cloudself.start.service.IAttachmentService
+import cn.cloudself.start.service.ISysAttachmentService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/attachment")
 class SysAttachmentController @Autowired constructor(
-    private val attachmentService: IAttachmentService,
+    private val attachmentService: ISysAttachmentService,
 ) {
     @ApiOperation(value = "获取附件列表")
     @GetMapping("/business/{business}/id/{businessId}")

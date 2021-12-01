@@ -8,7 +8,7 @@ import java.io.IOException
  * 附件服务
  * @author hb
  */
-interface IAttachmentService {
+interface ISysAttachmentService {
     /**
      * 获取附件
      * @param business 业务

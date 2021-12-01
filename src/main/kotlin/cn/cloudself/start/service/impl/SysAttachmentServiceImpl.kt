@@ -4,7 +4,7 @@ import cn.cloudself.start.dao.AttachmentQueryPro
 import cn.cloudself.start.entity.AttachmentEntity
 import cn.cloudself.start.exception.http.RequestNotFindException
 import cn.cloudself.start.exception.http.ServerException
-import cn.cloudself.start.service.IAttachmentService
+import cn.cloudself.start.service.ISysAttachmentService
 import cn.cloudself.start.util.Sha256WithRsa
 import org.springframework.stereotype.Service
 import org.springframework.util.FileCopyUtils
@@ -23,7 +23,7 @@ import java.util.regex.Pattern
  * @author hb
  */
 @Service
-class AttachmentServiceImpl : IAttachmentService {
+class SysAttachmentServiceImpl : ISysAttachmentService {
     override fun getAttachments(business: String, businessId: Long): List<AttachmentEntity> {
         return AttachmentQueryPro.selectBy().business.equalsTo(business).and().businessId.equalsTo(businessId).run()
     }

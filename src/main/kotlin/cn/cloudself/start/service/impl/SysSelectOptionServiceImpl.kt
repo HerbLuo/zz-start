@@ -6,20 +6,20 @@ import cn.cloudself.start.dao.SysSelectOptionQueryPro
 import cn.cloudself.start.entity.SysSelectOptionEntity
 import cn.cloudself.start.exception.http.RequestNotFindException
 import cn.cloudself.start.exception.http.ServerException
-import cn.cloudself.start.pojo.SelectOptionRes
-import cn.cloudself.start.service.ISelectOptionService
+import cn.cloudself.start.pojo.SysSelectOptionRes
+import cn.cloudself.start.service.ISysSelectOptionService
 import org.springframework.stereotype.Service
 
 @AutoLog
 @Service
-class SelectOptionServiceImpl : ISelectOptionService {
-    override fun getSelectOptions(key: String): List<SelectOptionRes> {
+class SysSelectOptionServiceImpl : ISysSelectOptionService {
+    override fun getSelectOptions(key: String): List<SysSelectOptionRes> {
         val selectOptionConfig = SysSelectOptionQueryPro.selectBy().key.equalsTo(key).runLimit1()
             ?: throw RequestNotFindException()
         return getSelectOptions(selectOptionConfig)
     }
 
-    override fun getSelectOptions(table: String, label: String, value: String): List<SelectOptionRes> {
+    override fun getSelectOptions(table: String, label: String, value: String): List<SysSelectOptionRes> {
         val selectOptionConfigList = SysSelectOptionQueryPro
             .selectBy().table.equalsTo(table)
             .and().label.equalsTo(label)
@@ -34,7 +34,7 @@ class SelectOptionServiceImpl : ISelectOptionService {
         return getSelectOptions(selectOptionConfigList[1])
     }
 
-    private fun getSelectOptions(selectOptionConfig: SysSelectOptionEntity): List<SelectOptionRes> {
+    private fun getSelectOptions(selectOptionConfig: SysSelectOptionEntity): List<SysSelectOptionRes> {
         val sqlBuilder = StringBuilder("SELECT ")
         sqlBuilder.append(selectOptionConfig.label, " AS `label`,")
         sqlBuilder.append(selectOptionConfig.value, " AS `value`")
@@ -63,7 +63,7 @@ class SelectOptionServiceImpl : ISelectOptionService {
         return if (payload?.isNotBlank() == true) {
             val payloadList = QueryProSql.create(sqlBuilder.toString()).query(mutableMapOf<String, Any?>().javaClass)
             payloadList.map {
-                SelectOptionRes(
+                SysSelectOptionRes(
                     label = it.remove("label") as String?,
                     value = it.remove("value") as String?,
                     default = it.remove("default") as Boolean? ?: false,
@@ -71,7 +71,7 @@ class SelectOptionServiceImpl : ISelectOptionService {
                 )
             }
         } else {
-            QueryProSql.create(sqlBuilder.toString()).query(SelectOptionRes::class.java)
+            QueryProSql.create(sqlBuilder.toString()).query(SysSelectOptionRes::class.java)
         }
     }
 }
