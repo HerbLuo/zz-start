@@ -20,5 +20,5 @@ object WebUtil {
     fun getUserId() = getUser()?.id
 
     @JvmStatic
-    fun getUserIdNonNull() = getUserId() ?: throw RequestUnauthorizedException(message = "[BUG] 该方法必须认证, 但未被认证拦截器拦截。")
+    fun getUserIdNonNull() = getUserId() ?: throw RequestUnauthorizedException(message = { "[BUG] 该方法必须认证, 但未被认证拦截器拦截。 " })
 }

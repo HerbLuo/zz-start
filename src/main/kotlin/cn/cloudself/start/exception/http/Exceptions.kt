@@ -7,56 +7,58 @@ const val NOT_FIND = "Not Found"
 const val UNAUTHORIZED = "Unauthorized"
 const val SERVER_ERROR = "Server Error"
 
+typealias MessageGenerator = () -> String
+
 open class HttpException(
     open val code: Int,
-    override val message: String,
-    open val alert: String?
-): RuntimeException(message)
+    open val alert: String?,
+    message: MessageGenerator,
+): RuntimeException(message())
 
 class RequestBadException(
     override val alert: String? = null,
     override val code: Int = 0x1000,
-    override val message: String = BAD_REQUEST,
-): HttpException(code, BAD_REQUEST, alert)
+    message: MessageGenerator = { BAD_REQUEST },
+): HttpException(code, alert, message)
 
 class RequestNotFindException(
     override val alert: String? = null,
     override val code: Int = 0x1100,
-    override val message: String = NOT_FIND,
-): HttpException(code, NOT_FIND, alert)
+    message: MessageGenerator = { NOT_FIND },
+): HttpException(code, alert, message)
 
 class RequestTooLargeException(
     override val alert: String? = null,
     override val code: Int = 0x1200,
-    override val message: String = BAD_REQUEST,
-): HttpException(code, BAD_REQUEST, alert)
+    message: MessageGenerator = { BAD_REQUEST },
+): HttpException(code, alert, message)
 
 class RequestTooManyException(
     override val alert: String? = null,
     override val code: Int = 0x1300,
-    override val message: String = BAD_REQUEST,
-): HttpException(code, BAD_REQUEST, alert)
+    message: MessageGenerator = { BAD_REQUEST },
+): HttpException(code, alert, message)
 
 class RequestUnauthorizedException(
     override val alert: String? = null,
     override val code: Int = 0x1400,
-    override val message: String = UNAUTHORIZED,
-): HttpException(code, UNAUTHORIZED, alert)
+    message: MessageGenerator = { UNAUTHORIZED },
+): HttpException(code, alert, message)
 
 class ServerException(
     override val alert: String? = null,
     override val code: Int = 0x1500,
-    override val message: String = SERVER_ERROR,
-): HttpException(code, SERVER_ERROR, alert)
+    message: MessageGenerator = { SERVER_ERROR },
+): HttpException(code, alert, message)
 
 class ServerNotImplementedException(
     override val alert: String? = null,
     override val code: Int = 0x1600,
-    override val message: String = SERVER_ERROR,
-): HttpException(code, SERVER_ERROR, alert)
+    message: MessageGenerator = { SERVER_ERROR },
+): HttpException(code, alert, message)
 
 class ServerUnavailableException(
     override val alert: String? = null,
     override val code: Int = 0x1700,
-    override val message: String = SERVER_ERROR,
-): HttpException(code, SERVER_ERROR, alert)
+    message: MessageGenerator = { SERVER_ERROR },
+): HttpException(code, alert, message)

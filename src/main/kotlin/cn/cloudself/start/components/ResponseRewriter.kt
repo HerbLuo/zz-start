@@ -32,6 +32,7 @@ class ResponseAdvice: ResponseBodyAdvice<Any> {
 
     @ResponseBody
     override fun beforeBodyWrite(body: Any?, returnType: MethodParameter, selectedContentType: MediaType, selectedConverterType: Class<out HttpMessageConverter<*>>, request: ServerHttpRequest, response: ServerHttpResponse): Any? {
+        println(body)
         if (body is Res<*>) {
             return body
         }
@@ -41,3 +42,25 @@ class ResponseAdvice: ResponseBodyAdvice<Any> {
         return ok(body)
     }
 }
+
+//class WebFluxResponseRewriter(writers: List<HttpMessageWriter<*>>, resolver: RequestedContentTypeResolver): ResponseBodyResultHandler(writers, resolver) {
+//    override fun handleResult(exchange: ServerWebExchange, result: HandlerResult): Mono<Void> {
+//        val body = result.returnValue
+//        val bodyTypeParameter = result.returnTypeSource
+//        println(body)
+//        println(bodyTypeParameter)
+//        return this.writeBody(body, bodyTypeParameter, exchange)
+//    }
+//}
+//
+//@Configuration
+//class WebFluxConfiguration: WebFluxConfigurer {
+//    @Bean
+//    fun serverCodecConfigurer() = ServerCodecConfigurer.create()
+//
+//    @Bean
+//    fun webFluxContentTypeResolver() = RequestedContentTypeResolverBuilder().build()
+//
+//    @Bean
+//    fun responseWrapper() = WebFluxResponseRewriter(serverCodecConfigurer().writers, webFluxContentTypeResolver())
+//}
