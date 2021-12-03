@@ -21,7 +21,13 @@ class TestController {
 
     @LoginRequired(false)
     @GetMapping("/foo3", produces = [MediaType.APPLICATION_STREAM_JSON_VALUE])
-    fun foo2(): Flux<Long> {
-        return Flux.interval(Duration.ofSeconds(1))
+    fun foo3(): Flux<Long> {
+        return Flux.interval(Duration.ofSeconds(5))
+    }
+
+    @LoginRequired(false)
+    @GetMapping("/foo2")
+    fun foo2(): String {
+        return "success"
     }
 }
