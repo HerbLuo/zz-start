@@ -17,7 +17,7 @@ class AuthenticationConfig @Autowired constructor(
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(authenticationInterceptor).addPathPatterns("/**")
-            .excludePathPatterns("/error", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**")
+            .excludePathPatterns("/favicon.ico", "/error", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**")
             .excludePathPatterns(*excludePatterns)
     }
 }

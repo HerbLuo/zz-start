@@ -48,13 +48,16 @@ class AuthenticationInterceptor @Autowired constructor(
         val loginRequired = userDefineLoginRequired ?: defaultLoginRequired
 
         // 无需登陆
+        val url = request.requestURI
+
         if (!loginRequired) {
+            log.debug("无需登陆, url: {}", url)
             return true
         }
 
         // 需要登陆
         if (token == null) {
-            log.info("需要登陆, url: {}", request.requestURL)
+            log.info("需要登陆, url: {}", url)
             responseException(response, RequestBadException("需要登陆"))
             return false
         }

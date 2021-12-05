@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
 import java.lang.Exception
 import java.util.*
 import javax.servlet.RequestDispatcher
@@ -54,19 +56,65 @@ val map = mapOf(
 
 val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
 
+fun getRequestInfo(): String? {
+    val attributes = RequestContextHolder.currentRequestAttributes()
+    if (attributes is ServletRequestAttributes) {
+        val requestInfoBuilder = StringBuilder("[")
+
+        val request = attributes.request
+        val forwardOriginUri = request.getAttribute("javax.servlet.forward.request_uri")
+        if (forwardOriginUri != null) {
+            requestInfoBuilder.append("origin uri: ", forwardOriginUri.toString(), ", ")
+        }
+        requestInfoBuilder.append("host: ", request.remoteHost, ", ")
+        requestInfoBuilder.append("uri: ", request.requestURI.toString(), ", ")
+        requestInfoBuilder.append("parameters: ")
+        for ((key, values) in request.parameterMap.entries) {
+            requestInfoBuilder.append("<", key, ":")
+            if (values.size == 1) {
+                requestInfoBuilder.append(values[0])
+            } else {
+                for (value in values) {
+                    requestInfoBuilder.append(value, ",")
+                }
+            }
+            requestInfoBuilder.append(">, ")
+        }
+        requestInfoBuilder.append(", ")
+        requestInfoBuilder.append("headers: ")
+        for (headerName in request.headerNames) {
+            requestInfoBuilder.append("<", headerName, ":")
+            val headers = request.getHeaders(headerName)
+            var first = true
+            for (header in headers) {
+                if (!first) {
+                    requestInfoBuilder.append(", ")
+                }
+                requestInfoBuilder.append(header)
+                first = false
+            }
+            requestInfoBuilder.append(">, ")
+        }
+        requestInfoBuilder.append(']')
+        return requestInfoBuilder.toString()
+    }
+    return null
+}
+
 fun exHandler(ex: Throwable): String {
     val serial = RandomUtil.base64Encode(System.currentTimeMillis()) + ":" +
             RandomUtil.base64Encode(abs(Random().nextLong()))
 
+    val requestInfo = getRequestInfo()
     when (ex) {
         is HttpException -> {
             logger.error(
-                "HttpException: serial: {} code {}, message {}, alert {}, Exception handled in ExceptionHandlerAdvice {}",
-                serial, ex.code, ex.message, ex.alert, ex
+                "HttpException: serial: {} code {}, message {}, alert {}, req: {},  Exception handled in ExceptionHandlerAdvice {}",
+                serial, ex.code, ex.message, ex.alert, requestInfo, ex
             )
         }
         else -> {
-            logger.error("Exception handled in ExceptionHandlerAdvice, serial: {}, error: {}", serial, ex)
+            logger.error("Exception handled in ExceptionHandlerAdvice, serial: {}, error: {}, req: {}", serial, ex, requestInfo)
         }
     }
 
@@ -87,7 +135,7 @@ fun exceptionToPlainError(throwable: Throwable): Pair<HttpStatus, Res<PlainError
 @ControllerAdvice
 class ExceptionHandlerAdvice {
     @ExceptionHandler
-    fun exceptionAll(exception: Exception): ResponseEntity<Res<PlainError>> {
+    fun handleAll(exception: Exception): ResponseEntity<Res<PlainError>> {
         val (status, body) = exceptionToPlainError(exception)
         return ResponseEntity(body, status)
     }

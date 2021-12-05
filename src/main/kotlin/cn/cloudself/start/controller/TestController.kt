@@ -30,4 +30,10 @@ class TestController {
     fun foo2(): String {
         return "success"
     }
+
+    @LoginRequired(false)
+    @GetMapping("/foo4")
+    fun foo4(): Boolean {
+        return true
+    }
 }
