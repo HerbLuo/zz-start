@@ -17,10 +17,11 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler
 import org.springframework.web.method.support.ModelAndViewContainer
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-class ReactorReturnValueHandler: HandlerMethodReturnValueHandler {
+class ReactorReturnValueHandler constructor(handler: HandlerMethodReturnValueHandler): HandlerMethodReturnValueHandler {
     override fun supportsReturnType(methodParamter: MethodParameter): Boolean {
         val method = methodParamter.method ?: return false
         val returnType = method.returnType
@@ -43,7 +44,9 @@ class ResponseRewriterInitializingBean @Autowired constructor(
 ): InitializingBean {
     override fun afterPropertiesSet() {
         val returnValueHandlers = mutableListOf(*(adapter.returnValueHandlers ?: return).toTypedArray())
-        returnValueHandlers.add(0, ReactorReturnValueHandler())
+        val responseBodyEmitterHandler = returnValueHandlers.find { it is ResponseBodyEmitterReturnValueHandler }
+            ?: throw RuntimeException("不支持的配置")
+        returnValueHandlers.add(0, ReactorReturnValueHandler(responseBodyEmitterHandler))
         adapter.returnValueHandlers = returnValueHandlers
     }
 }
@@ -66,6 +69,7 @@ class ResponseAdvice: ResponseBodyAdvice<Any> {
             return body
         }
         if (StringHttpMessageConverter::class.java.isAssignableFrom(selectedConverterType)) {
+            response.headers.contentType = MediaType.APPLICATION_JSON
             return ObjectMapper().writeValueAsString(ok(body))
         }
         return ok(body)
