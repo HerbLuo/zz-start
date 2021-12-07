@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 
 class FluxReturnValueHandler constructor(
     private val handler: HandlerMethodReturnValueHandler
