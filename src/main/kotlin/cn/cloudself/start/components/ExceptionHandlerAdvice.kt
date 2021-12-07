@@ -114,7 +114,8 @@ fun exHandler(ex: Throwable): String {
             )
         }
         else -> {
-            logger.error("Exception handled in ExceptionHandlerAdvice, serial: {}, error: {}, req: {}", serial, ex, requestInfo)
+            logger.error("Exception handled in ExceptionHandlerAdvice, serial: {}, req: {}", serial, requestInfo)
+            logger.error("Serial: $serial, error: ", ex)
         }
     }
 

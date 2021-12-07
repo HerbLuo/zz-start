@@ -1,10 +1,21 @@
 package cn.cloudself.start.util
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 object StringTemplate {
+    private var dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+    @JvmStatic
+    fun setDateFormat(pattern: String) {
+        dateFormat = SimpleDateFormat(pattern)
+    }
+
     /**
      * String.of("hello {}, today is {}", "dd", Date())
      * String.of("hello {}, I want to print \{}", "dd")
      */
+    @JvmStatic
     fun of(template: CharSequence, vararg args: Any?): String {
         val resBuilder = StringBuilder()
         var argI = 0
@@ -50,6 +61,9 @@ object StringTemplate {
             }
         }
         when (obj) {
+            is Date -> {
+                builder.append(dateFormat.format(obj))
+            }
             is Array<*> -> {
                 builder.append('[')
                 appendIter(obj.iterator())
@@ -64,6 +78,16 @@ object StringTemplate {
                 builder.append('{')
                 appendIter(obj.iterator())
                 builder.append('}')
+            }
+            is Map<*, *> -> {
+                builder.append('{')
+                appendIter(obj.iterator())
+                builder.append('}')
+            }
+            is Map.Entry<*, *> -> {
+                appendObj(builder, obj.key)
+                builder.append('=')
+                appendObj(builder, obj.value)
             }
             else -> {
                 builder.append(obj.toString())

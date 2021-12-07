@@ -21,8 +21,10 @@ class TestController {
 
     @LoginRequired(false)
     @GetMapping("/foo3", produces = [MediaType.APPLICATION_STREAM_JSON_VALUE])
+//    @GetMapping("/foo3")
     fun foo3(): Flux<Long> {
-        return Flux.interval(Duration.ofSeconds(5))
+        return Flux.fromArray(arrayOf(1, 2, 3, 5))
+//        Flux.interval(Duration.ofSeconds(5))
     }
 
     @LoginRequired(false)

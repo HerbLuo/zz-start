@@ -21,20 +21,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-class ReactorReturnValueHandler constructor(handler: HandlerMethodReturnValueHandler): HandlerMethodReturnValueHandler {
+class FluxReturnValueHandler constructor(
+    private val handler: HandlerMethodReturnValueHandler
+): HandlerMethodReturnValueHandler {
     override fun supportsReturnType(methodParamter: MethodParameter): Boolean {
         val method = methodParamter.method ?: return false
         val returnType = method.returnType
-        return Flux::class.java.isAssignableFrom(returnType) || Mono::class.java.isAssignableFrom(returnType)
+        return Flux::class.java.isAssignableFrom(returnType) && handler.supportsReturnType(methodParamter)
     }
 
     override fun handleReturnValue(
         returnValue: Any?,
-        returnType: MethodParameter,
+        method: MethodParameter,
         mavContainer: ModelAndViewContainer,
         webRequest: NativeWebRequest
     ) {
-        println("handing")
+        @Suppress("ReactiveStreamsUnusedPublisher") val mapped = when (returnValue) {
+            is Flux<*> -> returnValue.map { ok(it) }
+            else -> returnValue
+        }
+
+        handler.handleReturnValue(mapped, method, mavContainer, webRequest)
     }
 }
 
@@ -45,8 +52,8 @@ class ResponseRewriterInitializingBean @Autowired constructor(
     override fun afterPropertiesSet() {
         val returnValueHandlers = mutableListOf(*(adapter.returnValueHandlers ?: return).toTypedArray())
         val responseBodyEmitterHandler = returnValueHandlers.find { it is ResponseBodyEmitterReturnValueHandler }
-            ?: throw RuntimeException("不支持的配置")
-        returnValueHandlers.add(0, ReactorReturnValueHandler(responseBodyEmitterHandler))
+            ?: throw RuntimeException("unsupported Spring Configuration, no ResponseBodyEmitterReturnValueHandler found")
+        returnValueHandlers.add(0, FluxReturnValueHandler(responseBodyEmitterHandler))
         adapter.returnValueHandlers = returnValueHandlers
     }
 }

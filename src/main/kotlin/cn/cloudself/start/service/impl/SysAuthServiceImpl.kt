@@ -2,10 +2,10 @@ package cn.cloudself.start.service.impl
 
 import cn.cloudself.start.dao.SysUserQueryPro
 import cn.cloudself.start.exception.http.RequestBadException
-import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.pojo.Token
 import cn.cloudself.start.pojo.TokenWithUser
 import cn.cloudself.start.service.ISysAuthService
+import cn.cloudself.start.util.i18n
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import org.springframework.beans.factory.annotation.Value
@@ -22,9 +22,9 @@ class SysAuthServiceImpl : ISysAuthService {
         val user = SysUserQueryPro
             .selectBy().userName.equalsTo(username)
             .and().password.equalsTo(password)
-            .runLimit1() ?: throw RequestBadException("用户名或密码错误")
+            .runLimit1() ?: throw RequestBadException(i18n("用户名或密码错误"))
 
-        val id = user.id ?: throw ServerException("无ID")
+        val id = user.id!!
         return getToken(TokenWithUser(id, username))
     }
 

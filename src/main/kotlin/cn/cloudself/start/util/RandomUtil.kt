@@ -10,7 +10,7 @@ object RandomUtil {
     @JvmOverloads
     fun nextInt(len: Int = 3): Int {
         if (len > 9) {
-            throw UnSupportException("不支持的长度, RandomUtil.nextInt最大长度为9")
+            throw UnSupportException("[BUG] unsupported len, max value of len is 9")
         }
         return Random().nextInt(POWERS_OF_10[len])
     }

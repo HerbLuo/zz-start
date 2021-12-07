@@ -6,6 +6,7 @@ import cn.cloudself.start.exception.http.RequestNotFindException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.service.ISysAttachmentService
 import cn.cloudself.start.util.Sha256WithRsa
+import cn.cloudself.start.util.i18n
 import org.springframework.stereotype.Service
 import org.springframework.util.FileCopyUtils
 import org.springframework.web.multipart.MultipartFile
@@ -51,13 +52,13 @@ class SysAttachmentServiceImpl : ISysAttachmentService {
             Sha256WithRsa.sign(expire.toString() + sha256)
         } catch (e: Exception) {
             e.printStackTrace()
-            throw ServerException("签名失败")
+            throw ServerException(i18n("签名失败"))
         }
         val signatureUrlEncoded: String = try {
             URLEncoder.encode(signature, "UTF-8")
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
-            throw ServerException("URL编码失败")
+            throw ServerException(i18n("URL编码失败"))
         }
         return "/attachments/" + sha256 + "/" + attachment.name + "?expire=" + expire + "&sign=" + signatureUrlEncoded
     }
@@ -72,7 +73,7 @@ class SysAttachmentServiceImpl : ISysAttachmentService {
 
     override fun getAttachmentUrl(attachmentId: Long): String {
         val attachment: AttachmentEntity = AttachmentQueryPro.selectBy().id.equalsTo(attachmentId).runLimit1()
-            ?: throw RequestNotFindException("找不到该附件, id: $attachmentId")
+            ?: throw RequestNotFindException(i18n("找不到该附件，id: {}", attachmentId))
         return genUrl(attachment)
     }
 

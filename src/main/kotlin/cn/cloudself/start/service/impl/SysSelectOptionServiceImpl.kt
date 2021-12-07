@@ -8,6 +8,7 @@ import cn.cloudself.start.exception.http.RequestNotFindException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.pojo.SysSelectOptionRes
 import cn.cloudself.start.service.ISysSelectOptionService
+import cn.cloudself.start.util.i18n
 import org.springframework.stereotype.Service
 
 @AutoLog
@@ -29,9 +30,9 @@ class SysSelectOptionServiceImpl : ISysSelectOptionService {
             throw RequestNotFindException()
         }
         if (selectOptionConfigList.size > 1) {
-            throw ServerException("SysSelectOption数据库配置错误")
+            throw ServerException(i18n("SysSelectOption数据库配置错误"))
         }
-        return getSelectOptions(selectOptionConfigList[1])
+        return getSelectOptions( selectOptionConfigList[0])
     }
 
     private fun getSelectOptions(selectOptionConfig: SysSelectOptionEntity): List<SysSelectOptionRes> {

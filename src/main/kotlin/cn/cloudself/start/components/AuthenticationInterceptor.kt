@@ -5,7 +5,7 @@ import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.RequestUnauthorizedException
 import cn.cloudself.start.service.ISysAuthService
 import cn.cloudself.start.util.WebUtil
-import com.auth0.jwt.exceptions.TokenExpiredException
+import cn.cloudself.start.util.i18n
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -58,7 +58,7 @@ class AuthenticationInterceptor @Autowired constructor(
         // 需要登陆
         if (token == null) {
             log.info("需要登陆, url: {}", url)
-            responseException(response, RequestBadException("需要登陆"))
+            responseException(response, RequestBadException(i18n("需要登陆")))
             return false
         }
 
@@ -67,7 +67,7 @@ class AuthenticationInterceptor @Autowired constructor(
         } catch (e: Exception) {
             responseException(response, e)
             return false
-        } ?: return false.also { responseException(response, RequestUnauthorizedException("无法解析token")) }
+        } ?: return false.also { responseException(response, RequestUnauthorizedException(i18n("无法解析token"))) }
         WebUtil.setUser(tokenUser)
 
         return true
