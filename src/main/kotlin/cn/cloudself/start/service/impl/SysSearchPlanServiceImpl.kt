@@ -11,6 +11,7 @@ import cn.cloudself.start.entity.SysSearchUserPlanEntity
 import cn.cloudself.start.entity.SysSearchUserPlanItemEntity
 import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.ServerException
+import cn.cloudself.start.interactive.res.Async
 import cn.cloudself.start.interactive.res.Promise
 import cn.cloudself.start.pojo.SysSearchQueryCondition
 import cn.cloudself.start.pojo.SysSearchQueryReq
@@ -44,6 +45,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
         }
     }
 
+    @Async
     override fun getData(searchQuery: SysSearchQueryReq): SysSearchQueryRes {
         val tag = searchQuery.tag
         val config: SysSearchConfigEntity = SysSearchConfigQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()

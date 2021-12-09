@@ -23,3 +23,6 @@ data class Promise<T>(
         }
     }
 }
+
+annotation class Async {
+}
