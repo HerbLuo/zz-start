@@ -24,5 +24,10 @@ data class Promise<T>(
     }
 }
 
-annotation class Async {
+class Async<T> {
+    companion object {
+        @JvmStatic
+        fun <T> create() {
+        }
+    }
 }

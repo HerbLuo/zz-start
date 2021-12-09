@@ -15,11 +15,16 @@ class MyInteractiveTestController @Autowired constructor(
 ) {
     @GetMapping("/confirm")
     fun testConfirm() = testService.testConfirm()
+
+    @GetMapping("/promise")
+    fun testPromise() = testService.testPromise()
 }
 
 interface IMyInteractiveTestService {
     fun testConfirm(): Confirm
     fun deleteById(id: Long): String
+
+    fun testPromise():
 }
 
 @Service
@@ -31,4 +36,8 @@ class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
     )
 
     override fun deleteById(id: Long) = "已删除, id: $id"
+
+    override fun testPromise(): ??? {
+        TODO("Not yet implemented")
+    }
 }
