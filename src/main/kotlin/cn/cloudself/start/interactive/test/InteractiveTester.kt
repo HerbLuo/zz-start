@@ -1,8 +1,10 @@
 package cn.cloudself.start.interactive.test
 
+import cn.cloudself.start.annotation.LoginRequired
+import cn.cloudself.start.interactive.res.Async
 import cn.cloudself.start.interactive.res.Confirm
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,16 +18,22 @@ class MyInteractiveTestController @Autowired constructor(
     @GetMapping("/confirm")
     fun testConfirm() = testService.testConfirm()
 
-    @GetMapping("/promise")
-    fun testPromise() = testService.testPromise()
+    @LoginRequired(false)
+    @GetMapping("/async", produces = [MediaType.APPLICATION_STREAM_JSON_VALUE])
+    fun testPromise() = testService.testAsync()
 }
 
 interface IMyInteractiveTestService {
     fun testConfirm(): Confirm
     fun deleteById(id: Long): String
 
-    fun testPromise():
+    fun testAsync(): Async<Obj>
 }
+
+data class Obj(
+    val k1: String,
+    val k2: Async.Promise<String>,
+)
 
 @Service
 class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
@@ -37,7 +45,9 @@ class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
 
     override fun deleteById(id: Long) = "已删除, id: $id"
 
-    override fun testPromise(): ??? {
-        TODO("Not yet implemented")
+    override fun testAsync(): Async<Obj> {
+        return Async.create {
+            Obj("123", it.create { "567" })
+        }
     }
 }

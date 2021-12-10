@@ -12,7 +12,6 @@ import cn.cloudself.start.entity.SysSearchUserPlanItemEntity
 import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.interactive.res.Async
-import cn.cloudself.start.interactive.res.Promise
 import cn.cloudself.start.pojo.SysSearchQueryCondition
 import cn.cloudself.start.pojo.SysSearchQueryReq
 import cn.cloudself.start.pojo.SysSearchQueryRes
@@ -112,13 +111,15 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
         }
 
         // 查询总数
-        val totalCountPromise: Promise<Int> = if (hasNext) Promise.create {
-            val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
-            val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
-                ?: throw ServerException(message = "无法完成count查询, $sqlForCountWithConditions")
-            count
-        } else Promise.resolve(first + rows.size)
+//        val totalCountPromise: Promise<Int> = if (hasNext) Promise.create {
+//            val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
+//            val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
+//                ?: throw ServerException(message = "无法完成count查询, $sqlForCountWithConditions")
+//            count
+//        } else Promise.resolve(first + rows.size)
 
-        return SysSearchQueryRes(hasNext, totalCountPromise, rows)
+        return SysSearchQueryRes(hasNext,
+//            totalCountPromise,
+            rows)
     }
 }
