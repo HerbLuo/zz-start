@@ -5,16 +5,26 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
 import reactor.core.publisher.Operators
 
-class Async<T: Any> private constructor(
-): Flux<Any?>() {
-    private val flux = Flux.create<Any?> {  }
-    private var sink: FluxSink<Any?>
+class Async<T: Any> private constructor(): Flux<Any?>() {
+
+    private var sink: FluxSink<Any>? = null
+    private val onSinkLoadedList = mutableListOf<(FluxSink<Any>) -> Unit>()
+    private val flux = create<Any?> {
+        sink = it
+        for (onSinkLoaded in onSinkLoadedList) {
+            onSinkLoaded(it)
+        }
+    }
 
     class Promise<T> constructor()
 
     companion object {
-        class PromiseCreator {
-            fun <T> create(supplier: () -> T): Promise<T> {
+        class PromiseCreator<T: Any>(private val async: Async<T>) {
+            fun create(supplier: () -> T): Promise<T> {
+                Thread {
+                    val resolved = supplier()
+                    async.sink?.next(resolved)
+                }.start()
                 return Promise()
             }
             fun <T> just(data: T): Promise<T> {
@@ -22,20 +32,20 @@ class Async<T: Any> private constructor(
             }
         }
         @JvmStatic
-        fun <T: Any> create(customer: (PromiseCreator) -> T): Async<T> {
-            var sink: FluxSink<Any?>
-
-            Flux.from {}
+        fun <T: Any> create(customer: (PromiseCreator<T>) -> T): Async<T> {
+            val async = Async<T>()
+            val data = customer(PromiseCreator(async))
+            val sink = async.sink
+            if (sink == null) {
+                async.onSinkLoadedList.add {
+                    it.next(data)
+                }
+            } else {
+                sink.next(data)
+            }
+            return async
         }
     }
 
-    override fun subscribe(actual: CoreSubscriber<in Any?>) {
-        flux.subscribe { it }
-        actual.onSubscribe(Operators.scalarSubscription<T>(actual, data))
-    }
-
-    init {
-        sink = Flux.generate<> {  }
-
-    }
+    override fun subscribe(actual: CoreSubscriber<in Any?>) = flux.subscribe(actual)
 }
