@@ -49,7 +49,7 @@ class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
         return Async.create {
             Obj(
                 k1 = "v1",
-                k2 = it.create { // long time exec statement, Obj will return immediately, and k2 will return after
+                k2 = it.create { // 这里是一个较长时间执行的任务，使用Async.create，Obj会在创建后立刻传输到客户端，k2会在两秒后发送到客户端
                     Thread.sleep(2000)
                     "v2"
                 }

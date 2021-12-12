@@ -1,10 +1,11 @@
+
 package cn.cloudself.start.interactive.res
 
 import reactor.core.CoreSubscriber
 import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
-import reactor.core.publisher.Operators
 
+@Suppress("unused")
 class Async<T: Any> private constructor(
     private val init: (FluxSink<Any>) -> Unit
 ): Flux<Any?>() {
@@ -12,26 +13,31 @@ class Async<T: Any> private constructor(
     private val flux = create<Any?> { init(it) }
     override fun subscribe(actual: CoreSubscriber<in Any?>) = flux.subscribe(actual)
 
-    class Promise<T> constructor()
+    data class Promise<T>(
+        val id: String,
+        val `it's a promise`: Boolean = true,
+    )
+
+    data class PromiseResolved<T>(
+        val id: String,
+        val resolved: T,
+    )
 
     companion object {
         open class PromiseCreator(private val sink: FluxSink<Any>) {
             internal val tasks = mutableListOf<() -> Unit>()
+            private var id = System.currentTimeMillis()
 
             fun <T: Any> create(supplier: () -> T): Promise<T> {
+                val id = (id++).toString(36)
                 tasks.add {
                     val resolved = supplier()
-                    sink.next(resolved)
+                    sink.next(PromiseResolved(id, resolved))
                 }
-                return Promise()
+                return Promise(id)
             }
 
-            fun <T: Any> just(data: T): Promise<T> {
-                tasks.add {
-                    sink.next(data)
-                }
-                return Promise()
-            }
+            fun <T: Any> just(data: T) = create { data }
         }
 
         /**
