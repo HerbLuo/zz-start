@@ -5,47 +5,54 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
 import reactor.core.publisher.Operators
 
-class Async<T: Any> private constructor(): Flux<Any?>() {
+class Async<T: Any> private constructor(
+    private val init: (FluxSink<Any>) -> Unit
+): Flux<Any?>() {
 
-    private var sink: FluxSink<Any>? = null
-    private val onSinkLoadedList = mutableListOf<(FluxSink<Any>) -> Unit>()
-    private val flux = create<Any?> {
-        sink = it
-        for (onSinkLoaded in onSinkLoadedList) {
-            onSinkLoaded(it)
-        }
-    }
+    private val flux = create<Any?> { init(it) }
+    override fun subscribe(actual: CoreSubscriber<in Any?>) = flux.subscribe(actual)
 
     class Promise<T> constructor()
 
     companion object {
-        class PromiseCreator<T: Any>(private val async: Async<T>) {
-            fun create(supplier: () -> T): Promise<T> {
-                Thread {
+        open class PromiseCreator(private val sink: FluxSink<Any>) {
+            internal val tasks = mutableListOf<() -> Unit>()
+
+            fun <T: Any> create(supplier: () -> T): Promise<T> {
+                tasks.add {
                     val resolved = supplier()
-                    async.sink?.next(resolved)
-                }.start()
+                    sink.next(resolved)
+                }
                 return Promise()
             }
-            fun <T> just(data: T): Promise<T> {
+
+            fun <T: Any> just(data: T): Promise<T> {
+                tasks.add {
+                    sink.next(data)
+                }
                 return Promise()
             }
         }
+
+        /**
+         * 创建一个Async
+         * 参数是一个回调, 提供了PromiseCreator，可以用来创建Promise
+         * @sample cn.cloudself.start.interactive.test.MyInteractiveTestServiceImpl.testAsync
+         */
         @JvmStatic
-        fun <T: Any> create(customer: (PromiseCreator<T>) -> T): Async<T> {
-            val async = Async<T>()
-            val data = customer(PromiseCreator(async))
-            val sink = async.sink
-            if (sink == null) {
-                async.onSinkLoadedList.add {
-                    it.next(data)
-                }
-            } else {
-                sink.next(data)
+        fun <T: Any> create(customer: (PromiseCreator) -> T): Async<T> {
+            val async = Async<T> {
+                val promiseCreator = PromiseCreator(it)
+                val data = customer(promiseCreator)
+                it.next(data)
+                Thread {
+                    for (task in promiseCreator.tasks) {
+                        task()
+                    }
+                    it.complete()
+                }.start()
             }
             return async
         }
     }
-
-    override fun subscribe(actual: CoreSubscriber<in Any?>) = flux.subscribe(actual)
 }

@@ -47,7 +47,13 @@ class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
 
     override fun testAsync(): Async<Obj> {
         return Async.create {
-            Obj("123", it.create { "567" })
+            Obj(
+                k1 = "v1",
+                k2 = it.create { // long time exec statement, Obj will return immediately, and k2 will return after
+                    Thread.sleep(2000)
+                    "v2"
+                }
+            )
         }
     }
 }
