@@ -19,7 +19,7 @@ class MyInteractiveTestController @Autowired constructor(
     fun testConfirm() = testService.testConfirm()
 
     @LoginRequired(false)
-    @GetMapping("/async", produces = [MediaType.APPLICATION_STREAM_JSON_VALUE])
+    @GetMapping("/async")
     fun testPromise() = testService.testAsync()
 }
 
@@ -49,7 +49,7 @@ class MyInteractiveTestServiceImpl: IMyInteractiveTestService {
         return Async.create {
             Obj(
                 k1 = "v1",
-                k2 = it.create { // 这里是一个较长时间执行的任务，使用Async.create，Obj会在创建后立刻传输到客户端，k2会在两秒后发送到客户端
+                k2 = it.create { // 这里是一个较长时间执行的任务，使用Async.create()，Obj会在创建后立刻传输到客户端，k2会在两秒后发送到客户端
                     Thread.sleep(2000)
                     "v2"
                 }

@@ -50,7 +50,7 @@ class AnotherService {
 `Promise` 用于立刻返回一个需要较长时间执行的操作。
 ##### 1) 例子：
 ```java
-import cn.cloudself.start.interactive.res.Promise;
+import cn.cloudself.start.interactive.res.Async;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -58,9 +58,9 @@ import java.util.ArrayList;
 class PageData {
     private List<Map<String, Object>> rows;
     private Boolean hasNext;
-    private Promise<Integer> totalCount;
+    private Async.Promise<Integer> totalCount;
 
-    public PageData(List<Map<String, Object>> rows, Boolean hasNext, Promise<Integer> totalCount) {
+    public PageData(List<Map<String, Object>> rows, Boolean hasNext, Async.Promise<Integer> totalCount) {
         this.rows = rows;
         this.hasNext = hasNext;
         this.totalCount;
@@ -68,7 +68,7 @@ class PageData {
 }
 
 class Service {
-    public PageData getPage(Integer page, Integer pageSize) {
+    public Async<PageData> getPage(Integer page, Integer pageSize) {
         final Integer start = (page - 1) * pageSize;
         List<Map<String, Object>> rows = selectRows(start, pageSize + 1);
         final boolean hasNext;
@@ -79,10 +79,12 @@ class Service {
             hasNext = false;
         }
 
-        final Promise<Integer> totalCountPromise = hasNext
-                ? Promise.create(this::getTotalCount)
-                : Promise.resolve(page * pageSize + rows.size());
-        return new PageData(rows, hasNext, totalCountPromise);
+        return Async.create(promise -> {
+            final Async.Promise<Integer> totalCountPromise = hasNext
+                    ? promise.create(this::getTotalCount)
+                    : promise.just(page * pageSize + rows.size());
+            return new PageData(rows, hasNext, totalCountPromise); 
+        });
     }
 
     private List<Map<String, Object>> selectRows(Integer start, Integer limit) {
