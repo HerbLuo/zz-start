@@ -4,13 +4,21 @@ package cn.cloudself.start.interactive.res
 import reactor.core.CoreSubscriber
 import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
+import reactor.core.publisher.Sinks
 
 @Suppress("unused")
 class Async<T: Any> private constructor(
-    private val init: (FluxSink<Any>) -> Unit
+    private val init: (FluxSink<Any>) -> Unit,
+    private val promises: (FluxSink<Any>) -> Unit
 ): Flux<Any?>() {
 
-    private val flux = create<Any?> { init(it) }
+    private val flux = push<Any?> {
+        init(it)
+        it.complete()
+    }.concatWith(push {
+        promises(it)
+        it.complete()
+    })
     override fun subscribe(actual: CoreSubscriber<in Any?>) = flux.subscribe(actual)
 
     data class Promise<T>(
@@ -24,15 +32,15 @@ class Async<T: Any> private constructor(
     )
 
     companion object {
-        open class PromiseCreator(private val sink: FluxSink<Any>) {
-            internal val tasks = mutableListOf<() -> Unit>()
+        open class PromiseCreator() {
+            internal val tasks = mutableListOf<(FluxSink<Any>) -> Unit>()
             private var id = System.currentTimeMillis()
 
             fun <T: Any> create(supplier: () -> T): Promise<T> {
                 val id = (id++).toString(36)
                 tasks.add {
                     val resolved = supplier()
-                    sink.next(PromiseResolved(id, resolved))
+                    it.next(PromiseResolved(id, resolved))
                 }
                 return Promise(id)
             }
@@ -47,17 +55,17 @@ class Async<T: Any> private constructor(
          */
         @JvmStatic
         fun <T: Any> create(customer: (PromiseCreator) -> T): Async<T> {
-            val async = Async<T> {
-                val promiseCreator = PromiseCreator(it)
-                val data = customer(promiseCreator)
-                it.next(data)
-                Thread {
+            val promiseCreator = PromiseCreator()
+
+            val async = Async<T>(
+                { it.next(customer(promiseCreator)) },
+                {
                     for (task in promiseCreator.tasks) {
-                        task()
+                        task(it)
                     }
                     it.complete()
-                }.start()
-            }
+                }
+            )
             return async
         }
     }

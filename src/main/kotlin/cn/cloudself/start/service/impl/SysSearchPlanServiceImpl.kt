@@ -44,7 +44,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
         }
     }
 
-    override fun getData(searchQuery: SysSearchQueryReq): SysSearchQueryRes {
+    override fun getData(searchQuery: SysSearchQueryReq): Async<SysSearchQueryRes> {
         val tag = searchQuery.tag
         val config: SysSearchConfigEntity = SysSearchConfigQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
@@ -110,16 +110,16 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
             withNextPageRows
         }
 
-        // 查询总数
-//        val totalCountPromise: Promise<Int> = if (hasNext) Promise.create {
-//            val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
-//            val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
-//                ?: throw ServerException(message = "无法完成count查询, $sqlForCountWithConditions")
-//            count
-//        } else Promise.resolve(first + rows.size)
+        return Async.create {
+            // 查询总数
+            val totalCountPromise: Async.Promise<Int> = if (hasNext) it.create {
+                val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
+                val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
+                    ?: throw ServerException(message = "无法完成count查询, $sqlForCountWithConditions")
+                count
+            } else it.just(first + rows.size)
 
-        return SysSearchQueryRes(hasNext,
-//            totalCountPromise,
-            rows)
+            SysSearchQueryRes(hasNext, totalCountPromise, rows)
+        }
     }
 }
