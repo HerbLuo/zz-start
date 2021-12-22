@@ -1,5 +1,6 @@
 package cn.cloudself.start.controller
 
+import cn.cloudself.start.annotation.LoginRequired
 import cn.cloudself.start.pojo.SysSearchQueryReq
 import cn.cloudself.start.service.ISysSearchPlanService
 import io.swagger.annotations.Api
@@ -17,7 +18,8 @@ class SysSearchPlanController @Autowired constructor(
     @GetMapping("/{planName}")
     fun getPlan(@PathVariable planName: String) = searchPlanService.getPlan(planName)
 
+    @LoginRequired(false)
     @ApiOperation(value = "使用查询方案查询")
-    @GetMapping("/query")
+    @PostMapping("/query")
     fun getData(@RequestBody query: SysSearchQueryReq) = searchPlanService.getData(query)
 }
