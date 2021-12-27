@@ -47,6 +47,15 @@ fun simpleParser(code: Int, eClass: KClass<out Throwable>, status: HttpStatus) =
     { e: Throwable -> if (eClass.isInstance(e)) Parsed3rdException(status, code, e.message) else null }
 
 val throwableParsers = arrayOf(
+    {
+        if (it is HttpMessageNotReadableException) {
+            val e = it.rootCause
+            if (e is MissingKotlinParameterException) {
+                return@arrayOf Parsed3rdException(HttpStatus.BAD_REQUEST, 0xA001, "MissingKotlinParameterException: PATH REF:" + e.pathReference)
+            }
+        }
+        return@arrayOf null
+    },
     simpleParser(0xB001, HttpMediaTypeNotAcceptableException::class, HttpStatus.NOT_ACCEPTABLE),
     simpleParser(0xB002, HttpMediaTypeNotSupportedException::class, HttpStatus.UNSUPPORTED_MEDIA_TYPE),
     simpleParser(0xB003, HttpMessageNotReadableException::class, HttpStatus.BAD_REQUEST),
@@ -55,15 +64,6 @@ val throwableParsers = arrayOf(
     simpleParser(0xB006, JWTVerificationException::class, HttpStatus.UNAUTHORIZED),
     simpleParser(0xB007, JWTDecodeException::class, HttpStatus.UNAUTHORIZED),
     simpleParser(0xB008, TokenExpiredException::class, HttpStatus.UNAUTHORIZED),
-    {
-        if (it is HttpMessageNotReadableException) {
-            val e = it.rootCause
-            if (e is MissingKotlinParameterException) {
-                return@arrayOf Parsed3rdException(HttpStatus.BAD_REQUEST, 0xA001, e.message)
-            }
-        }
-        return@arrayOf null
-    }
 )
 
 val logger = LoggerFactory.getLogger(ExceptionHandlerAdvice::class.java)!!
