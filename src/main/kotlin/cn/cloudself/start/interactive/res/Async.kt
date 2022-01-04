@@ -4,7 +4,6 @@ package cn.cloudself.start.interactive.res
 import reactor.core.CoreSubscriber
 import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
-import reactor.core.publisher.Sinks
 
 @Suppress("unused")
 class Async<T: Any> private constructor(
