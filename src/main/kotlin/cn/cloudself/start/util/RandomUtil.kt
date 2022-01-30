@@ -54,7 +54,7 @@ object RandomUtil {
     }
 
     private fun ss4(sb: StringBuilder, withSymbols: CharArray) {
-        val randomNum = ((Math.random() + 1) * ((CHARSET62.size + withSymbols.size).toDouble().pow(4) - 1)).toLong()
+        val randomNum = ((Math.random() + 1) * ((CHARSET62.size + withSymbols.size).toDouble().pow(4))).toLong()
 
         val ss4Reversed = baseXXEncodeReversed(randomNum, *withSymbols)
         for (c in 0 until ss4Reversed.size - 1) {

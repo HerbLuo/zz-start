@@ -1,5 +1,6 @@
 package cn.cloudself.start.components
 
+import SwaggerGroupInfoPlugin
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -32,4 +33,7 @@ class Swagger2 : WebMvcConfigurer {
             .contact(Contact("herbluo", "https://cloudself.cn/", "im.hb@qq.com"))
             .version("1.0")
             .build()
+
+    @Bean
+    fun addGroupInfoToApiBean() = SwaggerGroupInfoPlugin()
 }
