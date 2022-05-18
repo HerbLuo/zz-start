@@ -18,7 +18,7 @@ import springfox.documentation.spring.web.plugins.Docket
 class Swagger2 : WebMvcConfigurer {
     @Bean
     fun createRestApi(): Docket =
-        Docket(DocumentationType.SWAGGER_2)
+        Docket(DocumentationType.OAS_30)
             .apiInfo(apiInfo())
             .select()
             .apis(

@@ -32,8 +32,10 @@ import kotlin.reflect.KClass
 data class PlainError(
     val serial: String,
     val code: Int,
-    val message: String?,
-    val alert: String? = ""
+    val message: String?, // message是给测试，开发看的
+    val alert: String? = "", // alert是给用户看的
+
+    val stacks: List<String>? = null, // stacks主要是给后端开发看的
 )
 
 data class Parsed3rdException(

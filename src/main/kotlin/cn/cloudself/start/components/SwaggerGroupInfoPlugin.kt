@@ -1,6 +1,7 @@
-import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import springfox.documentation.builders.RequestParameterBuilder
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.OperationBuilderPlugin
 import springfox.documentation.spi.service.contexts.OperationContext
@@ -11,7 +12,7 @@ import springfox.documentation.swagger.common.SwaggerPluginSupport
 class SwaggerGroupInfoPlugin : OperationBuilderPlugin {
 
     override fun apply(context: OperationContext) {
-        val apiAnnotationOpt = context.findControllerAnnotation(Api::class.java)
+        val apiAnnotationOpt = context.findControllerAnnotation(ApiOperation::class.java)
         val tags = apiAnnotationOpt.map { api -> api.tags }.orElse(arrayOf())
         context.operationBuilder().tags(setOf(*tags, "group(${context.groupName})"))
    }

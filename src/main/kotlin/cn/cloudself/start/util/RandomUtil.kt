@@ -1,6 +1,6 @@
 package cn.cloudself.start.util
 
-import cn.cloudself.query.exception.UnSupportException
+import cn.cloudself.start.exception.UnSupportException
 import java.util.Random
 import kotlin.math.ceil
 import kotlin.math.pow

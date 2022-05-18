@@ -4,8 +4,6 @@ import cn.cloudself.start.util.I18n
 import org.springframework.http.HttpStatus
 import java.lang.RuntimeException
 
-//typealias I18n = String
-
 const val BAD_REQUEST = "Bad Request"
 const val NOT_FIND = "Not Found"
 const val UNAUTHORIZED = "Unauthorized"
