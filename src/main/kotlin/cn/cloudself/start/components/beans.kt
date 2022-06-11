@@ -1,14 +1,14 @@
 package cn.cloudself.start.components
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.support.JdbcTransactionManager
+import javax.annotation.Resource
 import javax.sql.DataSource
 
 @Configuration
 class MyBeans {
-    @Autowired
+    @Resource
     private lateinit var dataSource: DataSource
 
     @Bean

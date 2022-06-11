@@ -36,6 +36,8 @@ data class Foo(
     val l5: List<Map<String, Int>>,
 
     val re: UsernamePassword,
+    val res: List<UsernamePassword>,
+    val timestamps: List<Timestamp>,
 )
 
 @RestController

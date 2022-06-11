@@ -1,6 +1,7 @@
 package cn.cloudself.start.components
 
 import SwaggerGroupInfoPlugin
+import SwaggerParametersPlugin
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -36,4 +37,7 @@ class Swagger2 : WebMvcConfigurer {
 
     @Bean
     fun addGroupInfoToApiBean() = SwaggerGroupInfoPlugin()
+
+    @Bean
+    fun fixParameters() = SwaggerParametersPlugin()
 }

@@ -1,7 +1,10 @@
 package cn.cloudself.start.pojo
 
+import java.util.*
+
 data class Token(
     val token: String,
+    val expireAt: Date
 )
 
 data class TokenWithUser (

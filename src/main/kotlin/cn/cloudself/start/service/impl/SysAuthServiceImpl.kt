@@ -35,7 +35,7 @@ class SysAuthServiceImpl : ISysAuthService {
             .withClaim("username", user.username)
             .withExpiresAt(expireAt)
             .sign(Algorithm.HMAC256(jwtSecret))
-        return Token(token)
+        return Token(token, expireAt)
     }
 
     override fun parseToken(token: String): TokenWithUser? {
