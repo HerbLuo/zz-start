@@ -10,10 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class AuthenticationConfig @Autowired constructor(
-    private val authenticationInterceptor: AuthenticationInterceptor
+    private val authenticationInterceptor: AuthenticationInterceptor,
+    @Value("\${cloudself.auth.exclude-patterns:}") private val excludePatterns: Array<String>,
 ) : WebMvcConfigurer {
-    @Value("\${cloudself.auth.exclude-patterns:}")
-    private val excludePatterns: Array<String> = arrayOf()
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(authenticationInterceptor).addPathPatterns("/**")

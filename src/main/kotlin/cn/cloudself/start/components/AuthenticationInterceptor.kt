@@ -21,12 +21,10 @@ import javax.servlet.http.HttpServletResponse
 class AuthenticationInterceptor @Autowired constructor(
     private val env: Environment,
     private val authService: ISysAuthService,
+    @Value("\${cloudself.auth.required-by-default:false}") private val defaultLoginRequired: Boolean,
 ) : HandlerInterceptor {
 
     private val log = LoggerFactory.getLogger(AuthenticationInterceptor::class.java)
-
-    @Value("\${cloudself.default-login-required}")
-    private val defaultLoginRequired = false
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         if (handler !is HandlerMethod && handler !is ResourceHttpRequestHandler) {
@@ -34,8 +32,8 @@ class AuthenticationInterceptor @Autowired constructor(
             return false
         }
 
-        // header中的token(dev环境允许使用url传输token)
-        val token = request.getHeader("Authorization")
+        // cookie中的token(dev环境允许使用url传输token)
+        val token = request.cookies.find { it.name == "ut" }?.value
             ?: if (env.activeProfiles[0] == "dev") {
                 request.getParameter("token")
             } else { null }

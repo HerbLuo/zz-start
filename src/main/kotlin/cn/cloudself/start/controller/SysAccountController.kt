@@ -7,30 +7,61 @@ import cn.cloudself.start.service.ISysAuthService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.Cookie
-import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Api(tags = ["登陆与注册"])
 @RestController
 @RequestMapping("/account")
 class SysAccountController @Autowired constructor(
-    private val authService: ISysAuthService
+    private val authService: ISysAuthService,
+    @Value("\${cloudself.site.only-https:false}") private val onlyHttps: Boolean,
 ) {
 
     @ApiOperation("使用用户名密码登陆")
     @LoginRequired(false)
     @PostMapping("/login")
     fun loginByPwd(response: HttpServletResponse, @RequestBody login: UsernamePassword): Token {
-        val token = authService.loginByPwd(login.username, login.password)
+        val token = authService.loginByPwd(login)
         setTokenToCookie(response, token)
+        if (login.rememberMe) {
+            setRememberMeTokenToCookie(response, token)
+        }
         return token
     }
 
-    private fun setTokenToCookie(response: HttpServletResponse, token: Token) {
-        val cookie = Cookie("ut", token.token)
+    @ApiOperation("使用RememberMeToken登陆")
+    @LoginRequired(false)
+    @PostMapping("/login/remember-me-token")
+    fun loginByRememberMeToken(
+        @CookieValue(COOKIE_KEY_USER_REMEMBER_ME_TOKEN) userRememberMeToken: String,
+        response: HttpServletResponse
+    ): Boolean {
+        val token = authService.loginByRememberMeToken(userRememberMeToken)
+        setTokenToCookie(response, token)
+        return true
+    }
+
+    private fun setRememberMeTokenToCookie(response: HttpServletResponse, token: Token) {
+        val cookie = Cookie(COOKIE_KEY_USER_REMEMBER_ME_TOKEN, token.rememberMeToken ?: return)
         cookie.isHttpOnly = true
+        if (onlyHttps) cookie.secure = true
         response.addCookie(cookie)
+    }
+
+    private fun setTokenToCookie(response: HttpServletResponse, token: Token) {
+        val cookie = Cookie(COOKIE_KEY_USER_TOKEN, token.token)
+        cookie.path = "/"
+        cookie.maxAge =  ((token.expireAt.time - System.currentTimeMillis()) / 1000).toInt()
+        cookie.isHttpOnly = true
+        if (onlyHttps) cookie.secure = true
+        response.addCookie(cookie)
+    }
+
+    companion object {
+        private const val COOKIE_KEY_USER_REMEMBER_ME_TOKEN = "urt"
+        private const val COOKIE_KEY_USER_TOKEN = "ut"
     }
 }

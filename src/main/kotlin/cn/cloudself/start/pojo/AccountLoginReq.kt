@@ -6,5 +6,10 @@ package cn.cloudself.start.pojo
 data class UsernamePassword(
     val username: String,
     val password: String,
+    val rememberMe: Boolean = false,
+)
+
+data class RememberMeToken(
+    val token: String
 )
 

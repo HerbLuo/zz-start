@@ -115,7 +115,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
             val totalCountPromise: Async.Promise<Int> = if (hasNext) it.create {
                 val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
                 val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
-                    ?: throw ServerException(message = "无法完成count查询, $sqlForCountWithConditions")
+                    ?: throw ServerException("无法完成count查询, {}", sqlForCountWithConditions)
                 count
             } else it.just(first + rows.size)
 

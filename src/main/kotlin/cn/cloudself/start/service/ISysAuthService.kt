@@ -1,10 +1,14 @@
 package cn.cloudself.start.service
 
+import cn.cloudself.start.pojo.RememberMeToken
 import cn.cloudself.start.pojo.Token
 import cn.cloudself.start.pojo.TokenWithUser
+import cn.cloudself.start.pojo.UsernamePassword
 
 interface ISysAuthService {
-    fun loginByPwd(username: String, password: String): Token
+    fun loginByPwd(usernamePassword: UsernamePassword): Token
+
+    fun loginByRememberMeToken(rememberMeToken: String): Token
 
     fun getToken(user: TokenWithUser): Token
 

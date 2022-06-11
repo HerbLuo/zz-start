@@ -16,12 +16,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
  */
 @Configuration
 class CorsConfig @Autowired constructor(
-    private val env: Environment
+    private val env: Environment,
+    @Value("\${cloudself.site.prod-site:}") private val prodSite: String,
 ) : WebMvcConfigurer {
-
-    @Value("\${cloudself.cors.prod-site:}")
-    private val prodSite = ""
-
     override fun addCorsMappings(registry: CorsRegistry) {
         super.addCorsMappings(registry)
         val areProd = env.activeProfiles[0] == "prod"

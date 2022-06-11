@@ -1,9 +1,14 @@
 package cn.cloudself.start.util
 
-class I18n constructor(private val value: String) {
+class I18n constructor(
+    private val value: String,
+    private val id: Int? = null
+) {
     override fun toString(): String {
         return value
     }
+
+    fun getId() = id
 }
 
 /**

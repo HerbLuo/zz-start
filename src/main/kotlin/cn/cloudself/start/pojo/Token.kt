@@ -4,7 +4,8 @@ import java.util.*
 
 data class Token(
     val token: String,
-    val expireAt: Date
+    val expireAt: Date,
+    var rememberMeToken: String?,
 )
 
 data class TokenWithUser (
