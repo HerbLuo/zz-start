@@ -47,11 +47,11 @@ class ImplSysSearchConfigQueryPro {
         fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
         @Contract(pure = true)
         fun name(vararg names: String) = createWhereField("name", names)
-        val sql = createWhereField("sql")
+        val sqlColumn = createWhereField("sql")
         @Contract(pure = true)
-        fun sql(sqlList: List<String>) = createWhereField("sql", sqlList.toTypedArray())
+        fun sqlColumn(sqlColumnList: List<String>) = createWhereField("sql", sqlColumnList.toTypedArray())
         @Contract(pure = true)
-        fun sql(vararg sqls: String) = createWhereField("sql", sqls)
+        fun sqlColumn(vararg sqlColumns: String) = createWhereField("sql", sqlColumns)
         val status = createWhereField("status")
         @Contract(pure = true)
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
@@ -102,7 +102,7 @@ class ImplSysSearchConfigQueryPro {
         @Contract(pure = true)
         fun name() = createOrderByField("name")
         @Contract(pure = true)
-        fun sql() = createOrderByField("sql")
+        fun sqlColumn() = createOrderByField("sql")
         @Contract(pure = true)
         fun status() = createOrderByField("status")
         @Contract(pure = true)
@@ -125,7 +125,7 @@ class ImplSysSearchConfigQueryPro {
         fun id() = getColumn(createField("id"), Long::class.java)
         fun tag() = getColumn(createField("tag"), String::class.java)
         fun name() = getColumn(createField("name"), String::class.java)
-        fun sql() = getColumn(createField("sql"), String::class.java)
+        fun sqlColumn() = getColumn(createField("sql"), String::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -148,7 +148,7 @@ class ImplSysSearchConfigQueryPro {
         @Contract(pure = true)
         fun name() = createColumnsLimiterField("name")
         @Contract(pure = true)
-        fun sql() = createColumnsLimiterField("sql")
+        fun sqlColumn() = createColumnsLimiterField("sql")
         @Contract(pure = true)
         fun status() = createColumnsLimiterField("status")
         @Contract(pure = true)
@@ -178,7 +178,7 @@ class ImplSysSearchConfigQueryPro {
         @Contract(pure = true)
         fun name(name: Any) = createUpdateSetField("name", name)
         @Contract(pure = true)
-        fun sql(sql: Any) = createUpdateSetField("sql", sql)
+        fun sqlColumn(sqlColumn: Any) = createUpdateSetField("sql", sqlColumn)
         @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
         @Contract(pure = true)
@@ -202,7 +202,7 @@ class ImplSysSearchConfigQueryPro {
         fun id() = this.also { fields.add(createField("id")) }
         fun tag() = this.also { fields.add(createField("tag")) }
         fun name() = this.also { fields.add(createField("name")) }
-        fun sql() = this.also { fields.add(createField("sql")) }
+        fun sqlColumn() = this.also { fields.add(createField("sql")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }

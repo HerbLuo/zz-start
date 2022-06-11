@@ -49,7 +49,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
         val config: SysSearchConfigEntity = SysSearchConfigQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
 
-        val sqlBuilder = StringBuilder(config.sql!!)
+        val sqlBuilder = StringBuilder(config.sqlColumn)
         val paramsList = mutableListOf<Any?>()
         sqlBuilder.append('\n')
         // 添加条件

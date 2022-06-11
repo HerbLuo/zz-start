@@ -1,6 +1,6 @@
 package cn.cloudself.start.controller
 
-import cn.cloudself.start.entity.AttachmentEntity
+import cn.cloudself.start.entity.SysAttachmentEntity
 import cn.cloudself.start.service.ISysAttachmentService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -16,7 +16,7 @@ class SysAttachmentController @Autowired constructor(
 ) {
     @ApiOperation(value = "获取附件列表")
     @GetMapping("/business/{business}/id/{businessId}")
-    fun listAttachment(@PathVariable business: String, @PathVariable businessId: Long): List<AttachmentEntity> {
+    fun listAttachment(@PathVariable business: String, @PathVariable businessId: Long): List<SysAttachmentEntity> {
         return attachmentService.getAttachments(business, businessId)
     }
 
@@ -46,7 +46,7 @@ class SysAttachmentController @Autowired constructor(
 
     @ApiOperation(value = "更新附件", produces = "application/json")
     @PutMapping("")
-    fun updateAttachment(@RequestBody attachment: AttachmentEntity): Boolean {
+    fun updateAttachment(@RequestBody attachment: SysAttachmentEntity): Boolean {
         return attachmentService.update(attachment)
     }
 
@@ -62,7 +62,7 @@ class SysAttachmentController @Autowired constructor(
         @PathVariable business: String,
         @PathVariable businessId: Long,
         @RequestParam("file") file: MultipartFile
-    ): AttachmentEntity {
+    ): SysAttachmentEntity {
         return attachmentService.upload(business, businessId, file)
     }
 
@@ -72,7 +72,7 @@ class SysAttachmentController @Autowired constructor(
         @PathVariable business: String,
         @PathVariable businessId: Long,
         @RequestParam("file") file: MultipartFile
-    ): AttachmentEntity {
+    ): SysAttachmentEntity {
         return attachmentService.uploadOrReplace(business, businessId, file)
     }
 }

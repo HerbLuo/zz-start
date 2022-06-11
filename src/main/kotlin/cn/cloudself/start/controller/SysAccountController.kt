@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse
 class SysAccountController @Autowired constructor(
     private val authService: ISysAuthService,
     @Value("\${cloudself.site.only-https:false}") private val onlyHttps: Boolean,
+    @Value("\${cloudself.auth.remember-me-days:-1}") private val rememberMeMaxRememberDays: Int,
 ) {
 
     @ApiOperation("使用用户名密码登陆")
@@ -47,6 +48,8 @@ class SysAccountController @Autowired constructor(
     private fun setRememberMeTokenToCookie(response: HttpServletResponse, token: Token) {
         val cookie = Cookie(COOKIE_KEY_USER_REMEMBER_ME_TOKEN, token.rememberMeToken ?: return)
         cookie.isHttpOnly = true
+        val days = if (rememberMeMaxRememberDays == -1) 365 * 30 else rememberMeMaxRememberDays
+        cookie.maxAge = (days * 24 * 60 * 60) - (5 * 60)
         if (onlyHttps) cookie.secure = true
         response.addCookie(cookie)
     }
@@ -54,7 +57,6 @@ class SysAccountController @Autowired constructor(
     private fun setTokenToCookie(response: HttpServletResponse, token: Token) {
         val cookie = Cookie(COOKIE_KEY_USER_TOKEN, token.token)
         cookie.path = "/"
-        cookie.maxAge =  ((token.expireAt.time - System.currentTimeMillis()) / 1000).toInt()
         cookie.isHttpOnly = true
         if (onlyHttps) cookie.secure = true
         response.addCookie(cookie)

@@ -1,6 +1,6 @@
 package cn.cloudself.start.service
 
-import cn.cloudself.start.entity.AttachmentEntity
+import cn.cloudself.start.entity.SysAttachmentEntity
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
 
@@ -15,14 +15,14 @@ interface ISysAttachmentService {
      * @param businessId 业务id
      * @return 附件列表
      */
-    fun getAttachments(business: String, businessId: Long): List<AttachmentEntity>
+    fun getAttachments(business: String, businessId: Long): List<SysAttachmentEntity>
 
     /**
      * 更新附件信息（用于重命名等）
      * @param attachment 附件
      * @return 是否更新成功
      */
-    fun update(attachment: AttachmentEntity): Boolean
+    fun update(attachment: SysAttachmentEntity): Boolean
 
     /**
      * 删除附件
@@ -39,7 +39,7 @@ interface ISysAttachmentService {
      * @return 附件信息
      * @throws IOException .
      */
-    fun upload(business: String, businessId: Long, file: MultipartFile): AttachmentEntity
+    fun upload(business: String, businessId: Long, file: MultipartFile): SysAttachmentEntity
 
     /**
      * 上传或替换单个附件
@@ -49,7 +49,7 @@ interface ISysAttachmentService {
      * @return 附件信息
      * @throws IOException .
      */
-    fun uploadOrReplace(business: String, businessId: Long, file: MultipartFile): AttachmentEntity
+    fun uploadOrReplace(business: String, businessId: Long, file: MultipartFile): SysAttachmentEntity
 
     /**
      * 获取附件条数 这里无关附件使用组织权限
@@ -74,7 +74,7 @@ interface ISysAttachmentService {
      * @param attachment 附件
      * @return url
      */
-    fun genUrl(attachment: AttachmentEntity): String
+    fun genUrl(attachment: SysAttachmentEntity): String
 
     /**
      * 获取附件地址

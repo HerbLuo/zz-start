@@ -25,7 +25,7 @@ data class SysSearchConfigEntity(
 
     /** sql */
     @Column(name = "sql")
-    var sql: String? = null,
+    var sqlColumn: String? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @Column(name = "status")

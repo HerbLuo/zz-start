@@ -1,7 +1,7 @@
 package cn.cloudself.start.service.impl
 
-import cn.cloudself.start.dao.AttachmentQueryPro
-import cn.cloudself.start.entity.AttachmentEntity
+import cn.cloudself.start.dao.SysAttachmentQueryPro
+import cn.cloudself.start.entity.SysAttachmentEntity
 import cn.cloudself.start.exception.http.RequestNotFindException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.service.ISysAttachmentService
@@ -25,27 +25,27 @@ import java.util.regex.Pattern
  */
 @Service
 class SysAttachmentServiceImpl : ISysAttachmentService {
-    override fun getAttachments(business: String, businessId: Long): List<AttachmentEntity> {
-        return AttachmentQueryPro.selectBy().business.equalsTo(business).and().businessId.equalsTo(businessId).run()
+    override fun getAttachments(business: String, businessId: Long): List<SysAttachmentEntity> {
+        return SysAttachmentQueryPro.selectBy().business.equalsTo(business).and().businessId.equalsTo(businessId).run()
     }
 
-    override fun update(attachment: AttachmentEntity): Boolean {
-        return AttachmentQueryPro.updateSet(attachment, false).run()
+    override fun update(attachment: SysAttachmentEntity): Boolean {
+        return SysAttachmentQueryPro.updateSet(attachment, false).run()
     }
 
     override fun remove(attachmentId: Long): Boolean {
-        return AttachmentQueryPro.deleteByPrimaryKey(attachmentId)
+        return SysAttachmentQueryPro.deleteByPrimaryKey(attachmentId)
     }
 
-    override fun upload(business: String, businessId: Long, file: MultipartFile): AttachmentEntity {
+    override fun upload(business: String, businessId: Long, file: MultipartFile): SysAttachmentEntity {
         return upload(business, businessId, file, false)
     }
 
-    override fun uploadOrReplace(business: String, businessId: Long, file: MultipartFile): AttachmentEntity {
+    override fun uploadOrReplace(business: String, businessId: Long, file: MultipartFile): SysAttachmentEntity {
         return upload(business, businessId, file, true)
     }
 
-    override fun genUrl(attachment: AttachmentEntity): String {
+    override fun genUrl(attachment: SysAttachmentEntity): String {
         val expire = EXPIRE_MILLIS + System.currentTimeMillis()
         val sha256 = attachment.hash
         val signature: String = try {
@@ -64,7 +64,7 @@ class SysAttachmentServiceImpl : ISysAttachmentService {
     }
 
     override fun getAttachmentCount(business: String, businessId: Long): Int {
-        return AttachmentQueryPro.selectBy().business.equalsTo(business).and().businessId.equalsTo(businessId).count()
+        return SysAttachmentQueryPro.selectBy().business.equalsTo(business).and().businessId.equalsTo(businessId).count()
     }
 
     override fun getAttachmentsCount(business: String, businessIds: Array<Long>): Map<Long, Int> {
@@ -72,13 +72,13 @@ class SysAttachmentServiceImpl : ISysAttachmentService {
     }
 
     override fun getAttachmentUrl(attachmentId: Long): String {
-        val attachment: AttachmentEntity = AttachmentQueryPro.selectBy().id.equalsTo(attachmentId).runLimit1()
+        val attachment: SysAttachmentEntity = SysAttachmentQueryPro.selectBy().id.equalsTo(attachmentId).runLimit1()
             ?: throw RequestNotFindException(i18n("找不到该附件，id: {}", attachmentId))
         return genUrl(attachment)
     }
 
     override fun getAttachmentUrl(business: String, businessId: Long): List<String> {
-        return AttachmentQueryPro
+        return SysAttachmentQueryPro
             .selectBy().business.equalsTo(business)
             .and().businessId.equalsTo(businessId)
             .run()
@@ -86,7 +86,7 @@ class SysAttachmentServiceImpl : ISysAttachmentService {
     }
 
     override fun getAttachmentUrlLimit1(business: String, businessId: Long): String? {
-        val attachment = AttachmentQueryPro
+        val attachment = SysAttachmentQueryPro
             .selectBy().business.equalsTo(business)
             .and().businessId.equalsTo(businessId)
             .runLimit1()
@@ -94,30 +94,30 @@ class SysAttachmentServiceImpl : ISysAttachmentService {
         return genUrl(attachment)
     }
 
-    private fun upload(business: String, businessId: Long, file: MultipartFile, withReplace: Boolean): AttachmentEntity {
+    private fun upload(business: String, businessId: Long, file: MultipartFile, withReplace: Boolean): SysAttachmentEntity {
         val fileBytes = file.bytes
         val digest: MessageDigest = MessageDigest.getInstance("SHA-256")
         val sha256 = BigInteger(1, digest.digest(fileBytes)).toString(16)
         FileCopyUtils.copy(fileBytes, FileOutputStream(ATTACHMENT_DIR + sha256))
-        val attachment = AttachmentEntity()
+        val attachment = SysAttachmentEntity()
         attachment.name = normalizingFilename(file.originalFilename ?: "unnamed")
         attachment.size = file.size
         attachment.business = business
         attachment.businessId = businessId
         attachment.hash = sha256
         if (withReplace) {
-            val oldAtt = AttachmentQueryPro
+            val oldAtt = SysAttachmentQueryPro
                 .selectBy().business.equalsTo(business)
                 .and().businessId.equalsTo(businessId)
                 .runLimit1()
             if (oldAtt == null) {
-                attachment.id = AttachmentQueryPro.insert(attachment)
+                attachment.id = SysAttachmentQueryPro.insert(attachment)
             } else {
                 attachment.id = oldAtt.id
-                AttachmentQueryPro.updateSet(attachment).run()
+                SysAttachmentQueryPro.updateSet(attachment).run()
             }
         } else {
-            attachment.id = AttachmentQueryPro.insert(attachment)
+            attachment.id = SysAttachmentQueryPro.insert(attachment)
         }
         return attachment
     }

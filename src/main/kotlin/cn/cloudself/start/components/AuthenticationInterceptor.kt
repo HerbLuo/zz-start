@@ -33,7 +33,7 @@ class AuthenticationInterceptor @Autowired constructor(
         }
 
         // cookie中的token(dev环境允许使用url传输token)
-        val token = request.cookies.find { it.name == "ut" }?.value
+        val token = request.cookies?.find { it.name == "ut" }?.value
             ?: if (env.activeProfiles[0] == "dev") {
                 request.getParameter("token")
             } else { null }
@@ -56,7 +56,7 @@ class AuthenticationInterceptor @Autowired constructor(
         // 需要登陆
         if (token == null) {
             log.info("需要登陆, url: {}", url)
-            responseException(response, RequestBadException(i18n("需要登陆")))
+            responseException(response, RequestUnauthorizedException("需要登陆"))
             return false
         }
 
@@ -65,7 +65,7 @@ class AuthenticationInterceptor @Autowired constructor(
         } catch (e: Exception) {
             responseException(response, e)
             return false
-        } ?: return false.also { responseException(response, RequestUnauthorizedException(i18n("无法解析token"))) }
+        } ?: return false.also { responseException(response, RequestUnauthorizedException("无法解析token")) }
         WebUtil.setUser(tokenUser)
 
         return true
