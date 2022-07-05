@@ -2,14 +2,15 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysSearchUserConfigColumnEntity
+import cn.cloudself.start.entity.SysQueryElementUserEntity
 import java.util.Date
 import cn.cloudself.query.*
 import org.jetbrains.annotations.Contract;
 
-class ImplSysSearchUserConfigColumnQueryPro {
+
+class ImplSysQueryElementUserQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_search_user_config_column"
+        const val TABLE_NAME = "sys_query_element_user"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -21,6 +22,7 @@ class ImplSysSearchUserConfigColumnQueryPro {
             { queryStructure -> ColumnLimiterField(queryStructure, field_clazz) }
         override val create_columns_limiter_field: CreateQueryField<ColumnsLimiterField<T, RUN_RES>> =
             { queryStructure -> ColumnsLimiterField(queryStructure, field_clazz) }
+        override fun getPayload() = SysQueryElementUserQueryPro.payload
     }
 
     class WhereField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -42,11 +44,11 @@ class ImplSysSearchUserConfigColumnQueryPro {
         fun sysUserId(sysUserIdList: List<Long>) = createWhereField("sys_user_id", sysUserIdList.toTypedArray())
         @Contract(pure = true)
         fun sysUserId(vararg sysUserIds: Long) = createWhereField("sys_user_id", sysUserIds.toTypedArray())
-        val sysSearchConfigColumnPropertyName = createWhereField("sys_search_config_column_property_name")
+        val sysQueryElementId = createWhereField("sys_query_element_id")
         @Contract(pure = true)
-        fun sysSearchConfigColumnPropertyName(sysSearchConfigColumnPropertyNameList: List<Long>) = createWhereField("sys_search_config_column_property_name", sysSearchConfigColumnPropertyNameList.toTypedArray())
+        fun sysQueryElementId(sysQueryElementIdList: List<Long>) = createWhereField("sys_query_element_id", sysQueryElementIdList.toTypedArray())
         @Contract(pure = true)
-        fun sysSearchConfigColumnPropertyName(vararg sysSearchConfigColumnPropertyNames: Long) = createWhereField("sys_search_config_column_property_name", sysSearchConfigColumnPropertyNames.toTypedArray())
+        fun sysQueryElementId(vararg sysQueryElementIds: Long) = createWhereField("sys_query_element_id", sysQueryElementIds.toTypedArray())
         val hidden = createWhereField("hidden")
         @Contract(pure = true)
         fun hidden(hiddenList: List<Boolean>) = createWhereField("hidden", hiddenList.toTypedArray())
@@ -62,6 +64,11 @@ class ImplSysSearchUserConfigColumnQueryPro {
         fun sortable(sortableList: List<Boolean>) = createWhereField("sortable", sortableList.toTypedArray())
         @Contract(pure = true)
         fun sortable(vararg sortables: Boolean) = createWhereField("sortable", sortables.toTypedArray())
+        val width = createWhereField("width")
+        @Contract(pure = true)
+        fun width(widthList: List<String>) = createWhereField("width", widthList.toTypedArray())
+        @Contract(pure = true)
+        fun width(vararg widths: String) = createWhereField("width", widths)
         val status = createWhereField("status")
         @Contract(pure = true)
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
@@ -110,13 +117,15 @@ class ImplSysSearchUserConfigColumnQueryPro {
         @Contract(pure = true)
         fun sysUserId() = createOrderByField("sys_user_id")
         @Contract(pure = true)
-        fun sysSearchConfigColumnPropertyName() = createOrderByField("sys_search_config_column_property_name")
+        fun sysQueryElementId() = createOrderByField("sys_query_element_id")
         @Contract(pure = true)
         fun hidden() = createOrderByField("hidden")
         @Contract(pure = true)
         fun sort() = createOrderByField("sort")
         @Contract(pure = true)
         fun sortable() = createOrderByField("sortable")
+        @Contract(pure = true)
+        fun width() = createOrderByField("width")
         @Contract(pure = true)
         fun status() = createOrderByField("status")
         @Contract(pure = true)
@@ -138,10 +147,11 @@ class ImplSysSearchUserConfigColumnQueryPro {
 
         fun id() = getColumn(createField("id"), Long::class.java)
         fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
-        fun sysSearchConfigColumnPropertyName() = getColumn(createField("sys_search_config_column_property_name"), Long::class.java)
+        fun sysQueryElementId() = getColumn(createField("sys_query_element_id"), Long::class.java)
         fun hidden() = getColumn(createField("hidden"), Boolean::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
         fun sortable() = getColumn(createField("sortable"), Boolean::class.java)
+        fun width() = getColumn(createField("width"), String::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -162,13 +172,15 @@ class ImplSysSearchUserConfigColumnQueryPro {
         @Contract(pure = true)
         fun sysUserId() = createColumnsLimiterField("sys_user_id")
         @Contract(pure = true)
-        fun sysSearchConfigColumnPropertyName() = createColumnsLimiterField("sys_search_config_column_property_name")
+        fun sysQueryElementId() = createColumnsLimiterField("sys_query_element_id")
         @Contract(pure = true)
         fun hidden() = createColumnsLimiterField("hidden")
         @Contract(pure = true)
         fun sort() = createColumnsLimiterField("sort")
         @Contract(pure = true)
         fun sortable() = createColumnsLimiterField("sortable")
+        @Contract(pure = true)
+        fun width() = createColumnsLimiterField("width")
         @Contract(pure = true)
         fun status() = createColumnsLimiterField("status")
         @Contract(pure = true)
@@ -196,13 +208,15 @@ class ImplSysSearchUserConfigColumnQueryPro {
         @Contract(pure = true)
         fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
         @Contract(pure = true)
-        fun sysSearchConfigColumnPropertyName(sysSearchConfigColumnPropertyName: Any) = createUpdateSetField("sys_search_config_column_property_name", sysSearchConfigColumnPropertyName)
+        fun sysQueryElementId(sysQueryElementId: Any) = createUpdateSetField("sys_query_element_id", sysQueryElementId)
         @Contract(pure = true)
         fun hidden(hidden: Any) = createUpdateSetField("hidden", hidden)
         @Contract(pure = true)
         fun sort(sort: Any) = createUpdateSetField("sort", sort)
         @Contract(pure = true)
         fun sortable(sortable: Any) = createUpdateSetField("sortable", sortable)
+        @Contract(pure = true)
+        fun width(width: Any) = createUpdateSetField("width", width)
         @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
         @Contract(pure = true)
@@ -225,10 +239,11 @@ class ImplSysSearchUserConfigColumnQueryPro {
 
         fun id() = this.also { fields.add(createField("id")) }
         fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
-        fun sysSearchConfigColumnPropertyName() = this.also { fields.add(createField("sys_search_config_column_property_name")) }
+        fun sysQueryElementId() = this.also { fields.add(createField("sys_query_element_id")) }
         fun hidden() = this.also { fields.add(createField("hidden")) }
         fun sort() = this.also { fields.add(createField("sort")) }
         fun sortable() = this.also { fields.add(createField("sortable")) }
+        fun width() = this.also { fields.add(createField("width")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }
@@ -241,28 +256,28 @@ class ImplSysSearchUserConfigColumnQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysSearchUserConfigColumnEntity,
+            SysQueryElementUserEntity,
             Long,
-            ImplSysSearchUserConfigColumnQueryPro.WhereField<SysSearchUserConfigColumnEntity, List<SysSearchUserConfigColumnEntity>>,
-            ImplSysSearchUserConfigColumnQueryPro.OrderByField<SysSearchUserConfigColumnEntity, List<SysSearchUserConfigColumnEntity>>,
-            ImplSysSearchUserConfigColumnQueryPro.UpdateSetField,
-            ImplSysSearchUserConfigColumnQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysSearchUserConfigColumnQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysQueryElementUserQueryPro.WhereField<SysQueryElementUserEntity, List<SysQueryElementUserEntity>>,
+            ImplSysQueryElementUserQueryPro.OrderByField<SysQueryElementUserEntity, List<SysQueryElementUserEntity>>,
+            ImplSysQueryElementUserQueryPro.UpdateSetField,
+            ImplSysQueryElementUserQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysQueryElementUserQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysSearchUserConfigColumnEntity::class.java,
+        SysQueryElementUserEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField(qs, SysSearchUserConfigColumnEntity::class.java) },
-        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.OrderByField(qs, SysSearchUserConfigColumnEntity::class.java) },
-        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysQueryElementUserQueryPro.WhereField(qs, SysQueryElementUserEntity::class.java) },
+        { qs: QueryStructure -> ImplSysQueryElementUserQueryPro.OrderByField(qs, SysQueryElementUserEntity::class.java) },
+        { qs: QueryStructure -> ImplSysQueryElementUserQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysQueryElementUserQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysQueryElementUserQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysSearchUserConfigColumnQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSearchUserConfigColumnQueryPro.TABLE_NAME)))
+val SysQueryElementUserQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysQueryElementUserQueryPro.TABLE_NAME)))
 
-val SysSearchUserConfigColumnQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysSearchUserConfigColumnQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysSearchUserConfigColumnQueryPro.WhereField<SysSearchUserConfigColumnEntity, List<SysSearchUserConfigColumnEntity>>(qs, SysSearchUserConfigColumnEntity::class.java) },
-    { ImplSysSearchUserConfigColumnQueryPro.FieldsGenerator() },
+val SysQueryElementUserQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysQueryElementUserQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysQueryElementUserQueryPro.WhereField<SysQueryElementUserEntity, List<SysQueryElementUserEntity>>(qs, SysQueryElementUserEntity::class.java) },
+    { ImplSysQueryElementUserQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

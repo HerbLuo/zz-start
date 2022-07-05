@@ -4,28 +4,40 @@ import java.util.Date
 import javax.persistence.*
 
 /**
- * 查询方案配置
+ * 用户保存的查询方案
  */
 @Entity
-@Table(name = "sys_search_config")
-data class SysSearchConfigEntity(
+@Table(name = "sys_query_user_plan")
+data class SysQueryUserPlanEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Long? = null,
 
-    /** 方案名(可用于查询，唯一) */
-    @Column(name = "tag")
-    var tag: String? = null,
+    /** 用户ID */
+    @Column(name = "sys_user_id")
+    var sysUserId: Long? = null,
 
-    /** 方案名(备注, 可为中文) */
+    /** 查询方案 */
+    @Column(name = "sys_query_id")
+    var sysQueryId: Long? = null,
+
+    /** 方案配置名(冗余字段) */
+    @Column(name = "sys_query_tag_cn_redundant")
+    var sysQueryTagCnRedundant: String? = null,
+
+    /** 用户定义的查询方案名称 */
     @Column(name = "name")
     var name: String? = null,
 
-    /** sql */
-    @Column(name = "sql")
-    var sqlColumn: String? = null,
+    /** 排序 */
+    @Column(name = "sort")
+    var sort: Int? = null,
+
+    /** 只读（针对公用方案, 只能拷贝不能修改） */
+    @Column(name = "readonly")
+    var readonly: Boolean? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @Column(name = "status")

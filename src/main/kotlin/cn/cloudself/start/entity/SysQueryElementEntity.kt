@@ -7,8 +7,8 @@ import javax.persistence.*
  * 查询方案配置列
  */
 @Entity
-@Table(name = "sys_search_config_column")
-data class SysSearchConfigColumnEntity(
+@Table(name = "sys_query_element")
+data class SysQueryElementEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,24 +16,24 @@ data class SysSearchConfigColumnEntity(
     var id: Long? = null,
 
     /** 主键ID */
-    @Column(name = "sys_search_config_id")
-    var sysSearchConfigId: Long? = null,
+    @Column(name = "sys_query_id")
+    var sysQueryId: Long? = null,
 
     /** 方案名(冗余字段) */
-    @Column(name = "sys_search_config_name_redundant")
-    var sysSearchConfigNameRedundant: String? = null,
+    @Column(name = "sys_query_tag_cn_redundant")
+    var sysQueryTagCnRedundant: String? = null,
 
     /** 属性名(作为字段名) */
-    @Column(name = "column")
-    var column: String? = null,
+    @Column(name = "alias")
+    var alias: String? = null,
 
     /** 属性名(显示用) */
-    @Column(name = "column_name")
-    var columnName: String? = null,
+    @Column(name = "alias_cn")
+    var aliasCn: String? = null,
 
     /** 属性sql */
-    @Column(name = "column_sql")
-    var columnSql: String? = null,
+    @Column(name = "sql")
+    var sqlColumn: String? = null,
 
     /** 类型(text, select, number, time, date, date-time, month, year) */
     @Column(name = "type")

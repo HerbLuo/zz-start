@@ -1,14 +1,14 @@
 package cn.cloudself.start.service.impl
 
 import cn.cloudself.query.QueryProSql
-import cn.cloudself.start.dao.SysSearchConfigColumnQueryPro
-import cn.cloudself.start.dao.SysSearchConfigQueryPro
-import cn.cloudself.start.dao.SysSearchUserPlanItemQueryPro
-import cn.cloudself.start.dao.SysSearchUserPlanQueryPro
-import cn.cloudself.start.entity.SysSearchConfigColumnEntity
-import cn.cloudself.start.entity.SysSearchConfigEntity
-import cn.cloudself.start.entity.SysSearchUserPlanEntity
-import cn.cloudself.start.entity.SysSearchUserPlanItemEntity
+import cn.cloudself.start.dao.SysQueryElementQueryPro
+import cn.cloudself.start.dao.SysQueryQueryPro
+import cn.cloudself.start.dao.SysQueryUserPlanItemQueryPro
+import cn.cloudself.start.dao.SysQueryUserPlanQueryPro
+import cn.cloudself.start.entity.SysQueryElementEntity
+import cn.cloudself.start.entity.SysQueryEntity
+import cn.cloudself.start.entity.SysQueryUserPlanEntity
+import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
 import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.interactive.res.Async
@@ -26,27 +26,27 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
 
     override fun getPlan(tag: String): List<SysSearchUserPlanRes> {
         val userId = WebUtil.getUserIdNonNull()
-        val searchConfigId = SysSearchConfigQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
+        val searchConfigId = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
 
-        val userPlanList: List<SysSearchUserPlanEntity> = SysSearchUserPlanQueryPro
+        val userPlanList: List<SysQueryUserPlanEntity> = SysQueryUserPlanQueryPro
             .selectBy().sysUserId.equalsTo(userId)
-            .and().sysSearchConfigId.equalsTo(searchConfigId)
+            .and().sysQueryId.equalsTo(searchConfigId)
             .run()
 
         val userPlanIdList: List<Long> = userPlanList.map { it.id!! }
-        val userPlanItems: List<SysSearchUserPlanItemEntity> = SysSearchUserPlanItemQueryPro
-            .selectBy().sysSearchUserPlanId(userPlanIdList)
+        val userPlanItems: List<SysQueryUserPlanItemEntity> = SysQueryUserPlanItemQueryPro
+            .selectBy().sysQueryUserPlanId(userPlanIdList)
             .run()
 
         return userPlanList.map {
-            SysSearchUserPlanRes(it, userPlanItems.filter { item -> item.sysSearchUserPlanId == it.id })
+            SysSearchUserPlanRes(it, userPlanItems.filter { item -> item.sysQueryUserPlanId == it.id })
         }
     }
 
     override fun getData(searchQuery: SysSearchQueryReq): Async<SysSearchQueryRes> {
         val tag = searchQuery.tag
-        val config: SysSearchConfigEntity = SysSearchConfigQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
+        val config: SysQueryEntity = SysQueryQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
 
         val sqlBuilder = StringBuilder(config.sqlColumn)
@@ -55,7 +55,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
         // 添加条件
         val conditions = searchQuery.conditions
         val columnIds: List<Long> = conditions.map { it.column_id }.filter { it > 0 }
-        val configColumns: List<SysSearchConfigColumnEntity> = SysSearchConfigColumnQueryPro.selectBy().id(columnIds).run()
+        val configColumns: List<SysQueryElementEntity> = SysQueryElementQueryPro.selectBy().id(columnIds).run()
         sqlBuilder.append(" and (")
         fun parseConditions(conditions: List<SysSearchQueryCondition>) {
             var first = true
@@ -79,7 +79,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
                 if (operatorsDb.indexOf(operator) < 0) {
                     throw RequestBadException(i18n("查询方案中不存在对应的操作符{}, 无法查询", operator))
                 }
-                sqlBuilder.append(columnDb.column)
+                sqlBuilder.append(columnDb.alias)
                 sqlBuilder.append(" ", operator, " ?")
                 paramsList.add(condition.value)
             }

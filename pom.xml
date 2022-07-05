@@ -140,6 +140,18 @@
             <version>${graalvm.version}</version>
         </dependency>
 
+        <!-- code gen -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
         <!-- misc -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -150,7 +162,7 @@
         <dependency>
             <groupId>cn.cloudself</groupId>
             <artifactId>query-pro</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

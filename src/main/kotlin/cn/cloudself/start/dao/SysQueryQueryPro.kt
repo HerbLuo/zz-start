@@ -2,14 +2,15 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysSearchUserPlanEntity
+import cn.cloudself.start.entity.SysQueryEntity
 import java.util.Date
 import cn.cloudself.query.*
 import org.jetbrains.annotations.Contract;
 
-class ImplSysSearchUserPlanQueryPro {
+
+class ImplSysQueryQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_search_user_plan"
+        const val TABLE_NAME = "sys_query"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -21,6 +22,7 @@ class ImplSysSearchUserPlanQueryPro {
             { queryStructure -> ColumnLimiterField(queryStructure, field_clazz) }
         override val create_columns_limiter_field: CreateQueryField<ColumnsLimiterField<T, RUN_RES>> =
             { queryStructure -> ColumnsLimiterField(queryStructure, field_clazz) }
+        override fun getPayload() = SysQueryQueryPro.payload
     }
 
     class WhereField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -37,36 +39,26 @@ class ImplSysSearchUserPlanQueryPro {
         fun id(idList: List<Long>) = createWhereField("id", idList.toTypedArray())
         @Contract(pure = true)
         fun id(vararg ids: Long) = createWhereField("id", ids.toTypedArray())
-        val sysUserId = createWhereField("sys_user_id")
+        val tag = createWhereField("tag")
         @Contract(pure = true)
-        fun sysUserId(sysUserIdList: List<Long>) = createWhereField("sys_user_id", sysUserIdList.toTypedArray())
+        fun tag(tagList: List<String>) = createWhereField("tag", tagList.toTypedArray())
         @Contract(pure = true)
-        fun sysUserId(vararg sysUserIds: Long) = createWhereField("sys_user_id", sysUserIds.toTypedArray())
-        val sysSearchConfigId = createWhereField("sys_search_config_id")
+        fun tag(vararg tags: String) = createWhereField("tag", tags)
+        val tagCn = createWhereField("tag_cn")
         @Contract(pure = true)
-        fun sysSearchConfigId(sysSearchConfigIdList: List<Long>) = createWhereField("sys_search_config_id", sysSearchConfigIdList.toTypedArray())
+        fun tagCn(tagCnList: List<String>) = createWhereField("tag_cn", tagCnList.toTypedArray())
         @Contract(pure = true)
-        fun sysSearchConfigId(vararg sysSearchConfigIds: Long) = createWhereField("sys_search_config_id", sysSearchConfigIds.toTypedArray())
-        val sysSearchConfigNameRedundant = createWhereField("sys_search_config_name_redundant")
+        fun tagCn(vararg tagCns: String) = createWhereField("tag_cn", tagCns)
+        val sqlColumn = createWhereField("sql")
         @Contract(pure = true)
-        fun sysSearchConfigNameRedundant(sysSearchConfigNameRedundantList: List<String>) = createWhereField("sys_search_config_name_redundant", sysSearchConfigNameRedundantList.toTypedArray())
+        fun sqlColumn(sqlColumnList: List<String>) = createWhereField("sql", sqlColumnList.toTypedArray())
         @Contract(pure = true)
-        fun sysSearchConfigNameRedundant(vararg sysSearchConfigNameRedundants: String) = createWhereField("sys_search_config_name_redundant", sysSearchConfigNameRedundants)
-        val name = createWhereField("name")
+        fun sqlColumn(vararg sqlColumns: String) = createWhereField("sql", sqlColumns)
+        val hash = createWhereField("hash")
         @Contract(pure = true)
-        fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
+        fun hash(hashList: List<ByteArray>) = createWhereField("hash", hashList.toTypedArray())
         @Contract(pure = true)
-        fun name(vararg names: String) = createWhereField("name", names)
-        val sort = createWhereField("sort")
-        @Contract(pure = true)
-        fun sort(sortList: List<Int>) = createWhereField("sort", sortList.toTypedArray())
-        @Contract(pure = true)
-        fun sort(vararg sorts: Int) = createWhereField("sort", sorts.toTypedArray())
-        val readonly = createWhereField("readonly")
-        @Contract(pure = true)
-        fun readonly(readonlyList: List<Boolean>) = createWhereField("readonly", readonlyList.toTypedArray())
-        @Contract(pure = true)
-        fun readonly(vararg readonlys: Boolean) = createWhereField("readonly", readonlys.toTypedArray())
+        fun hash(vararg hashs: ByteArray) = createWhereField("hash", hashs)
         val status = createWhereField("status")
         @Contract(pure = true)
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
@@ -113,17 +105,13 @@ class ImplSysSearchUserPlanQueryPro {
         @Contract(pure = true)
         fun id() = createOrderByField("id")
         @Contract(pure = true)
-        fun sysUserId() = createOrderByField("sys_user_id")
+        fun tag() = createOrderByField("tag")
         @Contract(pure = true)
-        fun sysSearchConfigId() = createOrderByField("sys_search_config_id")
+        fun tagCn() = createOrderByField("tag_cn")
         @Contract(pure = true)
-        fun sysSearchConfigNameRedundant() = createOrderByField("sys_search_config_name_redundant")
+        fun sqlColumn() = createOrderByField("sql")
         @Contract(pure = true)
-        fun name() = createOrderByField("name")
-        @Contract(pure = true)
-        fun sort() = createOrderByField("sort")
-        @Contract(pure = true)
-        fun readonly() = createOrderByField("readonly")
+        fun hash() = createOrderByField("hash")
         @Contract(pure = true)
         fun status() = createOrderByField("status")
         @Contract(pure = true)
@@ -144,12 +132,10 @@ class ImplSysSearchUserPlanQueryPro {
         override val field_type = QueryFieldType.OTHER_FIELD
 
         fun id() = getColumn(createField("id"), Long::class.java)
-        fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
-        fun sysSearchConfigId() = getColumn(createField("sys_search_config_id"), Long::class.java)
-        fun sysSearchConfigNameRedundant() = getColumn(createField("sys_search_config_name_redundant"), String::class.java)
-        fun name() = getColumn(createField("name"), String::class.java)
-        fun sort() = getColumn(createField("sort"), Int::class.java)
-        fun readonly() = getColumn(createField("readonly"), Boolean::class.java)
+        fun tag() = getColumn(createField("tag"), String::class.java)
+        fun tagCn() = getColumn(createField("tag_cn"), String::class.java)
+        fun sqlColumn() = getColumn(createField("sql"), String::class.java)
+        fun hash() = getColumn(createField("hash"), ByteArray::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -168,17 +154,13 @@ class ImplSysSearchUserPlanQueryPro {
         @Contract(pure = true)
         fun id() = createColumnsLimiterField("id")
         @Contract(pure = true)
-        fun sysUserId() = createColumnsLimiterField("sys_user_id")
+        fun tag() = createColumnsLimiterField("tag")
         @Contract(pure = true)
-        fun sysSearchConfigId() = createColumnsLimiterField("sys_search_config_id")
+        fun tagCn() = createColumnsLimiterField("tag_cn")
         @Contract(pure = true)
-        fun sysSearchConfigNameRedundant() = createColumnsLimiterField("sys_search_config_name_redundant")
+        fun sqlColumn() = createColumnsLimiterField("sql")
         @Contract(pure = true)
-        fun name() = createColumnsLimiterField("name")
-        @Contract(pure = true)
-        fun sort() = createColumnsLimiterField("sort")
-        @Contract(pure = true)
-        fun readonly() = createColumnsLimiterField("readonly")
+        fun hash() = createColumnsLimiterField("hash")
         @Contract(pure = true)
         fun status() = createColumnsLimiterField("status")
         @Contract(pure = true)
@@ -204,17 +186,13 @@ class ImplSysSearchUserPlanQueryPro {
         @Contract(pure = true)
         fun id(id: Any) = createUpdateSetField("id", id)
         @Contract(pure = true)
-        fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
+        fun tag(tag: Any) = createUpdateSetField("tag", tag)
         @Contract(pure = true)
-        fun sysSearchConfigId(sysSearchConfigId: Any) = createUpdateSetField("sys_search_config_id", sysSearchConfigId)
+        fun tagCn(tagCn: Any) = createUpdateSetField("tag_cn", tagCn)
         @Contract(pure = true)
-        fun sysSearchConfigNameRedundant(sysSearchConfigNameRedundant: Any) = createUpdateSetField("sys_search_config_name_redundant", sysSearchConfigNameRedundant)
+        fun sqlColumn(sqlColumn: Any) = createUpdateSetField("sql", sqlColumn)
         @Contract(pure = true)
-        fun name(name: Any) = createUpdateSetField("name", name)
-        @Contract(pure = true)
-        fun sort(sort: Any) = createUpdateSetField("sort", sort)
-        @Contract(pure = true)
-        fun readonly(readonly: Any) = createUpdateSetField("readonly", readonly)
+        fun hash(hash: Any) = createUpdateSetField("hash", hash)
         @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
         @Contract(pure = true)
@@ -236,12 +214,10 @@ class ImplSysSearchUserPlanQueryPro {
         override val tableName = TABLE_NAME
 
         fun id() = this.also { fields.add(createField("id")) }
-        fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
-        fun sysSearchConfigId() = this.also { fields.add(createField("sys_search_config_id")) }
-        fun sysSearchConfigNameRedundant() = this.also { fields.add(createField("sys_search_config_name_redundant")) }
-        fun name() = this.also { fields.add(createField("name")) }
-        fun sort() = this.also { fields.add(createField("sort")) }
-        fun readonly() = this.also { fields.add(createField("readonly")) }
+        fun tag() = this.also { fields.add(createField("tag")) }
+        fun tagCn() = this.also { fields.add(createField("tag_cn")) }
+        fun sqlColumn() = this.also { fields.add(createField("sql")) }
+        fun hash() = this.also { fields.add(createField("hash")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }
@@ -254,28 +230,28 @@ class ImplSysSearchUserPlanQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysSearchUserPlanEntity,
+            SysQueryEntity,
             Long,
-            ImplSysSearchUserPlanQueryPro.WhereField<SysSearchUserPlanEntity, List<SysSearchUserPlanEntity>>,
-            ImplSysSearchUserPlanQueryPro.OrderByField<SysSearchUserPlanEntity, List<SysSearchUserPlanEntity>>,
-            ImplSysSearchUserPlanQueryPro.UpdateSetField,
-            ImplSysSearchUserPlanQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysSearchUserPlanQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysQueryQueryPro.WhereField<SysQueryEntity, List<SysQueryEntity>>,
+            ImplSysQueryQueryPro.OrderByField<SysQueryEntity, List<SysQueryEntity>>,
+            ImplSysQueryQueryPro.UpdateSetField,
+            ImplSysQueryQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysQueryQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysSearchUserPlanEntity::class.java,
+        SysQueryEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysSearchUserPlanQueryPro.WhereField(qs, SysSearchUserPlanEntity::class.java) },
-        { qs: QueryStructure -> ImplSysSearchUserPlanQueryPro.OrderByField(qs, SysSearchUserPlanEntity::class.java) },
-        { qs: QueryStructure -> ImplSysSearchUserPlanQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysSearchUserPlanQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysSearchUserPlanQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysQueryQueryPro.WhereField(qs, SysQueryEntity::class.java) },
+        { qs: QueryStructure -> ImplSysQueryQueryPro.OrderByField(qs, SysQueryEntity::class.java) },
+        { qs: QueryStructure -> ImplSysQueryQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysQueryQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysQueryQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysSearchUserPlanQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSearchUserPlanQueryPro.TABLE_NAME)))
+val SysQueryQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysQueryQueryPro.TABLE_NAME)))
 
-val SysSearchUserPlanQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysSearchUserPlanQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysSearchUserPlanQueryPro.WhereField<SysSearchUserPlanEntity, List<SysSearchUserPlanEntity>>(qs, SysSearchUserPlanEntity::class.java) },
-    { ImplSysSearchUserPlanQueryPro.FieldsGenerator() },
+val SysQueryQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysQueryQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysQueryQueryPro.WhereField<SysQueryEntity, List<SysQueryEntity>>(qs, SysQueryEntity::class.java) },
+    { ImplSysQueryQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

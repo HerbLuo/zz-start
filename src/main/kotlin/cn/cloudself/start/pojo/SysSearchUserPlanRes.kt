@@ -1,9 +1,9 @@
 package cn.cloudself.start.pojo
 
-import cn.cloudself.start.entity.SysSearchUserPlanEntity
-import cn.cloudself.start.entity.SysSearchUserPlanItemEntity
+import cn.cloudself.start.entity.SysQueryUserPlanEntity
+import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
 
 data class SysSearchUserPlanRes(
-    val plan: SysSearchUserPlanEntity,
-    val items: List<SysSearchUserPlanItemEntity>,
+    val plan: SysQueryUserPlanEntity,
+    val items: List<SysQueryUserPlanItemEntity>,
 )

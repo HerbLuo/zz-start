@@ -4,36 +4,32 @@ import java.util.Date
 import javax.persistence.*
 
 /**
- * 用户定义字段信息(排序,隐藏)
+ * 查询方案配置
  */
 @Entity
-@Table(name = "sys_search_user_config_column")
-data class SysSearchUserConfigColumnEntity(
+@Table(name = "sys_query")
+data class SysQueryEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Long? = null,
 
-    /** 用户ID */
-    @Column(name = "sys_user_id")
-    var sysUserId: Long? = null,
+    /** 方案名(可用于查询，唯一) */
+    @Column(name = "tag")
+    var tag: String? = null,
 
-    /** 对应的查询方案列ID */
-    @Column(name = "sys_search_config_column_property_name")
-    var sysSearchConfigColumnPropertyName: Long? = null,
+    /** 方案名(备注, 可为中文) */
+    @Column(name = "tag_cn")
+    var tagCn: String? = null,
 
-    /** 是否隐藏 */
-    @Column(name = "hidden")
-    var hidden: Boolean? = null,
+    /** sql */
+    @Column(name = "sql")
+    var sqlColumn: String? = null,
 
-    /** 排序信息 */
-    @Column(name = "sort")
-    var sort: Int? = null,
-
-    /** 是否允许排序(对于操作列，是不能排序的) */
-    @Column(name = "sortable")
-    var sortable: Boolean? = null,
+    /** hash */
+    @Column(name = "hash")
+    var hash: ByteArray? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @Column(name = "status")

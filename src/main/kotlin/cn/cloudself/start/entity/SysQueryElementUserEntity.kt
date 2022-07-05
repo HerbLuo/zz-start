@@ -4,44 +4,40 @@ import java.util.Date
 import javax.persistence.*
 
 /**
- * 用户保存的查询方案明细
+ * 用户定义字段信息(排序,隐藏)
  */
 @Entity
-@Table(name = "sys_search_user_plan_item")
-data class SysSearchUserPlanItemEntity(
+@Table(name = "sys_query_element_user")
+data class SysQueryElementUserEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Long? = null,
 
-    /** 表头ID */
-    @Column(name = "sys_search_user_plan_id")
-    var sysSearchUserPlanId: Long? = null,
+    /** 用户ID */
+    @Column(name = "sys_user_id")
+    var sysUserId: Long? = null,
 
-    /** 用户ID(冗余) */
-    @Column(name = "sys_user_id_redundant")
-    var sysUserIdRedundant: Long? = null,
+    /** 对应的查询方案列ID */
+    @Column(name = "sys_query_element_id")
+    var sysQueryElementId: Long? = null,
 
-    /** 查询方案配置名(冗余) */
-    @Column(name = "sys_search_config_name_redundant")
-    var sysSearchConfigNameRedundant: Long? = null,
+    /** 是否隐藏 */
+    @Column(name = "hidden")
+    var hidden: Boolean? = null,
 
-    /** 字段sql */
-    @Column(name = "column_sql")
-    var columnSql: String? = null,
-
-    /** 条件 */
-    @Column(name = "search_condition")
-    var searchCondition: String? = null,
-
-    /** 值 */
-    @Column(name = "search_value")
-    var searchValue: String? = null,
-
-    /** 排序 */
+    /** 排序信息 */
     @Column(name = "sort")
     var sort: Int? = null,
+
+    /** 是否允许排序(对于操作列，是不能排序的) */
+    @Column(name = "sortable")
+    var sortable: Boolean? = null,
+
+    /** 宽度 */
+    @Column(name = "width")
+    var width: String? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @Column(name = "status")
