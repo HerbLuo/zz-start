@@ -37,6 +37,10 @@ val kvAbbrJson = """{
         "type": "number",
         "limit_conditions": {"等于": "=", "不等于": "<>", "大于":">", "大于等于":">=", "小于":"<", "小于等于":"<=", "范围":"~"}
     },
+    "datetime": {
+        "type": "datetime",
+        "limit_conditions": {"等于": "=", "不等于": "<>", "大于":">", "大于等于":">=", "小于":"<", "小于等于":"<=", "范围":"~"}
+    },
     "date": {
         "type": "date",
         "limit_conditions": {"等于": "=", "不等于": "<>", "大于":">", "大于等于":">=", "小于":"<", "小于等于":"<=", "范围":"~"}
@@ -119,8 +123,10 @@ class QueryConfigDbCreator constructor() {
         }
     }
 
-    private fun ofSql(name: String?, sql: InputStream, force: Boolean = false) { QueryProTransaction.use {
-        val lexer = MySqlLexer(CharStreams.fromStream(sql))
+    private fun ofSql(filename: String?, sqlIs: InputStream, force: Boolean = false) { QueryProTransaction.use {
+        val sql = sqlIs.reader().readText()
+        val charStream = CharStreams.fromString(sql)
+        val lexer = MySqlLexer(charStream)
         val tokenStream = CommonTokenStream(lexer)
         val parser = MySqlParser(tokenStream)
         val selectStatement = parser.querySpecification()
@@ -128,20 +134,21 @@ class QueryConfigDbCreator constructor() {
         if (selectElements.star != null) { throw CodeGenError("不支SELECT * 语句") }
         val selectElementList = selectElements.selectElement()
 
-        val tag = toPinyin(name ?: "_")
+        val tag = toPinyin(filename ?: "_")
 
         log.info("{} 解析中", tag)
 
-        val sysSearchConfigEntity = SysQueryEntity()
-        sysSearchConfigEntity.tagCn = name
-        sysSearchConfigEntity.tag = tag
+        val sysQueryEntity = SysQueryEntity()
+        sysQueryEntity.tagCn = filename
+        sysQueryEntity.tag = tag
+        sysQueryEntity.sqlColumn = sql
 
         // 生成或获取表头ID
         val queryIdNullable = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
         val queryId = if (queryIdNullable == null) {
-            SysQueryQueryPro.insert(sysSearchConfigEntity) ?: throw CodeGenError("insert方法没有返回ID")
+            SysQueryQueryPro.insert(sysQueryEntity) ?: throw CodeGenError("insert方法没有返回ID")
         } else {
-            SysQueryQueryPro.updateSet(sysSearchConfigEntity).run()
+            SysQueryQueryPro.updateSet(sysQueryEntity).where.id.equalsTo(queryIdNullable).run()
             queryIdNullable
         }
 
@@ -168,7 +175,7 @@ class QueryConfigDbCreator constructor() {
 
             val columnEntity = SysQueryElementEntity()
             columnEntity.sysQueryId = queryId
-            columnEntity.sysQueryTagCnRedundant = tag
+            columnEntity.sysQueryTagCnRedundant = filename
             columnEntity.alias = alias
             columnEntity.sqlColumn = selectElementSql
             val columnEntityMap = ObjectMapper().convertValue(columnEntity, object : TypeReference<Map<String, Any?>>() {})
@@ -196,7 +203,7 @@ class QueryConfigDbCreator constructor() {
                     ?: throw CodeGenError("insert返回了null")
                 currentElementIds.add(id)
             } else {
-                SysQueryElementQueryPro.updateSet(columnInfo).where.id.equalsTo(elementId)
+                SysQueryElementQueryPro.updateSet(columnInfo).where.id.equalsTo(elementId).run()
                 currentElementIds.add(elementId)
             }
         }
