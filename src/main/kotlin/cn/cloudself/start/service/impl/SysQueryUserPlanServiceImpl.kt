@@ -12,19 +12,19 @@ import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
 import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.interactive.res.Async
-import cn.cloudself.start.pojo.SysSearchQueryCondition
-import cn.cloudself.start.pojo.SysSearchQueryReq
-import cn.cloudself.start.pojo.SysSearchQueryRes
-import cn.cloudself.start.pojo.SysSearchUserPlanRes
-import cn.cloudself.start.service.ISysSearchPlanService
+import cn.cloudself.start.pojo.SysQueryCondition
+import cn.cloudself.start.pojo.SysQueryReq
+import cn.cloudself.start.pojo.SysQueryRes
+import cn.cloudself.start.pojo.SysQueryUserPlanRes
+import cn.cloudself.start.service.ISysQueryUserPlanService
 import cn.cloudself.start.util.WebUtil
 import cn.cloudself.start.util.i18n
 import org.springframework.stereotype.Service
 
 @Service
-class SysSearchPlanServiceImpl: ISysSearchPlanService {
+class SysQueryUserPlanServiceImpl: ISysQueryUserPlanService {
 
-    override fun getPlan(tag: String): List<SysSearchUserPlanRes> {
+    override fun getPlan(tag: String): List<SysQueryUserPlanRes> {
         val userId = WebUtil.getUserIdNonNull()
         val searchConfigId = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
@@ -40,11 +40,11 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
             .run()
 
         return userPlanList.map {
-            SysSearchUserPlanRes(it, userPlanItems.filter { item -> item.sysQueryUserPlanId == it.id })
+            SysQueryUserPlanRes(it, userPlanItems.filter { item -> item.sysQueryUserPlanId == it.id })
         }
     }
 
-    override fun getData(searchQuery: SysSearchQueryReq): Async<SysSearchQueryRes> {
+    override fun getData(searchQuery: SysQueryReq): Async<SysQueryRes> {
         val tag = searchQuery.tag
         val config: SysQueryEntity = SysQueryQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
@@ -57,7 +57,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
         val columnIds: List<Long> = conditions.map { it.column_id }.filter { it > 0 }
         val configColumns: List<SysQueryElementEntity> = SysQueryElementQueryPro.selectBy().id(columnIds).run()
         sqlBuilder.append(" and (")
-        fun parseConditions(conditions: List<SysSearchQueryCondition>) {
+        fun parseConditions(conditions: List<SysQueryCondition>) {
             var first = true
             for (condition in conditions) {
                 if (!first) {
@@ -74,7 +74,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
                     continue
                 }
                 val columnDb = configColumns.find { it.id == condition.column_id }
-                val operatorsStrDb = columnDb?.conditions ?: throw ServerException(i18n("[BUG] sys_search_config_column数据库配置错误 {}"))
+                val operatorsStrDb = columnDb?.limitConditions ?: throw ServerException(i18n("[BUG] sys_search_config_column数据库配置错误 {}"))
                 val operatorsDb = operatorsStrDb.split(",")
                 if (operatorsDb.indexOf(operator) < 0) {
                     throw RequestBadException(i18n("查询方案中不存在对应的操作符{}, 无法查询", operator))
@@ -119,7 +119,7 @@ class SysSearchPlanServiceImpl: ISysSearchPlanService {
                 count
             } else it.just(first + rows.size)
 
-            SysSearchQueryRes(hasNext, totalCountPromise, rows)
+            SysQueryRes(hasNext, totalCountPromise, rows)
         }
     }
 }

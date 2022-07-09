@@ -69,11 +69,11 @@ class ImplSysQueryElementQueryPro {
         fun type(typeList: List<String>) = createWhereField("type", typeList.toTypedArray())
         @Contract(pure = true)
         fun type(vararg types: String) = createWhereField("type", types)
-        val conditions = createWhereField("conditions")
+        val limitConditions = createWhereField("limit_conditions")
         @Contract(pure = true)
-        fun conditions(conditionsList: List<String>) = createWhereField("conditions", conditionsList.toTypedArray())
+        fun limitConditions(limitConditionsList: List<String>) = createWhereField("limit_conditions", limitConditionsList.toTypedArray())
         @Contract(pure = true)
-        fun conditions(vararg conditionss: String) = createWhereField("conditions", conditionss)
+        fun limitConditions(vararg limitConditionss: String) = createWhereField("limit_conditions", limitConditionss)
         val limitType = createWhereField("limit_type")
         @Contract(pure = true)
         fun limitType(limitTypeList: List<String>) = createWhereField("limit_type", limitTypeList.toTypedArray())
@@ -162,7 +162,7 @@ class ImplSysQueryElementQueryPro {
         @Contract(pure = true)
         fun type() = createOrderByField("type")
         @Contract(pure = true)
-        fun conditions() = createOrderByField("conditions")
+        fun limitConditions() = createOrderByField("limit_conditions")
         @Contract(pure = true)
         fun limitType() = createOrderByField("limit_type")
         @Contract(pure = true)
@@ -201,7 +201,7 @@ class ImplSysQueryElementQueryPro {
         fun aliasCn() = getColumn(createField("alias_cn"), String::class.java)
         fun sqlColumn() = getColumn(createField("sql"), String::class.java)
         fun type() = getColumn(createField("type"), String::class.java)
-        fun conditions() = getColumn(createField("conditions"), String::class.java)
+        fun limitConditions() = getColumn(createField("limit_conditions"), String::class.java)
         fun limitType() = getColumn(createField("limit_type"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
         fun hidden() = getColumn(createField("hidden"), Boolean::class.java)
@@ -238,7 +238,7 @@ class ImplSysQueryElementQueryPro {
         @Contract(pure = true)
         fun type() = createColumnsLimiterField("type")
         @Contract(pure = true)
-        fun conditions() = createColumnsLimiterField("conditions")
+        fun limitConditions() = createColumnsLimiterField("limit_conditions")
         @Contract(pure = true)
         fun limitType() = createColumnsLimiterField("limit_type")
         @Contract(pure = true)
@@ -288,7 +288,7 @@ class ImplSysQueryElementQueryPro {
         @Contract(pure = true)
         fun type(type: Any) = createUpdateSetField("type", type)
         @Contract(pure = true)
-        fun conditions(conditions: Any) = createUpdateSetField("conditions", conditions)
+        fun limitConditions(limitConditions: Any) = createUpdateSetField("limit_conditions", limitConditions)
         @Contract(pure = true)
         fun limitType(limitType: Any) = createUpdateSetField("limit_type", limitType)
         @Contract(pure = true)
@@ -328,7 +328,7 @@ class ImplSysQueryElementQueryPro {
         fun aliasCn() = this.also { fields.add(createField("alias_cn")) }
         fun sqlColumn() = this.also { fields.add(createField("sql")) }
         fun type() = this.also { fields.add(createField("type")) }
-        fun conditions() = this.also { fields.add(createField("conditions")) }
+        fun limitConditions() = this.also { fields.add(createField("limit_conditions")) }
         fun limitType() = this.also { fields.add(createField("limit_type")) }
         fun sort() = this.also { fields.add(createField("sort")) }
         fun hidden() = this.also { fields.add(createField("hidden")) }

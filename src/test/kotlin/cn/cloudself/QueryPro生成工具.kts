@@ -10,6 +10,7 @@ QueryProFileMaker
     .dbJavaNameConverter(DbNameToJava.createDefault().addSuffixToEntity("Entity").getConverter())
     .tables("*")
     .replaceMode()
+    .swaggerSupport(true)
     .disableKtNoArgMode()
     .debug()
     .create()

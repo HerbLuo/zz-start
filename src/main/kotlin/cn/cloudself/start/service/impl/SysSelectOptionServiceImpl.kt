@@ -32,7 +32,7 @@ class SysSelectOptionServiceImpl : ISysSelectOptionService {
         if (selectOptionConfigList.size > 1) {
             throw ServerException(i18n("SysSelectOption数据库配置错误"))
         }
-        return getSelectOptions( selectOptionConfigList[0])
+        return getSelectOptions(selectOptionConfigList[0])
     }
 
     private fun getSelectOptions(selectOptionConfig: SysSelectOptionEntity): List<SysSelectOptionRes> {

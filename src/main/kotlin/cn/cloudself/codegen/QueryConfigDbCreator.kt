@@ -166,12 +166,11 @@ class QueryConfigDbCreator constructor() {
                 continue
             }
 
-            val alias = getColumnName(selectElementContext)
+            val (alias, selectElementSql) = getColumnNameAndSql(selectElementContext)
             log.info("当前解析的字段(别名)是 {}", alias)
             val columnInfo = parseComment(comment)
             val aliasCn = columnInfo["alias_cn"]
             log.info("当前解析的字段名是 {}", aliasCn)
-            val selectElementSql = selectElementContext.text
 
             val columnEntity = SysQueryElementEntity()
             columnEntity.sysQueryId = queryId
@@ -180,7 +179,14 @@ class QueryConfigDbCreator constructor() {
             columnEntity.sqlColumn = selectElementSql
             val columnEntityMap = ObjectMapper().convertValue(columnEntity, object : TypeReference<Map<String, Any?>>() {})
 
-            columnInfo.putAll(columnEntityMap)
+            for ((key, value) in columnEntityMap) {
+                if (value != null) {
+                    columnInfo[key] = value
+                }
+            }
+            if (columnInfo["type"] == null) {
+                columnInfo["type"] = "string"
+            }
 
             val elementId = SysQueryElementQueryPro
                 .selectBy().sysQueryId.equalsTo(queryId)
@@ -216,7 +222,7 @@ class QueryConfigDbCreator constructor() {
 
     private fun parseComment(comment: String?): MutableMap<String, Any?> {
         val result = mutableMapOf<String, Any?>()
-        val infos = comment?.substring(1)?.split(' ')?.map { it.trim() } ?: return mutableMapOf()
+        val infos = comment?.substring(1)?.split(' ')?.map { it.trim() }?.filter { it.isNotEmpty() } ?: return mutableMapOf()
 
         val aliasCn = infos.first().unwrapEscapedChar()
         result["alias_cn"] = aliasCn
@@ -238,17 +244,21 @@ class QueryConfigDbCreator constructor() {
         return result
     }
 
-    private fun getColumnName(selectElementContext: MySqlParser.SelectElementContext): String {
+    private fun getColumnNameAndSql(selectElementContext: MySqlParser.SelectElementContext): Pair<String, String> {
+        val sql: String
         val columnNameWithReverseQuote = when (selectElementContext) {
             is MySqlParser.SelectColumnElementContext -> {
+                sql = selectElementContext.fullColumnName().text
                 selectElementContext.uid()?.text /* col as uid */
                     ?: selectElementContext.fullColumnName().text.split('.').last()
             }
             is MySqlParser.SelectFunctionElementContext -> {
+                sql = selectElementContext.functionCall().text
                 selectElementContext.uid()?.text
                     ?: throw CodeGenError("{} FunctionCall必须添加别名，例子 ifnull(col, 0) as col", selectElementContext)
             }
             is MySqlParser.SelectExpressionElementContext -> {
+                sql = selectElementContext.expression().text
                 selectElementContext.uid()?.text
                     ?: throw CodeGenError("{} Expression必须添加别名，例子 ifnull(col, 0) as col", selectElementContext)
             }
@@ -264,11 +274,11 @@ class QueryConfigDbCreator constructor() {
             columnNameWithReverseQuote.substring(startIndex, columnNameWithReverseQuote.length + endIndex)
         } else columnNameWithReverseQuote
 
-        return columnName
+        return columnName to sql
     }
 
     private fun toPinyin(chinese: String) =
-        PinyinHelper.toHanYuPinyinString(chinese, pinyinFormat, "_", true)
+        PinyinHelper.toHanYuPinyinString(chinese + "_", pinyinFormat, "_", true).dropLast(1)
 
     private val pinyinFormat = HanyuPinyinOutputFormat().also {
         it.toneType = HanyuPinyinToneType.WITHOUT_TONE
