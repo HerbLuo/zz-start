@@ -64,6 +64,11 @@ class ImplSysQueryUserPlanQueryPro {
         fun sort(sortList: List<Int>) = createWhereField("sort", sortList.toTypedArray())
         @Contract(pure = true)
         fun sort(vararg sorts: Int) = createWhereField("sort", sorts.toTypedArray())
+        val default = createWhereField("default")
+        @Contract(pure = true)
+        fun default(defaultList: List<Boolean>) = createWhereField("default", defaultList.toTypedArray())
+        @Contract(pure = true)
+        fun default(vararg defaults: Boolean) = createWhereField("default", defaults.toTypedArray())
         val readonly = createWhereField("readonly")
         @Contract(pure = true)
         fun readonly(readonlyList: List<Boolean>) = createWhereField("readonly", readonlyList.toTypedArray())
@@ -125,6 +130,8 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun sort() = createOrderByField("sort")
         @Contract(pure = true)
+        fun default() = createOrderByField("default")
+        @Contract(pure = true)
         fun readonly() = createOrderByField("readonly")
         @Contract(pure = true)
         fun status() = createOrderByField("status")
@@ -151,6 +158,7 @@ class ImplSysQueryUserPlanQueryPro {
         fun sysQueryTagCnRedundant() = getColumn(createField("sys_query_tag_cn_redundant"), String::class.java)
         fun name() = getColumn(createField("name"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
+        fun default() = getColumn(createField("default"), Boolean::class.java)
         fun readonly() = getColumn(createField("readonly"), Boolean::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
@@ -179,6 +187,8 @@ class ImplSysQueryUserPlanQueryPro {
         fun name() = createColumnsLimiterField("name")
         @Contract(pure = true)
         fun sort() = createColumnsLimiterField("sort")
+        @Contract(pure = true)
+        fun default() = createColumnsLimiterField("default")
         @Contract(pure = true)
         fun readonly() = createColumnsLimiterField("readonly")
         @Contract(pure = true)
@@ -216,6 +226,8 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun sort(sort: Any) = createUpdateSetField("sort", sort)
         @Contract(pure = true)
+        fun default(default: Any) = createUpdateSetField("default", default)
+        @Contract(pure = true)
         fun readonly(readonly: Any) = createUpdateSetField("readonly", readonly)
         @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
@@ -243,6 +255,7 @@ class ImplSysQueryUserPlanQueryPro {
         fun sysQueryTagCnRedundant() = this.also { fields.add(createField("sys_query_tag_cn_redundant")) }
         fun name() = this.also { fields.add(createField("name")) }
         fun sort() = this.also { fields.add(createField("sort")) }
+        fun default() = this.also { fields.add(createField("default")) }
         fun readonly() = this.also { fields.add(createField("readonly")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }

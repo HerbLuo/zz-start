@@ -143,6 +143,7 @@ create table if not exists sys_query_user_plan (
 
     name                       varchar(64) comment '用户定义的查询方案名称',
     sort                       int         comment '排序',
+    `default`                  tinyint(1)  comment '是否为默认方案',
     readonly                   tinyint(1)  comment '只读（针对公用方案, 只能拷贝不能修改）',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',

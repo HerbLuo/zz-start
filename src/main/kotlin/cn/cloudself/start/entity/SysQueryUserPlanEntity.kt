@@ -44,6 +44,11 @@ data class SysQueryUserPlanEntity(
     @Column(name = "sort")
     var sort: Int? = null,
 
+    /** 是否为默认方案 */
+    @ApiModelProperty("是否为默认方案")
+    @Column(name = "default")
+    var default: Boolean? = null,
+
     /** 只读（针对公用方案, 只能拷贝不能修改） */
     @ApiModelProperty("只读（针对公用方案, 只能拷贝不能修改）")
     @Column(name = "readonly")

@@ -35,8 +35,8 @@ class SysQueryServiceImpl: ISysQueryService {
         val sysQueryElements = SysQueryElementQueryPro.selectBy().sysQueryId.equalsTo(sysQueryId).run()
 
         val userPlanList: List<SysQueryUserPlanEntity> = SysQueryUserPlanQueryPro
-            .selectBy().sysUserId.equalsTo(userId)
-            .and().sysQueryId.equalsTo(sysQueryId)
+            .selectBy().sysQueryId.equalsTo(sysQueryId)
+            .and().parLeft().sysUserId.equalsTo(userId).or().default.equalsTo(true).parRight()
             .run()
 
         val userPlanIdList: List<Long> = userPlanList.map { it.id!! }
@@ -46,6 +46,9 @@ class SysQueryServiceImpl: ISysQueryService {
 
         val userPlans = userPlanList.map {
             SysQueryUserPlan(it, userPlanItems.filter { item -> item.sysQueryUserPlanId == it.id })
+        }.ifEmpty {
+            val defPlan = SysQueryUserPlanEntity(id = -1, name = i18n("默认方案").toString(), default = true)
+            listOf(SysQueryUserPlan(defPlan, listOf()))
         }
 
         return SysQueryUserPlanRes(userPlans, sysQueryElements)
