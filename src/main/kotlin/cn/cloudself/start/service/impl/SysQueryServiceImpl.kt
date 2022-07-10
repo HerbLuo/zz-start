@@ -12,26 +12,31 @@ import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
 import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.interactive.res.Async
-import cn.cloudself.start.pojo.SysQueryCondition
-import cn.cloudself.start.pojo.SysQueryReq
-import cn.cloudself.start.pojo.SysQueryRes
-import cn.cloudself.start.pojo.SysQueryUserPlanRes
-import cn.cloudself.start.service.ISysQueryUserPlanService
+import cn.cloudself.start.pojo.*
+import cn.cloudself.start.service.ISysQueryService
 import cn.cloudself.start.util.WebUtil
 import cn.cloudself.start.util.i18n
 import org.springframework.stereotype.Service
 
 @Service
-class SysQueryUserPlanServiceImpl: ISysQueryUserPlanService {
-
-    override fun getPlan(tag: String): List<SysQueryUserPlanRes> {
-        val userId = WebUtil.getUserIdNonNull()
-        val searchConfigId = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
+class SysQueryServiceImpl: ISysQueryService {
+    override fun get(tag: String): SysQueryRes {
+        val sysQuery = SysQueryQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
+        val sysQueryElements = SysQueryElementQueryPro.selectBy().sysQueryId.equalsTo(sysQuery.id!!).run()
+        return SysQueryRes(sysQuery, sysQueryElements)
+    }
+
+    override fun getPlan(tag: String): SysQueryUserPlanRes {
+        val userId = WebUtil.getUserIdNonNull()
+        val sysQueryId = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
+            ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
+
+        val sysQueryElements = SysQueryElementQueryPro.selectBy().sysQueryId.equalsTo(sysQueryId).run()
 
         val userPlanList: List<SysQueryUserPlanEntity> = SysQueryUserPlanQueryPro
             .selectBy().sysUserId.equalsTo(userId)
-            .and().sysQueryId.equalsTo(searchConfigId)
+            .and().sysQueryId.equalsTo(sysQueryId)
             .run()
 
         val userPlanIdList: List<Long> = userPlanList.map { it.id!! }
@@ -39,12 +44,14 @@ class SysQueryUserPlanServiceImpl: ISysQueryUserPlanService {
             .selectBy().sysQueryUserPlanId(userPlanIdList)
             .run()
 
-        return userPlanList.map {
-            SysQueryUserPlanRes(it, userPlanItems.filter { item -> item.sysQueryUserPlanId == it.id })
+        val userPlans = userPlanList.map {
+            SysQueryUserPlan(it, userPlanItems.filter { item -> item.sysQueryUserPlanId == it.id })
         }
+
+        return SysQueryUserPlanRes(userPlans, sysQueryElements)
     }
 
-    override fun getData(searchQuery: SysQueryReq): Async<SysQueryRes> {
+    override fun getData(searchQuery: SysQueryDataReq): Async<SysQueryDataRes> {
         val tag = searchQuery.tag
         val config: SysQueryEntity = SysQueryQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
@@ -119,7 +126,7 @@ class SysQueryUserPlanServiceImpl: ISysQueryUserPlanService {
                 count
             } else it.just(first + rows.size)
 
-            SysQueryRes(hasNext, totalCountPromise, rows)
+            SysQueryDataRes(hasNext, totalCountPromise, rows)
         }
     }
 }

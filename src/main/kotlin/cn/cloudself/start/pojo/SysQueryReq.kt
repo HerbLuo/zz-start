@@ -20,7 +20,7 @@ data class SysQueryCondition(
     var column_sql: String?, // 该字段无用，但建议传入（因为可以增加可读性）
 )
 
-data class SysQueryReq(
+data class SysQueryDataReq(
     var tag: String,
     var page: Int,
     var pageSize: Int,
