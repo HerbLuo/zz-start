@@ -121,7 +121,7 @@ class SysQueryServiceImpl: ISysQueryService {
         }
 
         return Async.create {
-            // 查询总数
+            // 查询总数，客户端支持的情况下，查询结果会优先返回，数据条数延期返回
             val totalCountPromise: Async.Promise<Int> = if (hasNext) it.create {
                 val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
                 val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
