@@ -1,11 +1,9 @@
 package cn.cloudself.start.components
 
 import cn.cloudself.start.annotation.LoginRequired
-import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.RequestUnauthorizedException
 import cn.cloudself.start.service.ISysAuthService
 import cn.cloudself.start.util.WebUtil
-import cn.cloudself.start.util.i18n
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -27,6 +25,10 @@ class AuthenticationInterceptor @Autowired constructor(
     private val log = LoggerFactory.getLogger(AuthenticationInterceptor::class.java)
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
+        if (request.method == "OPTIONS") {
+            return true
+        }
+
         if (handler !is HandlerMethod && handler !is ResourceHttpRequestHandler) {
             log.warn("未知的切面: {}", handler)
             return false

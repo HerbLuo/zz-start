@@ -17,14 +17,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class CorsConfig @Autowired constructor(
     private val env: Environment,
-    @Value("\${cloudself.site.prod-site:}") private val prodSite: String,
+    @Value("\${cloudself.site.cors-allowed-origin:}") private val prodSites: Array<String>,
 ) : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         super.addCorsMappings(registry)
         val areProd = env.activeProfiles[0] == "prod"
 
         registry.addMapping("/**")
-                .allowedOriginPatterns(if(areProd) { prodSite } else { "*" })
+                .allowedOriginPatterns(*if(areProd) { prodSites } else { arrayOf("*") })
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE", "PATCH")
                 .allowedHeaders("*")
                 .allowCredentials(true)

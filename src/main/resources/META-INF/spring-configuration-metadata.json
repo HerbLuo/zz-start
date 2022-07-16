@@ -1,14 +1,14 @@
 {
   "properties": [
     {
-      "name": "cloudself.site.prod-site",
-      "type": "java.lang.String",
-      "description": "prod网址，用于cors, 可以包含*"
-    },
-    {
       "name": "cloudself.site.only-https",
       "type": "java.lang.Boolean",
       "description": "启用该选项会更安全，但会停止对http请求的支持"
+    },
+    {
+      "name": "cloudself.site.cors-allowed-origin",
+      "type": "java.lang.String[]",
+      "description": "跨域配置，可以有多个，用逗号隔开，例：*://*.cloudself.cn,http://localhost:*"
     },
     {
       "name": "cloudself.auth.required-by-default",
