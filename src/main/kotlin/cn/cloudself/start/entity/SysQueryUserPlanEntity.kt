@@ -51,8 +51,8 @@ data class SysQueryUserPlanEntity(
 
     /** 只读（针对公用方案, 只能拷贝不能修改） */
     @ApiModelProperty("只读（针对公用方案, 只能拷贝不能修改）")
-    @Column(name = "readonly")
-    var readonly: Boolean? = null,
+    @Column(name = "public")
+    var public: Boolean? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @ApiModelProperty("状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]")

@@ -69,11 +69,11 @@ class ImplSysQueryUserPlanQueryPro {
         fun default(defaultList: List<Boolean>) = createWhereField("default", defaultList.toTypedArray())
         @Contract(pure = true)
         fun default(vararg defaults: Boolean) = createWhereField("default", defaults.toTypedArray())
-        val readonly = createWhereField("readonly")
+        val public = createWhereField("public")
         @Contract(pure = true)
-        fun readonly(readonlyList: List<Boolean>) = createWhereField("readonly", readonlyList.toTypedArray())
+        fun public(publicList: List<Boolean>) = createWhereField("public", publicList.toTypedArray())
         @Contract(pure = true)
-        fun readonly(vararg readonlys: Boolean) = createWhereField("readonly", readonlys.toTypedArray())
+        fun public(vararg publics: Boolean) = createWhereField("public", publics.toTypedArray())
         val status = createWhereField("status")
         @Contract(pure = true)
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
@@ -132,7 +132,7 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun default() = createOrderByField("default")
         @Contract(pure = true)
-        fun readonly() = createOrderByField("readonly")
+        fun public() = createOrderByField("public")
         @Contract(pure = true)
         fun status() = createOrderByField("status")
         @Contract(pure = true)
@@ -159,7 +159,7 @@ class ImplSysQueryUserPlanQueryPro {
         fun name() = getColumn(createField("name"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
         fun default() = getColumn(createField("default"), Boolean::class.java)
-        fun readonly() = getColumn(createField("readonly"), Boolean::class.java)
+        fun public() = getColumn(createField("public"), Boolean::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -190,7 +190,7 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun default() = createColumnsLimiterField("default")
         @Contract(pure = true)
-        fun readonly() = createColumnsLimiterField("readonly")
+        fun public() = createColumnsLimiterField("public")
         @Contract(pure = true)
         fun status() = createColumnsLimiterField("status")
         @Contract(pure = true)
@@ -228,7 +228,7 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun default(default: Any) = createUpdateSetField("default", default)
         @Contract(pure = true)
-        fun readonly(readonly: Any) = createUpdateSetField("readonly", readonly)
+        fun public(public: Any) = createUpdateSetField("public", public)
         @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
         @Contract(pure = true)
@@ -256,7 +256,7 @@ class ImplSysQueryUserPlanQueryPro {
         fun name() = this.also { fields.add(createField("name")) }
         fun sort() = this.also { fields.add(createField("sort")) }
         fun default() = this.also { fields.add(createField("default")) }
-        fun readonly() = this.also { fields.add(createField("readonly")) }
+        fun public() = this.also { fields.add(createField("public")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }

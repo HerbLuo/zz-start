@@ -36,7 +36,7 @@ class SysQueryServiceImpl: ISysQueryService {
 
         val userPlanList: List<SysQueryUserPlanEntity> = SysQueryUserPlanQueryPro
             .selectBy().sysQueryId.equalsTo(sysQueryId)
-            .and().parLeft().sysUserId.equalsTo(userId).or().default.equalsTo(true).parRight()
+            .and().parLeft().sysUserId.equalsTo(userId).or().public.equalsTo(true).parRight()
             .run()
 
         val userPlanIdList: List<Long> = userPlanList.map { it.id!! }
