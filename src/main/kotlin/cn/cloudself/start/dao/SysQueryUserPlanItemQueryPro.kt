@@ -61,14 +61,14 @@ class ImplSysQueryUserPlanItemQueryPro {
         fun sysUserIdRedundant(vararg sysUserIdRedundants: Long) = createWhereField("sys_user_id_redundant", sysUserIdRedundants.toTypedArray())
         val sysQueryTagCnRedundant = createWhereField("sys_query_tag_cn_redundant")
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant(sysQueryTagCnRedundantList: List<Long>) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundantList.toTypedArray())
+        fun sysQueryTagCnRedundant(sysQueryTagCnRedundantList: List<String>) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundantList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant(vararg sysQueryTagCnRedundants: Long) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundants.toTypedArray())
-        val columnSql = createWhereField("column_sql")
+        fun sysQueryTagCnRedundant(vararg sysQueryTagCnRedundants: String) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundants)
+        val sysQueryElementAliasCnRedundant = createWhereField("sys_query_element_alias_cn_redundant")
         @Contract(pure = true)
-        fun columnSql(columnSqlList: List<String>) = createWhereField("column_sql", columnSqlList.toTypedArray())
+        fun sysQueryElementAliasCnRedundant(sysQueryElementAliasCnRedundantList: List<String>) = createWhereField("sys_query_element_alias_cn_redundant", sysQueryElementAliasCnRedundantList.toTypedArray())
         @Contract(pure = true)
-        fun columnSql(vararg columnSqls: String) = createWhereField("column_sql", columnSqls)
+        fun sysQueryElementAliasCnRedundant(vararg sysQueryElementAliasCnRedundants: String) = createWhereField("sys_query_element_alias_cn_redundant", sysQueryElementAliasCnRedundants)
         val searchCondition = createWhereField("search_condition")
         @Contract(pure = true)
         fun searchCondition(searchConditionList: List<String>) = createWhereField("search_condition", searchConditionList.toTypedArray())
@@ -140,7 +140,7 @@ class ImplSysQueryUserPlanItemQueryPro {
         @Contract(pure = true)
         fun sysQueryTagCnRedundant() = createOrderByField("sys_query_tag_cn_redundant")
         @Contract(pure = true)
-        fun columnSql() = createOrderByField("column_sql")
+        fun sysQueryElementAliasCnRedundant() = createOrderByField("sys_query_element_alias_cn_redundant")
         @Contract(pure = true)
         fun searchCondition() = createOrderByField("search_condition")
         @Contract(pure = true)
@@ -171,8 +171,8 @@ class ImplSysQueryUserPlanItemQueryPro {
         fun sysQueryUserPlanId() = getColumn(createField("sys_query_user_plan_id"), Long::class.java)
         fun sysQueryElementId() = getColumn(createField("sys_query_element_id"), Long::class.java)
         fun sysUserIdRedundant() = getColumn(createField("sys_user_id_redundant"), Long::class.java)
-        fun sysQueryTagCnRedundant() = getColumn(createField("sys_query_tag_cn_redundant"), Long::class.java)
-        fun columnSql() = getColumn(createField("column_sql"), String::class.java)
+        fun sysQueryTagCnRedundant() = getColumn(createField("sys_query_tag_cn_redundant"), String::class.java)
+        fun sysQueryElementAliasCnRedundant() = getColumn(createField("sys_query_element_alias_cn_redundant"), String::class.java)
         fun searchCondition() = getColumn(createField("search_condition"), String::class.java)
         fun searchValue() = getColumn(createField("search_value"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
@@ -204,7 +204,7 @@ class ImplSysQueryUserPlanItemQueryPro {
         @Contract(pure = true)
         fun sysQueryTagCnRedundant() = createColumnsLimiterField("sys_query_tag_cn_redundant")
         @Contract(pure = true)
-        fun columnSql() = createColumnsLimiterField("column_sql")
+        fun sysQueryElementAliasCnRedundant() = createColumnsLimiterField("sys_query_element_alias_cn_redundant")
         @Contract(pure = true)
         fun searchCondition() = createColumnsLimiterField("search_condition")
         @Contract(pure = true)
@@ -246,7 +246,7 @@ class ImplSysQueryUserPlanItemQueryPro {
         @Contract(pure = true)
         fun sysQueryTagCnRedundant(sysQueryTagCnRedundant: Any) = createUpdateSetField("sys_query_tag_cn_redundant", sysQueryTagCnRedundant)
         @Contract(pure = true)
-        fun columnSql(columnSql: Any) = createUpdateSetField("column_sql", columnSql)
+        fun sysQueryElementAliasCnRedundant(sysQueryElementAliasCnRedundant: Any) = createUpdateSetField("sys_query_element_alias_cn_redundant", sysQueryElementAliasCnRedundant)
         @Contract(pure = true)
         fun searchCondition(searchCondition: Any) = createUpdateSetField("search_condition", searchCondition)
         @Contract(pure = true)
@@ -279,7 +279,7 @@ class ImplSysQueryUserPlanItemQueryPro {
         fun sysQueryElementId() = this.also { fields.add(createField("sys_query_element_id")) }
         fun sysUserIdRedundant() = this.also { fields.add(createField("sys_user_id_redundant")) }
         fun sysQueryTagCnRedundant() = this.also { fields.add(createField("sys_query_tag_cn_redundant")) }
-        fun columnSql() = this.also { fields.add(createField("column_sql")) }
+        fun sysQueryElementAliasCnRedundant() = this.also { fields.add(createField("sys_query_element_alias_cn_redundant")) }
         fun searchCondition() = this.also { fields.add(createField("search_condition")) }
         fun searchValue() = this.also { fields.add(createField("search_value")) }
         fun sort() = this.also { fields.add(createField("sort")) }

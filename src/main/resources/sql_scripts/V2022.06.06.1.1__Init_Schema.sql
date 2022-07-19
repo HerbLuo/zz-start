@@ -162,9 +162,9 @@ create table if not exists sys_query_user_plan_item (
     sys_query_user_plan_id                  bigint       comment '表头ID',
     sys_query_element_id                    bigint       comment '对应的查询方案列ID',
     sys_user_id_redundant                   bigint       comment '用户ID(冗余)',
-    sys_query_tag_cn_redundant              bigint       comment '查询方案配置名(冗余)',
+    sys_query_tag_cn_redundant              varchar(255) comment '查询方案配置名(冗余)',
+    sys_query_element_alias_cn_redundant    varchar(255) comment '查询方案字段名(冗余)',
 
-    column_sql       varchar(255) comment '字段sql',
     search_condition varchar(255) comment '条件',
     search_value     varchar(255) comment '值',
     sort             int          comment '排序',

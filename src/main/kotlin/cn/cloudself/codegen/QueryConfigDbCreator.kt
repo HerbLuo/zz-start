@@ -101,7 +101,7 @@ val valueAbbr = JSON.parse(valueAbbrJson, object : TypeReference<LinkedHashMap<S
 
 class CodeGenError(message: String, vararg args: Any?) : RuntimeException(StringTemplate.of(message, *args))
 
-class QueryConfigDbCreator constructor() {
+class QueryConfigDbCreator {
     companion object {
         private val log = LoggerFactory.getLogger(QueryConfigDbCreator::class.java)
 
@@ -184,9 +184,6 @@ class QueryConfigDbCreator constructor() {
                     columnInfo[key] = value
                 }
             }
-            if (columnInfo["type"] == null) {
-                columnInfo["type"] = "string"
-            }
 
             val elementId = SysQueryElementQueryPro
                 .selectBy().sysQueryId.equalsTo(queryId)
@@ -222,7 +219,8 @@ class QueryConfigDbCreator constructor() {
 
     private fun parseComment(comment: String?): MutableMap<String, Any?> {
         val result = mutableMapOf<String, Any?>()
-        val infos = comment?.substring(1)?.split(' ')?.map { it.trim() }?.filter { it.isNotEmpty() } ?: return mutableMapOf()
+        val infos = comment?.substring(1)?.split(' ')?.map { it.trim() }?.filter { it.isNotEmpty() }
+            ?: return mutableMapOf()
 
         val aliasCn = infos.first().unwrapEscapedChar()
         result["alias_cn"] = aliasCn
@@ -240,6 +238,18 @@ class QueryConfigDbCreator constructor() {
             val key = keyAbbr[k]?.toString() ?: k
             val value = valueAbbr[v]?.toString() ?: v
             result[key] = value
+        }
+
+        // 需要提前处理
+        if (result["type"] == null) {
+            val cfg = kvAbbr["string"]
+            if (cfg != null) {
+                for ((k, v) in cfg) {
+                    if (result[k] == null) {
+                        result[k] = v;
+                    }
+                }
+            }
         }
         return result
     }

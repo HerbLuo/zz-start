@@ -42,12 +42,12 @@ data class SysQueryUserPlanItemEntity(
     /** 查询方案配置名(冗余) */
     @ApiModelProperty("查询方案配置名(冗余)")
     @Column(name = "sys_query_tag_cn_redundant")
-    var sysQueryTagCnRedundant: Long? = null,
+    var sysQueryTagCnRedundant: String? = null,
 
-    /** 字段sql */
-    @ApiModelProperty("字段sql")
-    @Column(name = "column_sql")
-    var columnSql: String? = null,
+    /** 查询方案字段名(冗余) */
+    @ApiModelProperty("查询方案字段名(冗余)")
+    @Column(name = "sys_query_element_alias_cn_redundant")
+    var sysQueryElementAliasCnRedundant: String? = null,
 
     /** 条件 */
     @ApiModelProperty("条件")
