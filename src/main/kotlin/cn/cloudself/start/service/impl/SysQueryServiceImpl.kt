@@ -56,17 +56,19 @@ class SysQueryServiceImpl: ISysQueryService {
 
     override fun getData(searchQuery: SysQueryDataReq): Async<SysQueryDataRes> {
         val tag = searchQuery.tag
-        val config: SysQueryEntity = SysQueryQueryPro.selectBy().tag.equalsTo(tag).or() .runLimit1()
+        val query: SysQueryEntity = SysQueryQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
 
-        val sqlBuilder = StringBuilder(config.sqlColumn)
+        val sqlBuilder = StringBuilder(query.sqlColumn)
         val paramsList = mutableListOf<Any?>()
         sqlBuilder.append('\n')
         // 添加条件
         val conditions = searchQuery.conditions
         val columnIds: List<Long> = conditions.map { it.column_id }.filter { it > 0 }
-        val configColumns: List<SysQueryElementEntity> = SysQueryElementQueryPro.selectBy().id(columnIds).run()
-        sqlBuilder.append(" and (")
+        val configColumns: List<SysQueryElementEntity> = SysQueryElementQueryPro
+            .selectBy().id(columnIds)
+            .and().sysQueryId.equalsTo(query.id!!)
+            .run()
         fun parseConditions(conditions: List<SysQueryCondition>) {
             var first = true
             for (condition in conditions) {
@@ -94,15 +96,26 @@ class SysQueryServiceImpl: ISysQueryService {
                 paramsList.add(condition.value)
             }
         }
+        if (conditions.isNotEmpty()) {
+            sqlBuilder.append(" and (")
+        }
         parseConditions(conditions)
-        sqlBuilder.append(")")
+        if (conditions.isNotEmpty()) {
+            sqlBuilder.append(")")
+        }
         val sqlForCount = sqlBuilder.toString()
         // 查询语句
         // 添加order by
-        val orderBy = searchQuery.orderBy
-        if (orderBy != null) {
-            val ascDesc = if (searchQuery.asc) " asc" else " desc"
-            sqlBuilder.append(" order by ", orderBy, ascDesc)
+        val orderBys = searchQuery.orderBys
+        if (orderBys.isNotEmpty()) {
+            sqlBuilder.append(" order by ")
+            for (orderBy in orderBys) {
+                val ascDesc = if (orderBy.asc) " asc" else " desc"
+                val column = configColumns.find { it.id == orderBy.column_id }?.sqlColumn
+                    ?: throw RequestBadException(i18n("查询方案{}中不存在id为{}的element", tag, orderBy.column_id))
+                sqlBuilder.append(column, ascDesc, ", ")
+            }
+            sqlBuilder.delete(sqlBuilder.length - 2, sqlBuilder.length)
         }
         // 添加分页信息
         val page = searchQuery.page
@@ -112,7 +125,7 @@ class SysQueryServiceImpl: ISysQueryService {
             sqlBuilder.append(" limit ", first, ", ", pageSize + 1)
         }
         val params = paramsList.toTypedArray()
-        val withNextPageRows = QueryProSql.create(sqlBuilder.toString(), params).query(Map::class.java)
+        val withNextPageRows = QueryProSql.create(sqlBuilder.toString(), params).query()
         val hasNext = withNextPageRows.size > pageSize
         val rows = if (hasNext) {
             withNextPageRows.dropLast(1)
@@ -123,7 +136,7 @@ class SysQueryServiceImpl: ISysQueryService {
         return Async.create {
             // 查询总数，客户端支持的情况下，查询结果会优先返回，数据条数延期返回
             val totalCountPromise: Async.Promise<Int> = if (hasNext) it.create {
-                val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount)"
+                val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount) t"
                 val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
                     ?: throw ServerException("无法完成count查询, {}", sqlForCountWithConditions)
                 count

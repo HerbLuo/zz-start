@@ -23,7 +23,7 @@ class SysAccountController @Autowired constructor(
     @Value("\${cloudself.site.token-domain:}") private val tokenDomainMayEmpty: String,
 ) {
 
-    private val tokenDomain = if (tokenDomainMayEmpty.isEmpty()) null else tokenDomainMayEmpty
+    private val tokenDomain = tokenDomainMayEmpty.ifEmpty { null }
 
     @ApiOperation("使用用户名密码登陆")
     @LoginRequired(false)

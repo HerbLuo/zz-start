@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
+import java.time.Duration
 
 @RestController
 @RequestMapping("/zz/test/interactive/")
@@ -19,8 +21,9 @@ class MyInteractiveTestController @Autowired constructor(
     fun testConfirm() = testService.testConfirm()
 
     @LoginRequired(false)
-    @GetMapping("/async", produces = [MediaType.APPLICATION_STREAM_JSON_VALUE])
-    fun testPromise() = testService.testAsync()
+    @GetMapping("/async", produces = [MediaType.APPLICATION_NDJSON_VALUE])
+    fun testPromise() =
+        testService.testAsync()
 }
 
 interface IMyInteractiveTestService {

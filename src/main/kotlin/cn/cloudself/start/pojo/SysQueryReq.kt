@@ -20,12 +20,16 @@ data class SysQueryCondition(
     var column_sql: String?, // 该字段无用，但建议传入（因为可以增加可读性）
 )
 
+data class SysQueryDataReqOrderBy(
+    var column_id: Long,
+    var asc: Boolean = true,
+)
+
 data class SysQueryDataReq(
     var tag: String,
     var page: Int,
     var pageSize: Int,
     var conditions: List<SysQueryCondition>,
 
-    var orderBy: String?,
-    var asc: Boolean = true,
+    var orderBys: List<SysQueryDataReqOrderBy>,
 )

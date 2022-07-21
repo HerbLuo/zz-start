@@ -141,7 +141,7 @@ class QueryConfigDbCreator {
         val sysQueryEntity = SysQueryEntity()
         sysQueryEntity.tagCn = filename
         sysQueryEntity.tag = tag
-        sysQueryEntity.sqlColumn = sql
+        sysQueryEntity.sqlColumn = sql.trim()
 
         // 生成或获取表头ID
         val queryIdNullable = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()

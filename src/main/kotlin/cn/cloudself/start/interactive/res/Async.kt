@@ -7,17 +7,25 @@ import reactor.core.publisher.FluxSink
 
 @Suppress("unused")
 class Async<T: Any> private constructor(
-    private val init: (FluxSink<Any>) -> Unit,
-    private val promises: (FluxSink<Any>) -> Unit
+    init: (FluxSink<Any>) -> Unit,
+    promises: List<(FluxSink<Any>) -> Unit>
 ): Flux<Any?>() {
 
-    private val flux = push<Any?> {
-        init(it)
-        it.complete()
-    }.concatWith(push {
-        promises(it)
-        it.complete()
-    })
+    private val flux = create<Any?> { sink ->
+        init(sink)
+        val threads = promises.map { promise ->
+            Thread {
+                promise(sink)
+            }.also { it.start() }
+        }
+        Thread {
+            for (thread in threads) {
+                thread.join()
+            }
+            sink.complete()
+        }.start()
+    }
+
     override fun subscribe(actual: CoreSubscriber<in Any?>) = flux.subscribe(actual)
 
     data class Promise<T>(
@@ -31,7 +39,7 @@ class Async<T: Any> private constructor(
     )
 
     companion object {
-        open class PromiseCreator() {
+        open class PromiseCreator {
             internal val tasks = mutableListOf<(FluxSink<Any>) -> Unit>()
             private var id = System.currentTimeMillis()
 
@@ -53,19 +61,13 @@ class Async<T: Any> private constructor(
          * @sample cn.cloudself.start.interactive.test.MyInteractiveTestServiceImpl.testAsync
          */
         @JvmStatic
-        fun <T: Any> create(customer: (PromiseCreator) -> T): Async<T> {
+        fun <T : Any> create(customer: (PromiseCreator) -> T): Async<T> {
             val promiseCreator = PromiseCreator()
 
-            val async = Async<T>(
+            return Async(
                 { it.next(customer(promiseCreator)) },
-                {
-                    for (task in promiseCreator.tasks) {
-                        task(it)
-                    }
-                    it.complete()
-                }
+                promiseCreator.tasks
             )
-            return async
         }
     }
 }

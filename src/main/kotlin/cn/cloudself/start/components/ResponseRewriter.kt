@@ -1,5 +1,6 @@
 package cn.cloudself.start.components
 
+import cn.cloudself.start.interactive.res.Async
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,6 +40,8 @@ class FluxReturnValueHandler constructor(
             is Flux<*> -> returnValue.map { ok(it) }
             else -> returnValue
         }
+
+
 
         handler.handleReturnValue(mapped, method, mavContainer, webRequest)
     }
