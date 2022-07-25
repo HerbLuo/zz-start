@@ -16,12 +16,12 @@ class SysQueryController @Autowired constructor(
     private val query: ISysQueryService,
 ) {
     @ApiOperation(value = "获取默认的查询方案")
-    @GetMapping("/{tag}")
+    @GetMapping("/tag/{tag}")
     fun get(@PathVariable tag: String) = query.get(tag)
 
     @ApiOperation(value = "获取用户配置的查询方案或默认的查询方案")
-    @GetMapping("/{tag}/user-plan")
-    fun getPlan(@PathVariable tag: String) = query.getPlan(tag)
+    @GetMapping("/tag/{tag}/page/{pageTag}/user-plan")
+    fun getPlan(@PathVariable tag: String, @PathVariable pageTag: String) = query.getPlan(tag, pageTag)
 
     @LoginRequired(false)
     @ApiOperation(value = "使用查询方案查询")

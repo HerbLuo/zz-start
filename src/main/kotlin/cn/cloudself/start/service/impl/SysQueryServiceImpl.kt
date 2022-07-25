@@ -1,14 +1,9 @@
 package cn.cloudself.start.service.impl
 
 import cn.cloudself.query.QueryProSql
-import cn.cloudself.start.dao.SysQueryElementQueryPro
-import cn.cloudself.start.dao.SysQueryQueryPro
-import cn.cloudself.start.dao.SysQueryUserPlanItemQueryPro
-import cn.cloudself.start.dao.SysQueryUserPlanQueryPro
-import cn.cloudself.start.entity.SysQueryElementEntity
-import cn.cloudself.start.entity.SysQueryEntity
-import cn.cloudself.start.entity.SysQueryUserPlanEntity
-import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
+import cn.cloudself.start.dao.*
+import cn.cloudself.start.entity.*
+import cn.cloudself.start.exception.http.PlanNotFindException
 import cn.cloudself.start.exception.http.RequestBadException
 import cn.cloudself.start.exception.http.ServerException
 import cn.cloudself.start.interactive.res.Async
@@ -22,20 +17,20 @@ import org.springframework.stereotype.Service
 class SysQueryServiceImpl: ISysQueryService {
     override fun get(tag: String): SysQueryRes {
         val sysQuery = SysQueryQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
-            ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
+            ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
         val sysQueryElements = SysQueryElementQueryPro.selectBy().sysQueryId.equalsTo(sysQuery.id!!).run()
         return SysQueryRes(sysQuery, sysQueryElements)
     }
 
-    override fun getPlan(tag: String): SysQueryUserPlanRes {
+    override fun getPlan(tag: String, pageTag: String): SysQueryUserPlanRes {
         val userId = WebUtil.getUserIdNonNull()
         val sysQueryId = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
-            ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
+            ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
 
         val sysQueryElements = SysQueryElementQueryPro.selectBy().sysQueryId.equalsTo(sysQueryId).run()
 
         val userPlanList: List<SysQueryUserPlanEntity> = SysQueryUserPlanQueryPro
-            .selectBy().sysQueryId.equalsTo(sysQueryId)
+            .selectBy().pageTag.equalsTo(pageTag)
             .and().parLeft().sysUserId.equalsTo(userId).or().public.equalsTo(true).parRight()
             .run()
 
@@ -51,7 +46,12 @@ class SysQueryServiceImpl: ISysQueryService {
             listOf(SysQueryUserPlan(defPlan, listOf()))
         }
 
-        return SysQueryUserPlanRes(userPlans, sysQueryElements)
+        val sysQueryColumns = SysQueryUserTableColumnQueryPro
+            .selectBy().pageTag.equalsTo(pageTag)
+            .and().sysUserId.equalsTo(userId)
+            .run()
+
+        return SysQueryUserPlanRes(userPlans, sysQueryElements, sysQueryColumns)
     }
 
     override fun getData(searchQuery: SysQueryDataReq): Async<SysQueryDataRes> {
@@ -138,7 +138,7 @@ class SysQueryServiceImpl: ISysQueryService {
             val totalCountPromise: Async.Promise<Int> = if (hasNext) it.create {
                 val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount) t"
                 val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)
-                    ?: throw ServerException("无法完成count查询, {}", sqlForCountWithConditions)
+                    ?: throw ServerException(i18n("无法完成count查询, {}", sqlForCountWithConditions))
                 count
             } else it.just(first + rows.size)
 

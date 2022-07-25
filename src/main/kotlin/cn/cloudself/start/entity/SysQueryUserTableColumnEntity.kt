@@ -6,12 +6,12 @@ import java.util.Date
 import javax.persistence.*
 
 /**
- * 用户保存的查询方案
+ * 用户定义字段信息(排序,隐藏)
  */
 @Entity
-@ApiModel(description = "用户保存的查询方案")
-@Table(name = "sys_query_user_plan")
-data class SysQueryUserPlanEntity(
+@ApiModel(description = "用户定义字段信息(排序,隐藏)")
+@Table(name = "sys_query_user_table_column")
+data class SysQueryUserTableColumnEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,35 +29,50 @@ data class SysQueryUserPlanEntity(
     @Column(name = "sys_user_id")
     var sysUserId: Long? = null,
 
-    /** 查询方案 */
-    @ApiModelProperty("查询方案")
-    @Column(name = "sys_query_id")
-    var sysQueryId: Long? = null,
+    /** 对应的查询方案列ID */
+    @ApiModelProperty("对应的查询方案列ID")
+    @Column(name = "sys_query_element_id")
+    var sysQueryElementId: Long? = null,
 
-    /** 方案配置名(冗余字段) */
-    @ApiModelProperty("方案配置名(冗余字段)")
-    @Column(name = "sys_query_tag_cn_redundant")
-    var sysQueryTagCnRedundant: String? = null,
+    /** 列名 */
+    @ApiModelProperty("列名")
+    @Column(name = "title")
+    var title: String? = null,
 
-    /** 用户定义的查询方案名称 */
-    @ApiModelProperty("用户定义的查询方案名称")
-    @Column(name = "name")
-    var name: String? = null,
+    /** 数据键名 */
+    @ApiModelProperty("数据键名")
+    @Column(name = "data_index")
+    var dataIndex: String? = null,
 
-    /** 排序 */
-    @ApiModelProperty("排序")
+    /** 列类型 */
+    @ApiModelProperty("列类型")
+    @Column(name = "type")
+    var type: String? = null,
+
+    /** 是否隐藏 */
+    @ApiModelProperty("是否隐藏")
+    @Column(name = "hidden")
+    var hidden: Boolean? = null,
+
+    /** 可隐藏的 */
+    @ApiModelProperty("可隐藏的")
+    @Column(name = "hide_able")
+    var hideAble: Boolean? = null,
+
+    /** 排序信息 */
+    @ApiModelProperty("排序信息")
     @Column(name = "sort")
     var sort: Int? = null,
 
-    /** 是否为默认方案 */
-    @ApiModelProperty("是否为默认方案")
-    @Column(name = "default")
-    var default: Boolean? = null,
+    /** 是否允许排序(对于操作列，是不能排序的) */
+    @ApiModelProperty("是否允许排序(对于操作列，是不能排序的)")
+    @Column(name = "sortable")
+    var sortable: Boolean? = null,
 
-    /** 只读（针对公用方案, 只能拷贝不能修改） */
-    @ApiModelProperty("只读（针对公用方案, 只能拷贝不能修改）")
-    @Column(name = "public")
-    var public: Boolean? = null,
+    /** 宽度 */
+    @ApiModelProperty("宽度")
+    @Column(name = "width")
+    var width: String? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @ApiModelProperty("状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]")

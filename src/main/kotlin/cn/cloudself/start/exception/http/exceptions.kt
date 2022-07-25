@@ -23,7 +23,7 @@ class RequestBadException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class RequestNotFindException(
@@ -33,7 +33,7 @@ class RequestNotFindException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class RequestTooLargeException(
@@ -42,7 +42,7 @@ class RequestTooLargeException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class RequestTooManyException(
@@ -51,7 +51,7 @@ class RequestTooManyException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class RequestUnauthorizedException(
@@ -60,7 +60,7 @@ class RequestUnauthorizedException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class ServerException(
@@ -69,7 +69,7 @@ class ServerException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class ServerNotImplementedException(
@@ -78,7 +78,7 @@ class ServerNotImplementedException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
 
 class ServerUnavailableException(
@@ -87,5 +87,9 @@ class ServerUnavailableException(
     constructor(alert: I18n): this(alert, alert.getId(), null, null)
     constructor(alert: I18n, message: String, vararg args: Any?) : this(alert, alert.getId(), StringTemplate.of(message, *args), null)
     constructor(message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), null)
-    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, args), cause)
+    constructor(cause: Throwable, message: String, vararg args: Any?): this(null, null, StringTemplate.of(message, *args), cause)
 }
+
+class PlanNotFindException(
+    message: String, vararg args: Any?
+): HttpException(0x10001, null, HttpStatus.NOT_FOUND, StringTemplate.of(message, *args), null)

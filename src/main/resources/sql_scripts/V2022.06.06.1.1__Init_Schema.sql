@@ -137,6 +137,7 @@ create table if not exists sys_query_element (
 create table if not exists sys_query_user_plan (
     id bigint auto_increment comment 'ID' primary key,
 
+    page_tag                   varchar(128) comment 'page tag',
     sys_user_id                bigint       comment '用户ID',
     sys_query_id               bigint       comment '查询方案',
     sys_query_tag_cn_redundant varchar(128) comment '方案配置名(冗余字段)',
@@ -178,15 +179,21 @@ create table if not exists sys_query_user_plan_item (
     remark      varchar(500) null comment '备注'
 ) comment '用户保存的查询方案明细';
 
-create table if not exists sys_query_element_user (
+create table if not exists sys_query_user_table_column (
     id bigint auto_increment comment 'ID' primary key,
 
-    sys_user_id                            bigint      comment '用户ID',
-    sys_query_element_id                   bigint      comment '对应的查询方案列ID',
-    hidden                                 tinyint(1)  comment '是否隐藏',
-    sort                                   int         comment '排序信息',
-    sortable                               tinyint(1)  comment '是否允许排序(对于操作列，是不能排序的)',
-    width                                  varchar(64) comment '宽度',
+    page_tag                               varchar(128) comment 'page tag',
+    sys_user_id                            bigint       comment '用户ID',
+    sys_query_element_id                   bigint       comment '对应的查询方案列ID',
+    title                                  varchar(128) comment '列名',
+    data_index                             varchar(128) comment '数据键名',
+
+    type                                   varchar(64)  comment '列类型',
+    hidden                                 tinyint(1)   comment '是否隐藏',
+    hide_able                              tinyint(1)   comment '可隐藏的',
+    sort                                   int          comment '排序信息',
+    sortable                               tinyint(1)   comment '是否允许排序(对于操作列，是不能排序的)',
+    width                                  varchar(64)  comment '宽度',
 
     status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
     create_by   varchar(64)  null comment '创建者',

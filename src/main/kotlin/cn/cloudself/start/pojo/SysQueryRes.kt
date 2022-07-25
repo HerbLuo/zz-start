@@ -1,9 +1,6 @@
 package cn.cloudself.start.pojo
 
-import cn.cloudself.start.entity.SysQueryElementEntity
-import cn.cloudself.start.entity.SysQueryEntity
-import cn.cloudself.start.entity.SysQueryUserPlanEntity
-import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
+import cn.cloudself.start.entity.*
 import cn.cloudself.start.interactive.res.Async
 
 data class SysQueryRes(
@@ -19,6 +16,7 @@ data class SysQueryUserPlan(
 data class SysQueryUserPlanRes(
     val plans: List<SysQueryUserPlan>,
     val elements: List<SysQueryElementEntity>,
+    val columns: List<SysQueryUserTableColumnEntity>,
 )
 
 data class SysQueryDataRes(
