@@ -9,7 +9,7 @@ import cn.cloudself.start.pojo.SysQueryUserPlanRes
 interface ISysQueryService {
     fun get(tag: String): SysQueryRes
 
-    fun getPlan(tag: String, pageTag: String): SysQueryUserPlanRes
+    fun getPlan(pageTag: String): SysQueryUserPlanRes
 
     fun getData(searchQuery: SysQueryDataReq): Async<SysQueryDataRes>
 }

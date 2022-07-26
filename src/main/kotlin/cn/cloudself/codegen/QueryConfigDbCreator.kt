@@ -169,6 +169,7 @@ class QueryConfigDbCreator {
             val (alias, selectElementSql) = getColumnNameAndSql(selectElementContext)
             log.info("当前解析的字段(别名)是 {}", alias)
             val columnInfo = parseComment(comment)
+            columnInfo.putIfAbsent("sort", (i + 1) * 10000)
             val aliasCn = columnInfo["alias_cn"]
             log.info("当前解析的字段名是 {}", aliasCn)
 

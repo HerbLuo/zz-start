@@ -22,7 +22,13 @@ class SysQueryServiceImpl: ISysQueryService {
         return SysQueryRes(sysQuery, sysQueryElements)
     }
 
-    override fun getPlan(tag: String, pageTag: String): SysQueryUserPlanRes {
+    override fun getPlan(pageTag: String): SysQueryUserPlanRes {
+        val splitterIndex = pageTag.indexOf(':')
+        if (splitterIndex < 0) {
+            throw RequestBadException("pageTag命名不符合要求, 示例：'<tag>:<page>'")
+        }
+        val tag = pageTag.substring(0, splitterIndex)
+
         val userId = WebUtil.getUserIdNonNull()
         val sysQueryId = SysQueryQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
             ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
@@ -134,7 +140,6 @@ class SysQueryServiceImpl: ISysQueryService {
         }
 
         return Async.create {
-            // 查询总数，客户端支持的情况下，查询结果会优先返回，数据条数延期返回
             val totalCountPromise: Async.Promise<Int> = if (hasNext) it.create {
                 val sqlForCountWithConditions = "SELECT COUNT(*) FROM ($sqlForCount) t"
                 val count = QueryProSql.create(sqlForCountWithConditions, params).queryOne(Int::class.java)

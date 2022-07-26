@@ -44,11 +44,6 @@ data class SysQueryElementEntity(
     @Column(name = "sql")
     var sqlColumn: String? = null,
 
-    /** 类型(text, select, number, time, date, date-time, month, year) */
-    @ApiModelProperty("类型(text, select, number, time, date, date-time, month, year)")
-    @Column(name = "type")
-    var type: String? = null,
-
     /** 允许的搜索条件 */
     @ApiModelProperty("允许的搜索条件")
     @Column(name = "limit_conditions")
@@ -59,30 +54,45 @@ data class SysQueryElementEntity(
     @Column(name = "limit_type")
     var limitType: String? = null,
 
-    /** 排序 */
-    @ApiModelProperty("排序")
-    @Column(name = "sort")
-    var sort: Int? = null,
-
-    /** 隐藏 */
-    @ApiModelProperty("隐藏")
-    @Column(name = "hidden")
-    var hidden: Boolean? = null,
-
-    /** 排序字段 */
-    @ApiModelProperty("排序字段")
-    @Column(name = "order_by")
-    var orderByColumn: Boolean? = null,
-
-    /** 倒序排序字段 */
-    @ApiModelProperty("倒序排序字段")
-    @Column(name = "order_by_desc")
-    var orderByDesc: Boolean? = null,
-
     /** 限定值 */
     @ApiModelProperty("限定值")
     @Column(name = "limit_values")
     var limitValues: String? = null,
+
+    /** 类型(text, select, number, time, date, date-time, month, year) */
+    @ApiModelProperty("类型(text, select, number, time, date, date-time, month, year)")
+    @Column(name = "type")
+    var type: String? = null,
+
+    /** 是否在列表中隐藏 */
+    @ApiModelProperty("是否在列表中隐藏")
+    @Column(name = "hidden")
+    var hidden: Boolean? = null,
+
+    /** 拖拽排序信息 */
+    @ApiModelProperty("拖拽排序信息")
+    @Column(name = "sort")
+    var sort: Int? = null,
+
+    /** 固定列，不允许排序 right, left */
+    @ApiModelProperty("固定列，不允许排序 right, left")
+    @Column(name = "fixed")
+    var fixed: String? = null,
+
+    /** asc, desc */
+    @ApiModelProperty("asc, desc")
+    @Column(name = "order_by")
+    var orderByColumn: String? = null,
+
+    /** 存在多个order_by字段时的先后顺序 */
+    @ApiModelProperty("存在多个order_by字段时的先后顺序")
+    @Column(name = "order_by_index")
+    var orderByIndex: Int? = null,
+
+    /** 宽度 */
+    @ApiModelProperty("宽度")
+    @Column(name = "width")
+    var width: String? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @ApiModelProperty("状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]")
