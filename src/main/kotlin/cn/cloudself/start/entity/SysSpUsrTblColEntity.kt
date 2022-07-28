@@ -10,8 +10,8 @@ import javax.persistence.*
  */
 @Entity
 @ApiModel(description = "用户定义字段信息(排序,隐藏)")
-@Table(name = "sys_select_user_table_column")
-data class SysSelectUserTableColumnEntity(
+@Table(name = "sys_sp_usr_tbl_col")
+data class SysSpUsrTblColEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +31,8 @@ data class SysSelectUserTableColumnEntity(
 
     /** 对应的查询方案列ID */
     @ApiModelProperty("对应的查询方案列ID")
-    @Column(name = "sys_select_element_id")
-    var sysSelectElementId: Long? = null,
+    @Column(name = "sys_sp_ele_id")
+    var sysSpEleId: Long? = null,
 
     /** 列名 */
     @ApiModelProperty("列名")

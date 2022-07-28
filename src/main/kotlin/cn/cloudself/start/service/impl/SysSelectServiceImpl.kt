@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service
 @Service
 class SysSelectServiceImpl: ISysSelectService {
     override fun get(tag: String): SysSelectRes {
-        val sysSelect = SysSelectQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
+        val sysSelect = SysSpQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
             ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
-        val sysQueryElements = SysSelectElementQueryPro.selectBy().sysSelectId.equalsTo(sysSelect.id!!).run()
+        val sysQueryElements = SysSpEleQueryPro.selectBy().sysSpId.equalsTo(sysSelect.id!!).run()
         return SysSelectRes(sysSelect, sysQueryElements)
     }
 
@@ -26,29 +26,29 @@ class SysSelectServiceImpl: ISysSelectService {
         val tag = getTag(pageTag)
 
         val userId = WebUtil.getUserIdNonNull()
-        val sysQueryId = SysSelectQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
+        val sysQueryId = SysSpQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
             ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
 
-        val sysSelectElements = SysSelectElementQueryPro.selectBy().sysSelectId.equalsTo(sysQueryId).run()
+        val sysSelectElements = SysSpEleQueryPro.selectBy().sysSpId.equalsTo(sysQueryId).run()
 
-        val userPlanList: List<SysSelectUserPlanEntity> = SysSelectUserPlanQueryPro
+        val userPlanList: List<SysSpUsrPlanEntity> = SysSpUsrPlanQueryPro
             .selectBy().pageTag.equalsTo(pageTag)
             .and().parLeft().sysUserId.equalsTo(userId).or().public.equalsTo(true).parRight()
             .run()
 
         val userPlanIdList: List<Long> = userPlanList.map { it.id!! }
-        val userPlanItems: List<SysSelectUserPlanItemEntity> = SysSelectUserPlanItemQueryPro
-            .selectBy().sysSelectUserPlanId(userPlanIdList)
+        val userPlanItems: List<SysSpUsrPlanItemEntity> = SysSpUsrPlanItemQueryPro
+            .selectBy().sysSpUsrPlanId(userPlanIdList)
             .run()
 
         val userPlans = userPlanList.map {
-            SysSelectUserPlan(it, userPlanItems.filter { item -> item.sysSelectUserPlanId == it.id })
+            SysSelectUserPlan(it, userPlanItems.filter { item -> item.sysSpUsrPlanId == it.id })
         }.ifEmpty {
-            val defPlan = SysSelectUserPlanEntity(id = -1, name = i18n("默认方案").toString(), default = true)
+            val defPlan = SysSpUsrPlanEntity(id = -1, name = i18n("默认方案").toString(), default = true)
             listOf(SysSelectUserPlan(defPlan, listOf()))
         }
 
-        val sysQueryColumns = SysSelectUserTableColumnQueryPro
+        val sysQueryColumns = SysSpUsrTblColQueryPro
             .selectBy().pageTag.equalsTo(pageTag)
             .and().sysUserId.equalsTo(userId)
             .run()
@@ -59,7 +59,7 @@ class SysSelectServiceImpl: ISysSelectService {
     override fun getData(selectReq: SysSelectDataReq): Async<SysSelectDataRes> {
         val pageTag = selectReq.pageTag
         val tag = getTag(pageTag)
-        val sysSelect = SysSelectQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
+        val sysSelect = SysSpQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
             ?: throw RequestBadException(i18n("找不到tag: {}对应的查询方案配置", tag))
         val sysSelectId = sysSelect.id!!
 
@@ -69,9 +69,9 @@ class SysSelectServiceImpl: ISysSelectService {
         // 添加条件
         val conditions = selectReq.conditions
         val aliasList: List<String> = conditions.map { it.alias }
-        val selectElements: List<SysSelectElementEntity> = SysSelectElementQueryPro
+        val selectElements: List<SysSpEleEntity> = SysSpEleQueryPro
             .selectBy().alias(aliasList)
-            .and().sysSelectId.equalsTo(sysSelectId)
+            .and().sysSpId.equalsTo(sysSelectId)
             .run()
 
         fun parseConditions(conditions: List<SysSelectDataReqCondition>) {

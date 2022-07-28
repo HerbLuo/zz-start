@@ -97,7 +97,7 @@ create table if not exists sys_dict_data
     remark      varchar(500) null comment '备注'
 ) comment '字典值';
 
-create table if not exists sys_select
+create table if not exists sys_sp
 (
     id          bigint auto_increment comment 'ID' primary key,
     tag         varchar(128) comment '方案名(可用于查询，唯一)',
@@ -115,10 +115,10 @@ create table if not exists sys_select
     remark      varchar(500) null comment '备注'
 ) comment '查询方案配置';
 
-create table if not exists sys_select_element
+create table if not exists sys_sp_ele
 (
     id               bigint auto_increment comment 'ID' primary key,
-    sys_select_id    bigint comment '主键ID',
+    sys_sp_id        bigint comment '主键ID',
     tag_cn           varchar(128) comment '方案名(冗余字段)',
     alias            varchar(128) comment '属性名(作为字段名)',
     alias_cn         varchar(128) comment '属性名(显示用)',
@@ -144,79 +144,79 @@ create table if not exists sys_select_element
     remark           varchar(500) null comment '备注'
 ) comment '查询方案配置列';
 
-create table if not exists sys_select_user_plan
+create table if not exists sys_sp_usr_plan
 (
-    id            bigint auto_increment comment 'ID' primary key,
+    id          bigint auto_increment comment 'ID' primary key,
 
-    page_tag      varchar(128) comment 'page tag',
-    sys_user_id   bigint comment '用户ID',
-    sys_select_id bigint comment '查询方案',
-    tag_cn        varchar(128) comment '方案配置名(冗余字段)',
+    page_tag    varchar(128) comment 'page tag',
+    sys_user_id bigint comment '用户ID',
+    sys_sp_id   bigint comment '查询方案',
+    tag_cn      varchar(128) comment '方案配置名(冗余字段)',
 
-    name          varchar(64) comment '用户定义的查询方案名称',
-    sort          int comment '排序',
-    `default`     tinyint(1) comment '是否为默认方案',
-    public        tinyint(1) comment '只读（针对公用方案, 只能拷贝不能修改）',
+    name        varchar(64) comment '用户定义的查询方案名称',
+    sort        int comment '排序',
+    `default`   tinyint(1) comment '是否为默认方案',
+    public      tinyint(1) comment '只读（针对公用方案, 只能拷贝不能修改）',
 
-    status        varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
-    create_by     varchar(64)  null comment '创建者',
-    create_time   datetime     null comment '创建时间',
-    update_by     varchar(64)  null comment '更新者',
-    update_time   datetime     null comment '更新时间',
-    deleted       tinyint(1)   not null default false comment '删除标志',
-    remark        varchar(500) null comment '备注'
+    status      varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by   varchar(64)  null comment '创建者',
+    create_time datetime     null comment '创建时间',
+    update_by   varchar(64)  null comment '更新者',
+    update_time datetime     null comment '更新时间',
+    deleted     tinyint(1)   not null default false comment '删除标志',
+    remark      varchar(500) null comment '备注'
 ) comment '用户保存的查询方案';
 
-create table if not exists sys_select_user_plan_item
+create table if not exists sys_sp_usr_plan_item
 (
-    id                      bigint auto_increment comment 'ID' primary key,
+    id                 bigint auto_increment comment 'ID' primary key,
 
-    sys_select_id           bigint comment '',
-    sys_select_user_plan_id bigint comment '表头ID',
-    sys_select_element_id   bigint comment '对应的查询方案列ID',
-    sys_user_id             bigint comment '用户ID(冗余)',
-    tag_cn                  varchar(255) comment '查询方案配置名(冗余)',
-    alias_cn                varchar(255) comment '查询方案字段名(冗余)',
+    sys_sp_id          bigint comment '',
+    sys_sp_ele_id      bigint comment '对应的查询方案列ID',
+    sys_sp_usr_plan_id bigint comment '表头ID',
+    sys_user_id        bigint comment '用户ID(冗余)',
+    tag_cn             varchar(255) comment '查询方案配置名(冗余)',
+    alias_cn           varchar(255) comment '查询方案字段名(冗余)',
 
-    search_condition        varchar(255) comment '条件',
-    search_value            varchar(255) comment '值',
-    sort                    int comment '排序',
+    search_condition   varchar(255) comment '条件',
+    search_value       varchar(255) comment '值',
+    sort               int comment '排序',
 
-    status                  varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
-    create_by               varchar(64)  null comment '创建者',
-    create_time             datetime     null comment '创建时间',
-    update_by               varchar(64)  null comment '更新者',
-    update_time             datetime     null comment '更新时间',
-    deleted                 tinyint(1)   not null default false comment '删除标志',
-    remark                  varchar(500) null comment '备注'
+    status             varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by          varchar(64)  null comment '创建者',
+    create_time        datetime     null comment '创建时间',
+    update_by          varchar(64)  null comment '更新者',
+    update_time        datetime     null comment '更新时间',
+    deleted            tinyint(1)   not null default false comment '删除标志',
+    remark             varchar(500) null comment '备注'
 ) comment '用户保存的查询方案明细';
 
-create table if not exists sys_select_user_table_column
+create table if not exists sys_sp_usr_tbl_col
 (
-    id                    bigint auto_increment comment 'ID' primary key,
+    id             bigint auto_increment comment 'ID' primary key,
 
-    page_tag              varchar(128) comment 'page tag',
-    sys_user_id           bigint comment '用户ID',
-    sys_select_element_id bigint comment '对应的查询方案列ID',
+    page_tag       varchar(128) comment 'page tag',
+    sys_user_id    bigint comment '用户ID',
+    sys_sp_ele_id  bigint comment '对应的查询方案列ID',
 
-    title                 varchar(128) comment '列名',
-    data_index            varchar(128) comment '数据键名',
-    type                  varchar(64) comment '列类型(text, select, number, money, time, date, date-time, month, year)',
-    hidden                tinyint(1) comment '是否隐藏',
-    sort                  int comment '拖拽排序信息',
-    fixed                 char(5) comment '固定列，不允许排序 right, left',
-    order_by              char(4) comment 'asc, desc',
-    order_by_index        int comment '存在多个order_by字段时的先后顺序',
-    width                 varchar(64) comment '宽度',
+    title          varchar(128) comment '列名',
+    data_index     varchar(128) comment '数据键名',
+    type           varchar(64) comment '列类型(text, select, number, money, time, date, date-time, month, year)',
+    hidden         tinyint(1) comment '是否隐藏',
+    sort           int comment '拖拽排序信息',
+    fixed          char(5) comment '固定列，不允许排序 right, left',
+    order_by       char(4) comment 'asc, desc',
+    order_by_index int comment '存在多个order_by字段时的先后顺序',
+    width          varchar(64) comment '宽度',
 
-    css                   text comment '',
-    render                text comment '',
+    css            text comment '',
+    render         text comment '',
 
-    status                varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
-    create_by             varchar(64)  null comment '创建者',
-    create_time           datetime     null comment '创建时间',
-    update_by             varchar(64)  null comment '更新者',
-    update_time           datetime     null comment '更新时间',
-    deleted               tinyint(1)   not null default false comment '删除标志',
-    remark                varchar(500) null comment '备注'
+    status         varchar(64)  not null comment '状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]',
+    create_by      varchar(64)  null comment '创建者',
+    create_time    datetime     null comment '创建时间',
+    update_by      varchar(64)  null comment '更新者',
+    update_time    datetime     null comment '更新时间',
+    deleted        tinyint(1)   not null default false comment '删除标志',
+    remark         varchar(500) null comment '备注'
 ) comment '用户定义字段信息(排序,隐藏)';

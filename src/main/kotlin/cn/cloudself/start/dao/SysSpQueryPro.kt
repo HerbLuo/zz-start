@@ -2,15 +2,15 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysSelectEntity
+import cn.cloudself.start.entity.SysSpEntity
 import java.util.Date
 import cn.cloudself.query.*
 import org.jetbrains.annotations.Contract;
 
 
-class ImplSysSelectQueryPro {
+class ImplSysSpQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_select"
+        const val TABLE_NAME = "sys_sp"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -22,7 +22,7 @@ class ImplSysSelectQueryPro {
             { queryStructure -> ColumnLimiterField(queryStructure, field_clazz) }
         override val create_columns_limiter_field: CreateQueryField<ColumnsLimiterField<T, RUN_RES>> =
             { queryStructure -> ColumnsLimiterField(queryStructure, field_clazz) }
-        override fun getPayload() = SysSelectQueryPro.payload
+        override fun getPayload() = SysSpQueryPro.payload
     }
 
     class WhereField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -230,28 +230,28 @@ class ImplSysSelectQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysSelectEntity,
+            SysSpEntity,
             Long,
-            ImplSysSelectQueryPro.WhereField<SysSelectEntity, List<SysSelectEntity>>,
-            ImplSysSelectQueryPro.OrderByField<SysSelectEntity, List<SysSelectEntity>>,
-            ImplSysSelectQueryPro.UpdateSetField,
-            ImplSysSelectQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysSelectQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSpQueryPro.WhereField<SysSpEntity, List<SysSpEntity>>,
+            ImplSysSpQueryPro.OrderByField<SysSpEntity, List<SysSpEntity>>,
+            ImplSysSpQueryPro.UpdateSetField,
+            ImplSysSpQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSpQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysSelectEntity::class.java,
+        SysSpEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField(qs, SysSelectEntity::class.java) },
-        { qs: QueryStructure -> ImplSysSelectQueryPro.OrderByField(qs, SysSelectEntity::class.java) },
-        { qs: QueryStructure -> ImplSysSelectQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSpQueryPro.WhereField(qs, SysSpEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSpQueryPro.OrderByField(qs, SysSpEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSpQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysSpQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSpQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysSelectQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSelectQueryPro.TABLE_NAME)))
+val SysSpQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSpQueryPro.TABLE_NAME)))
 
-val SysSelectQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysSelectQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField<SysSelectEntity, List<SysSelectEntity>>(qs, SysSelectEntity::class.java) },
-    { ImplSysSelectQueryPro.FieldsGenerator() },
+val SysSpQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysSpQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysSpQueryPro.WhereField<SysSpEntity, List<SysSpEntity>>(qs, SysSpEntity::class.java) },
+    { ImplSysSpQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

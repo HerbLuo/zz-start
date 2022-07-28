@@ -6,12 +6,12 @@ import java.util.Date
 import javax.persistence.*
 
 /**
- * 用户保存的查询方案
+ * 用户保存的查询方案明细
  */
 @Entity
-@ApiModel(description = "用户保存的查询方案")
-@Table(name = "sys_select_user_plan")
-data class SysSelectUserPlanEntity(
+@ApiModel(description = "用户保存的查询方案明细")
+@Table(name = "sys_sp_usr_plan_item")
+data class SysSpUsrPlanItemEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,45 +19,50 @@ data class SysSelectUserPlanEntity(
     @Column(name = "id")
     var id: Long? = null,
 
-    /** page tag */
-    @ApiModelProperty("page tag")
-    @Column(name = "page_tag")
-    var pageTag: String? = null,
+    /**  */
+    @ApiModelProperty("")
+    @Column(name = "sys_sp_id")
+    var sysSpId: Long? = null,
 
-    /** 用户ID */
-    @ApiModelProperty("用户ID")
+    /** 对应的查询方案列ID */
+    @ApiModelProperty("对应的查询方案列ID")
+    @Column(name = "sys_sp_ele_id")
+    var sysSpEleId: Long? = null,
+
+    /** 表头ID */
+    @ApiModelProperty("表头ID")
+    @Column(name = "sys_sp_usr_plan_id")
+    var sysSpUsrPlanId: Long? = null,
+
+    /** 用户ID(冗余) */
+    @ApiModelProperty("用户ID(冗余)")
     @Column(name = "sys_user_id")
     var sysUserId: Long? = null,
 
-    /** 查询方案 */
-    @ApiModelProperty("查询方案")
-    @Column(name = "sys_select_id")
-    var sysSelectId: Long? = null,
-
-    /** 方案配置名(冗余字段) */
-    @ApiModelProperty("方案配置名(冗余字段)")
+    /** 查询方案配置名(冗余) */
+    @ApiModelProperty("查询方案配置名(冗余)")
     @Column(name = "tag_cn")
     var tagCn: String? = null,
 
-    /** 用户定义的查询方案名称 */
-    @ApiModelProperty("用户定义的查询方案名称")
-    @Column(name = "name")
-    var name: String? = null,
+    /** 查询方案字段名(冗余) */
+    @ApiModelProperty("查询方案字段名(冗余)")
+    @Column(name = "alias_cn")
+    var aliasCn: String? = null,
+
+    /** 条件 */
+    @ApiModelProperty("条件")
+    @Column(name = "search_condition")
+    var searchCondition: String? = null,
+
+    /** 值 */
+    @ApiModelProperty("值")
+    @Column(name = "search_value")
+    var searchValue: String? = null,
 
     /** 排序 */
     @ApiModelProperty("排序")
     @Column(name = "sort")
     var sort: Int? = null,
-
-    /** 是否为默认方案 */
-    @ApiModelProperty("是否为默认方案")
-    @Column(name = "default")
-    var default: Boolean? = null,
-
-    /** 只读（针对公用方案, 只能拷贝不能修改） */
-    @ApiModelProperty("只读（针对公用方案, 只能拷贝不能修改）")
-    @Column(name = "public")
-    var public: Boolean? = null,
 
     /** 状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject] */
     @ApiModelProperty("状态[init, wait, success, invalid, cancel, invalid_wait, cancel_wait, reject]")

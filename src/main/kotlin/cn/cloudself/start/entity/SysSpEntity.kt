@@ -10,8 +10,8 @@ import javax.persistence.*
  */
 @Entity
 @ApiModel(description = "查询方案配置")
-@Table(name = "sys_select")
-data class SysSelectEntity(
+@Table(name = "sys_sp")
+data class SysSpEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

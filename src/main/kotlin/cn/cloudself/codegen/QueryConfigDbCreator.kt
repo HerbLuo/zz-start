@@ -5,10 +5,10 @@ import cn.cloudself.codegen.antlr4.mysql.MySqlParser
 import cn.cloudself.query.QueryProConfig
 import cn.cloudself.query.QueryProTransaction
 import cn.cloudself.start.components.logger
-import cn.cloudself.start.dao.SysSelectElementQueryPro
-import cn.cloudself.start.dao.SysSelectQueryPro
-import cn.cloudself.start.entity.SysSelectElementEntity
-import cn.cloudself.start.entity.SysSelectEntity
+import cn.cloudself.start.dao.SysSpEleQueryPro
+import cn.cloudself.start.dao.SysSpQueryPro
+import cn.cloudself.start.entity.SysSpEleEntity
+import cn.cloudself.start.entity.SysSpEntity
 import cn.cloudself.start.util.JSON
 import cn.cloudself.start.util.StringTemplate
 import cn.cloudself.start.util.StringUtil.split
@@ -138,17 +138,17 @@ class QueryConfigDbCreator {
 
         log.info("{} 解析中", tag)
 
-        val sysSelect = SysSelectEntity()
+        val sysSelect = SysSpEntity()
         sysSelect.tagCn = filename
         sysSelect.tag = tag
         sysSelect.sqlColumn = sql.trim()
 
         // 生成或获取表头ID
-        val queryIdNullable = SysSelectQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
+        val queryIdNullable = SysSpQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
         val queryId = if (queryIdNullable == null) {
-            SysSelectQueryPro.insert(sysSelect) ?: throw CodeGenError("insert方法没有返回ID")
+            SysSpQueryPro.insert(sysSelect) ?: throw CodeGenError("insert方法没有返回ID")
         } else {
-            SysSelectQueryPro.updateSet(sysSelect).where.id.equalsTo(queryIdNullable).run()
+            SysSpQueryPro.updateSet(sysSelect).where.id.equalsTo(queryIdNullable).run()
             queryIdNullable
         }
 
@@ -173,8 +173,8 @@ class QueryConfigDbCreator {
             val aliasCn = columnInfo["alias_cn"]
             log.info("当前解析的字段名是 {}", aliasCn)
 
-            val columnEntity = SysSelectElementEntity()
-            columnEntity.sysSelectId = queryId
+            val columnEntity = SysSpEleEntity()
+            columnEntity.sysSpId = queryId
             columnEntity.tagCn = filename
             columnEntity.alias = alias
             columnEntity.sqlColumn = selectElementSql
@@ -186,13 +186,13 @@ class QueryConfigDbCreator {
                 }
             }
 
-            val elementId = SysSelectElementQueryPro
-                .selectBy().sysSelectId.equalsTo(queryId)
+            val elementId = SysSpEleQueryPro
+                .selectBy().sysSpId.equalsTo(queryId)
                 .and().alias.equalsTo(alias).columnLimiter().id()
                 .let {
                     if (it.isEmpty() && aliasCn != null) {
-                        SysSelectElementQueryPro
-                            .selectBy().sysSelectId.equalsTo(queryId)
+                        SysSpEleQueryPro
+                            .selectBy().sysSpId.equalsTo(queryId)
                             .and().aliasCn.equalsTo(aliasCn).columnLimiter().id()
                     } else {
                         it
@@ -203,17 +203,17 @@ class QueryConfigDbCreator {
                 }
 
             if (elementId == null) {
-                val id = SysSelectElementQueryPro.insert(columnInfo).firstOrNull()
+                val id = SysSpEleQueryPro.insert(columnInfo).firstOrNull()
                     ?: throw CodeGenError("insert返回了null")
                 currentElementIds.add(id)
             } else {
-                SysSelectElementQueryPro.updateSet(columnInfo).where.id.equalsTo(elementId).run()
+                SysSpEleQueryPro.updateSet(columnInfo).where.id.equalsTo(elementId).run()
                 currentElementIds.add(elementId)
             }
         }
 
-        SysSelectElementQueryPro
-            .deleteBy().sysSelectId.equalsTo(queryId)
+        SysSpEleQueryPro
+            .deleteBy().sysSpId.equalsTo(queryId)
             .and().id.not.`in`(*currentElementIds.toTypedArray())
             .run()
     } }

@@ -10,8 +10,8 @@ import javax.persistence.*
  */
 @Entity
 @ApiModel(description = "查询方案配置列")
-@Table(name = "sys_select_element")
-data class SysSelectElementEntity(
+@Table(name = "sys_sp_ele")
+data class SysSpEleEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ data class SysSelectElementEntity(
 
     /** 主键ID */
     @ApiModelProperty("主键ID")
-    @Column(name = "sys_select_id")
-    var sysSelectId: Long? = null,
+    @Column(name = "sys_sp_id")
+    var sysSpId: Long? = null,
 
     /** 方案名(冗余字段) */
     @ApiModelProperty("方案名(冗余字段)")
