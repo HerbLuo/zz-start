@@ -2,15 +2,15 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysQueryUserPlanItemEntity
+import cn.cloudself.start.entity.SysSelectEntity
 import java.util.Date
 import cn.cloudself.query.*
 import org.jetbrains.annotations.Contract;
 
 
-class ImplSysQueryUserPlanItemQueryPro {
+class ImplSysSelectQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_query_user_plan_item"
+        const val TABLE_NAME = "sys_select"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -22,7 +22,7 @@ class ImplSysQueryUserPlanItemQueryPro {
             { queryStructure -> ColumnLimiterField(queryStructure, field_clazz) }
         override val create_columns_limiter_field: CreateQueryField<ColumnsLimiterField<T, RUN_RES>> =
             { queryStructure -> ColumnsLimiterField(queryStructure, field_clazz) }
-        override fun getPayload() = SysQueryUserPlanItemQueryPro.payload
+        override fun getPayload() = SysSelectQueryPro.payload
     }
 
     class WhereField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -39,51 +39,26 @@ class ImplSysQueryUserPlanItemQueryPro {
         fun id(idList: List<Long>) = createWhereField("id", idList.toTypedArray())
         @Contract(pure = true)
         fun id(vararg ids: Long) = createWhereField("id", ids.toTypedArray())
-        val sysQueryId = createWhereField("sys_query_id")
+        val tag = createWhereField("tag")
         @Contract(pure = true)
-        fun sysQueryId(sysQueryIdList: List<Long>) = createWhereField("sys_query_id", sysQueryIdList.toTypedArray())
+        fun tag(tagList: List<String>) = createWhereField("tag", tagList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryId(vararg sysQueryIds: Long) = createWhereField("sys_query_id", sysQueryIds.toTypedArray())
-        val sysQueryUserPlanId = createWhereField("sys_query_user_plan_id")
+        fun tag(vararg tags: String) = createWhereField("tag", tags)
+        val tagCn = createWhereField("tag_cn")
         @Contract(pure = true)
-        fun sysQueryUserPlanId(sysQueryUserPlanIdList: List<Long>) = createWhereField("sys_query_user_plan_id", sysQueryUserPlanIdList.toTypedArray())
+        fun tagCn(tagCnList: List<String>) = createWhereField("tag_cn", tagCnList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryUserPlanId(vararg sysQueryUserPlanIds: Long) = createWhereField("sys_query_user_plan_id", sysQueryUserPlanIds.toTypedArray())
-        val sysQueryElementId = createWhereField("sys_query_element_id")
+        fun tagCn(vararg tagCns: String) = createWhereField("tag_cn", tagCns)
+        val sqlColumn = createWhereField("sql")
         @Contract(pure = true)
-        fun sysQueryElementId(sysQueryElementIdList: List<Long>) = createWhereField("sys_query_element_id", sysQueryElementIdList.toTypedArray())
+        fun sqlColumn(sqlColumnList: List<String>) = createWhereField("sql", sqlColumnList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryElementId(vararg sysQueryElementIds: Long) = createWhereField("sys_query_element_id", sysQueryElementIds.toTypedArray())
-        val sysUserIdRedundant = createWhereField("sys_user_id_redundant")
+        fun sqlColumn(vararg sqlColumns: String) = createWhereField("sql", sqlColumns)
+        val hash = createWhereField("hash")
         @Contract(pure = true)
-        fun sysUserIdRedundant(sysUserIdRedundantList: List<Long>) = createWhereField("sys_user_id_redundant", sysUserIdRedundantList.toTypedArray())
+        fun hash(hashList: List<ByteArray>) = createWhereField("hash", hashList.toTypedArray())
         @Contract(pure = true)
-        fun sysUserIdRedundant(vararg sysUserIdRedundants: Long) = createWhereField("sys_user_id_redundant", sysUserIdRedundants.toTypedArray())
-        val sysQueryTagCnRedundant = createWhereField("sys_query_tag_cn_redundant")
-        @Contract(pure = true)
-        fun sysQueryTagCnRedundant(sysQueryTagCnRedundantList: List<String>) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundantList.toTypedArray())
-        @Contract(pure = true)
-        fun sysQueryTagCnRedundant(vararg sysQueryTagCnRedundants: String) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundants)
-        val sysQueryElementAliasCnRedundant = createWhereField("sys_query_element_alias_cn_redundant")
-        @Contract(pure = true)
-        fun sysQueryElementAliasCnRedundant(sysQueryElementAliasCnRedundantList: List<String>) = createWhereField("sys_query_element_alias_cn_redundant", sysQueryElementAliasCnRedundantList.toTypedArray())
-        @Contract(pure = true)
-        fun sysQueryElementAliasCnRedundant(vararg sysQueryElementAliasCnRedundants: String) = createWhereField("sys_query_element_alias_cn_redundant", sysQueryElementAliasCnRedundants)
-        val searchCondition = createWhereField("search_condition")
-        @Contract(pure = true)
-        fun searchCondition(searchConditionList: List<String>) = createWhereField("search_condition", searchConditionList.toTypedArray())
-        @Contract(pure = true)
-        fun searchCondition(vararg searchConditions: String) = createWhereField("search_condition", searchConditions)
-        val searchValue = createWhereField("search_value")
-        @Contract(pure = true)
-        fun searchValue(searchValueList: List<String>) = createWhereField("search_value", searchValueList.toTypedArray())
-        @Contract(pure = true)
-        fun searchValue(vararg searchValues: String) = createWhereField("search_value", searchValues)
-        val sort = createWhereField("sort")
-        @Contract(pure = true)
-        fun sort(sortList: List<Int>) = createWhereField("sort", sortList.toTypedArray())
-        @Contract(pure = true)
-        fun sort(vararg sorts: Int) = createWhereField("sort", sorts.toTypedArray())
+        fun hash(vararg hashs: ByteArray) = createWhereField("hash", hashs)
         val status = createWhereField("status")
         @Contract(pure = true)
         fun status(statusList: List<String>) = createWhereField("status", statusList.toTypedArray())
@@ -130,23 +105,13 @@ class ImplSysQueryUserPlanItemQueryPro {
         @Contract(pure = true)
         fun id() = createOrderByField("id")
         @Contract(pure = true)
-        fun sysQueryId() = createOrderByField("sys_query_id")
+        fun tag() = createOrderByField("tag")
         @Contract(pure = true)
-        fun sysQueryUserPlanId() = createOrderByField("sys_query_user_plan_id")
+        fun tagCn() = createOrderByField("tag_cn")
         @Contract(pure = true)
-        fun sysQueryElementId() = createOrderByField("sys_query_element_id")
+        fun sqlColumn() = createOrderByField("sql")
         @Contract(pure = true)
-        fun sysUserIdRedundant() = createOrderByField("sys_user_id_redundant")
-        @Contract(pure = true)
-        fun sysQueryTagCnRedundant() = createOrderByField("sys_query_tag_cn_redundant")
-        @Contract(pure = true)
-        fun sysQueryElementAliasCnRedundant() = createOrderByField("sys_query_element_alias_cn_redundant")
-        @Contract(pure = true)
-        fun searchCondition() = createOrderByField("search_condition")
-        @Contract(pure = true)
-        fun searchValue() = createOrderByField("search_value")
-        @Contract(pure = true)
-        fun sort() = createOrderByField("sort")
+        fun hash() = createOrderByField("hash")
         @Contract(pure = true)
         fun status() = createOrderByField("status")
         @Contract(pure = true)
@@ -167,15 +132,10 @@ class ImplSysQueryUserPlanItemQueryPro {
         override val field_type = QueryFieldType.OTHER_FIELD
 
         fun id() = getColumn(createField("id"), Long::class.java)
-        fun sysQueryId() = getColumn(createField("sys_query_id"), Long::class.java)
-        fun sysQueryUserPlanId() = getColumn(createField("sys_query_user_plan_id"), Long::class.java)
-        fun sysQueryElementId() = getColumn(createField("sys_query_element_id"), Long::class.java)
-        fun sysUserIdRedundant() = getColumn(createField("sys_user_id_redundant"), Long::class.java)
-        fun sysQueryTagCnRedundant() = getColumn(createField("sys_query_tag_cn_redundant"), String::class.java)
-        fun sysQueryElementAliasCnRedundant() = getColumn(createField("sys_query_element_alias_cn_redundant"), String::class.java)
-        fun searchCondition() = getColumn(createField("search_condition"), String::class.java)
-        fun searchValue() = getColumn(createField("search_value"), String::class.java)
-        fun sort() = getColumn(createField("sort"), Int::class.java)
+        fun tag() = getColumn(createField("tag"), String::class.java)
+        fun tagCn() = getColumn(createField("tag_cn"), String::class.java)
+        fun sqlColumn() = getColumn(createField("sql"), String::class.java)
+        fun hash() = getColumn(createField("hash"), ByteArray::class.java)
         fun status() = getColumn(createField("status"), String::class.java)
         fun createBy() = getColumn(createField("create_by"), String::class.java)
         fun createTime() = getColumn(createField("create_time"), Date::class.java)
@@ -194,23 +154,13 @@ class ImplSysQueryUserPlanItemQueryPro {
         @Contract(pure = true)
         fun id() = createColumnsLimiterField("id")
         @Contract(pure = true)
-        fun sysQueryId() = createColumnsLimiterField("sys_query_id")
+        fun tag() = createColumnsLimiterField("tag")
         @Contract(pure = true)
-        fun sysQueryUserPlanId() = createColumnsLimiterField("sys_query_user_plan_id")
+        fun tagCn() = createColumnsLimiterField("tag_cn")
         @Contract(pure = true)
-        fun sysQueryElementId() = createColumnsLimiterField("sys_query_element_id")
+        fun sqlColumn() = createColumnsLimiterField("sql")
         @Contract(pure = true)
-        fun sysUserIdRedundant() = createColumnsLimiterField("sys_user_id_redundant")
-        @Contract(pure = true)
-        fun sysQueryTagCnRedundant() = createColumnsLimiterField("sys_query_tag_cn_redundant")
-        @Contract(pure = true)
-        fun sysQueryElementAliasCnRedundant() = createColumnsLimiterField("sys_query_element_alias_cn_redundant")
-        @Contract(pure = true)
-        fun searchCondition() = createColumnsLimiterField("search_condition")
-        @Contract(pure = true)
-        fun searchValue() = createColumnsLimiterField("search_value")
-        @Contract(pure = true)
-        fun sort() = createColumnsLimiterField("sort")
+        fun hash() = createColumnsLimiterField("hash")
         @Contract(pure = true)
         fun status() = createColumnsLimiterField("status")
         @Contract(pure = true)
@@ -236,23 +186,13 @@ class ImplSysQueryUserPlanItemQueryPro {
         @Contract(pure = true)
         fun id(id: Any) = createUpdateSetField("id", id)
         @Contract(pure = true)
-        fun sysQueryId(sysQueryId: Any) = createUpdateSetField("sys_query_id", sysQueryId)
+        fun tag(tag: Any) = createUpdateSetField("tag", tag)
         @Contract(pure = true)
-        fun sysQueryUserPlanId(sysQueryUserPlanId: Any) = createUpdateSetField("sys_query_user_plan_id", sysQueryUserPlanId)
+        fun tagCn(tagCn: Any) = createUpdateSetField("tag_cn", tagCn)
         @Contract(pure = true)
-        fun sysQueryElementId(sysQueryElementId: Any) = createUpdateSetField("sys_query_element_id", sysQueryElementId)
+        fun sqlColumn(sqlColumn: Any) = createUpdateSetField("sql", sqlColumn)
         @Contract(pure = true)
-        fun sysUserIdRedundant(sysUserIdRedundant: Any) = createUpdateSetField("sys_user_id_redundant", sysUserIdRedundant)
-        @Contract(pure = true)
-        fun sysQueryTagCnRedundant(sysQueryTagCnRedundant: Any) = createUpdateSetField("sys_query_tag_cn_redundant", sysQueryTagCnRedundant)
-        @Contract(pure = true)
-        fun sysQueryElementAliasCnRedundant(sysQueryElementAliasCnRedundant: Any) = createUpdateSetField("sys_query_element_alias_cn_redundant", sysQueryElementAliasCnRedundant)
-        @Contract(pure = true)
-        fun searchCondition(searchCondition: Any) = createUpdateSetField("search_condition", searchCondition)
-        @Contract(pure = true)
-        fun searchValue(searchValue: Any) = createUpdateSetField("search_value", searchValue)
-        @Contract(pure = true)
-        fun sort(sort: Any) = createUpdateSetField("sort", sort)
+        fun hash(hash: Any) = createUpdateSetField("hash", hash)
         @Contract(pure = true)
         fun status(status: Any) = createUpdateSetField("status", status)
         @Contract(pure = true)
@@ -274,15 +214,10 @@ class ImplSysQueryUserPlanItemQueryPro {
         override val tableName = TABLE_NAME
 
         fun id() = this.also { fields.add(createField("id")) }
-        fun sysQueryId() = this.also { fields.add(createField("sys_query_id")) }
-        fun sysQueryUserPlanId() = this.also { fields.add(createField("sys_query_user_plan_id")) }
-        fun sysQueryElementId() = this.also { fields.add(createField("sys_query_element_id")) }
-        fun sysUserIdRedundant() = this.also { fields.add(createField("sys_user_id_redundant")) }
-        fun sysQueryTagCnRedundant() = this.also { fields.add(createField("sys_query_tag_cn_redundant")) }
-        fun sysQueryElementAliasCnRedundant() = this.also { fields.add(createField("sys_query_element_alias_cn_redundant")) }
-        fun searchCondition() = this.also { fields.add(createField("search_condition")) }
-        fun searchValue() = this.also { fields.add(createField("search_value")) }
-        fun sort() = this.also { fields.add(createField("sort")) }
+        fun tag() = this.also { fields.add(createField("tag")) }
+        fun tagCn() = this.also { fields.add(createField("tag_cn")) }
+        fun sqlColumn() = this.also { fields.add(createField("sql")) }
+        fun hash() = this.also { fields.add(createField("hash")) }
         fun status() = this.also { fields.add(createField("status")) }
         fun createBy() = this.also { fields.add(createField("create_by")) }
         fun createTime() = this.also { fields.add(createField("create_time")) }
@@ -295,28 +230,28 @@ class ImplSysQueryUserPlanItemQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysQueryUserPlanItemEntity,
+            SysSelectEntity,
             Long,
-            ImplSysQueryUserPlanItemQueryPro.WhereField<SysQueryUserPlanItemEntity, List<SysQueryUserPlanItemEntity>>,
-            ImplSysQueryUserPlanItemQueryPro.OrderByField<SysQueryUserPlanItemEntity, List<SysQueryUserPlanItemEntity>>,
-            ImplSysQueryUserPlanItemQueryPro.UpdateSetField,
-            ImplSysQueryUserPlanItemQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysQueryUserPlanItemQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSelectQueryPro.WhereField<SysSelectEntity, List<SysSelectEntity>>,
+            ImplSysSelectQueryPro.OrderByField<SysSelectEntity, List<SysSelectEntity>>,
+            ImplSysSelectQueryPro.UpdateSetField,
+            ImplSysSelectQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSelectQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysQueryUserPlanItemEntity::class.java,
+        SysSelectEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysQueryUserPlanItemQueryPro.WhereField(qs, SysQueryUserPlanItemEntity::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanItemQueryPro.OrderByField(qs, SysQueryUserPlanItemEntity::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanItemQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanItemQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanItemQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField(qs, SysSelectEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSelectQueryPro.OrderByField(qs, SysSelectEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSelectQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysQueryUserPlanItemQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysQueryUserPlanItemQueryPro.TABLE_NAME)))
+val SysSelectQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSelectQueryPro.TABLE_NAME)))
 
-val SysQueryUserPlanItemQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysQueryUserPlanItemQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysQueryUserPlanItemQueryPro.WhereField<SysQueryUserPlanItemEntity, List<SysQueryUserPlanItemEntity>>(qs, SysQueryUserPlanItemEntity::class.java) },
-    { ImplSysQueryUserPlanItemQueryPro.FieldsGenerator() },
+val SysSelectQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysSelectQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysSelectQueryPro.WhereField<SysSelectEntity, List<SysSelectEntity>>(qs, SysSelectEntity::class.java) },
+    { ImplSysSelectQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

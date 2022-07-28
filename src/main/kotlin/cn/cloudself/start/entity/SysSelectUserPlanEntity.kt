@@ -10,8 +10,8 @@ import javax.persistence.*
  */
 @Entity
 @ApiModel(description = "用户保存的查询方案")
-@Table(name = "sys_query_user_plan")
-data class SysQueryUserPlanEntity(
+@Table(name = "sys_select_user_plan")
+data class SysSelectUserPlanEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ data class SysQueryUserPlanEntity(
 
     /** 查询方案 */
     @ApiModelProperty("查询方案")
-    @Column(name = "sys_query_id")
-    var sysQueryId: Long? = null,
+    @Column(name = "sys_select_id")
+    var sysSelectId: Long? = null,
 
     /** 方案配置名(冗余字段) */
     @ApiModelProperty("方案配置名(冗余字段)")
-    @Column(name = "sys_query_tag_cn_redundant")
-    var sysQueryTagCnRedundant: String? = null,
+    @Column(name = "tag_cn")
+    var tagCn: String? = null,
 
     /** 用户定义的查询方案名称 */
     @ApiModelProperty("用户定义的查询方案名称")

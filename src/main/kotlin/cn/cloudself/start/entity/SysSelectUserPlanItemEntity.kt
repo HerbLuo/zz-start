@@ -10,8 +10,8 @@ import javax.persistence.*
  */
 @Entity
 @ApiModel(description = "用户保存的查询方案明细")
-@Table(name = "sys_query_user_plan_item")
-data class SysQueryUserPlanItemEntity(
+@Table(name = "sys_select_user_plan_item")
+data class SysSelectUserPlanItemEntity(
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,33 +21,33 @@ data class SysQueryUserPlanItemEntity(
 
     /**  */
     @ApiModelProperty("")
-    @Column(name = "sys_query_id")
-    var sysQueryId: Long? = null,
+    @Column(name = "sys_select_id")
+    var sysSelectId: Long? = null,
 
     /** 表头ID */
     @ApiModelProperty("表头ID")
-    @Column(name = "sys_query_user_plan_id")
-    var sysQueryUserPlanId: Long? = null,
+    @Column(name = "sys_select_user_plan_id")
+    var sysSelectUserPlanId: Long? = null,
 
     /** 对应的查询方案列ID */
     @ApiModelProperty("对应的查询方案列ID")
-    @Column(name = "sys_query_element_id")
-    var sysQueryElementId: Long? = null,
+    @Column(name = "sys_select_element_id")
+    var sysSelectElementId: Long? = null,
 
     /** 用户ID(冗余) */
     @ApiModelProperty("用户ID(冗余)")
-    @Column(name = "sys_user_id_redundant")
-    var sysUserIdRedundant: Long? = null,
+    @Column(name = "sys_user_id")
+    var sysUserId: Long? = null,
 
     /** 查询方案配置名(冗余) */
     @ApiModelProperty("查询方案配置名(冗余)")
-    @Column(name = "sys_query_tag_cn_redundant")
-    var sysQueryTagCnRedundant: String? = null,
+    @Column(name = "tag_cn")
+    var tagCn: String? = null,
 
     /** 查询方案字段名(冗余) */
     @ApiModelProperty("查询方案字段名(冗余)")
-    @Column(name = "sys_query_element_alias_cn_redundant")
-    var sysQueryElementAliasCnRedundant: String? = null,
+    @Column(name = "alias_cn")
+    var aliasCn: String? = null,
 
     /** 条件 */
     @ApiModelProperty("条件")

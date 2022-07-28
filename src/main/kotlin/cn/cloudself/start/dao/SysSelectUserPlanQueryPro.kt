@@ -2,15 +2,15 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysQueryUserPlanEntity
+import cn.cloudself.start.entity.SysSelectUserPlanEntity
 import java.util.Date
 import cn.cloudself.query.*
 import org.jetbrains.annotations.Contract;
 
 
-class ImplSysQueryUserPlanQueryPro {
+class ImplSysSelectUserPlanQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_query_user_plan"
+        const val TABLE_NAME = "sys_select_user_plan"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -22,7 +22,7 @@ class ImplSysQueryUserPlanQueryPro {
             { queryStructure -> ColumnLimiterField(queryStructure, field_clazz) }
         override val create_columns_limiter_field: CreateQueryField<ColumnsLimiterField<T, RUN_RES>> =
             { queryStructure -> ColumnsLimiterField(queryStructure, field_clazz) }
-        override fun getPayload() = SysQueryUserPlanQueryPro.payload
+        override fun getPayload() = SysSelectUserPlanQueryPro.payload
     }
 
     class WhereField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -49,16 +49,16 @@ class ImplSysQueryUserPlanQueryPro {
         fun sysUserId(sysUserIdList: List<Long>) = createWhereField("sys_user_id", sysUserIdList.toTypedArray())
         @Contract(pure = true)
         fun sysUserId(vararg sysUserIds: Long) = createWhereField("sys_user_id", sysUserIds.toTypedArray())
-        val sysQueryId = createWhereField("sys_query_id")
+        val sysSelectId = createWhereField("sys_select_id")
         @Contract(pure = true)
-        fun sysQueryId(sysQueryIdList: List<Long>) = createWhereField("sys_query_id", sysQueryIdList.toTypedArray())
+        fun sysSelectId(sysSelectIdList: List<Long>) = createWhereField("sys_select_id", sysSelectIdList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryId(vararg sysQueryIds: Long) = createWhereField("sys_query_id", sysQueryIds.toTypedArray())
-        val sysQueryTagCnRedundant = createWhereField("sys_query_tag_cn_redundant")
+        fun sysSelectId(vararg sysSelectIds: Long) = createWhereField("sys_select_id", sysSelectIds.toTypedArray())
+        val tagCn = createWhereField("tag_cn")
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant(sysQueryTagCnRedundantList: List<String>) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundantList.toTypedArray())
+        fun tagCn(tagCnList: List<String>) = createWhereField("tag_cn", tagCnList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant(vararg sysQueryTagCnRedundants: String) = createWhereField("sys_query_tag_cn_redundant", sysQueryTagCnRedundants)
+        fun tagCn(vararg tagCns: String) = createWhereField("tag_cn", tagCns)
         val name = createWhereField("name")
         @Contract(pure = true)
         fun name(nameList: List<String>) = createWhereField("name", nameList.toTypedArray())
@@ -129,9 +129,9 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun sysUserId() = createOrderByField("sys_user_id")
         @Contract(pure = true)
-        fun sysQueryId() = createOrderByField("sys_query_id")
+        fun sysSelectId() = createOrderByField("sys_select_id")
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant() = createOrderByField("sys_query_tag_cn_redundant")
+        fun tagCn() = createOrderByField("tag_cn")
         @Contract(pure = true)
         fun name() = createOrderByField("name")
         @Contract(pure = true)
@@ -162,8 +162,8 @@ class ImplSysQueryUserPlanQueryPro {
         fun id() = getColumn(createField("id"), Long::class.java)
         fun pageTag() = getColumn(createField("page_tag"), String::class.java)
         fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
-        fun sysQueryId() = getColumn(createField("sys_query_id"), Long::class.java)
-        fun sysQueryTagCnRedundant() = getColumn(createField("sys_query_tag_cn_redundant"), String::class.java)
+        fun sysSelectId() = getColumn(createField("sys_select_id"), Long::class.java)
+        fun tagCn() = getColumn(createField("tag_cn"), String::class.java)
         fun name() = getColumn(createField("name"), String::class.java)
         fun sort() = getColumn(createField("sort"), Int::class.java)
         fun default() = getColumn(createField("default"), Boolean::class.java)
@@ -190,9 +190,9 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun sysUserId() = createColumnsLimiterField("sys_user_id")
         @Contract(pure = true)
-        fun sysQueryId() = createColumnsLimiterField("sys_query_id")
+        fun sysSelectId() = createColumnsLimiterField("sys_select_id")
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant() = createColumnsLimiterField("sys_query_tag_cn_redundant")
+        fun tagCn() = createColumnsLimiterField("tag_cn")
         @Contract(pure = true)
         fun name() = createColumnsLimiterField("name")
         @Contract(pure = true)
@@ -230,9 +230,9 @@ class ImplSysQueryUserPlanQueryPro {
         @Contract(pure = true)
         fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
         @Contract(pure = true)
-        fun sysQueryId(sysQueryId: Any) = createUpdateSetField("sys_query_id", sysQueryId)
+        fun sysSelectId(sysSelectId: Any) = createUpdateSetField("sys_select_id", sysSelectId)
         @Contract(pure = true)
-        fun sysQueryTagCnRedundant(sysQueryTagCnRedundant: Any) = createUpdateSetField("sys_query_tag_cn_redundant", sysQueryTagCnRedundant)
+        fun tagCn(tagCn: Any) = createUpdateSetField("tag_cn", tagCn)
         @Contract(pure = true)
         fun name(name: Any) = createUpdateSetField("name", name)
         @Contract(pure = true)
@@ -264,8 +264,8 @@ class ImplSysQueryUserPlanQueryPro {
         fun id() = this.also { fields.add(createField("id")) }
         fun pageTag() = this.also { fields.add(createField("page_tag")) }
         fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
-        fun sysQueryId() = this.also { fields.add(createField("sys_query_id")) }
-        fun sysQueryTagCnRedundant() = this.also { fields.add(createField("sys_query_tag_cn_redundant")) }
+        fun sysSelectId() = this.also { fields.add(createField("sys_select_id")) }
+        fun tagCn() = this.also { fields.add(createField("tag_cn")) }
         fun name() = this.also { fields.add(createField("name")) }
         fun sort() = this.also { fields.add(createField("sort")) }
         fun default() = this.also { fields.add(createField("default")) }
@@ -282,28 +282,28 @@ class ImplSysQueryUserPlanQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysQueryUserPlanEntity,
+            SysSelectUserPlanEntity,
             Long,
-            ImplSysQueryUserPlanQueryPro.WhereField<SysQueryUserPlanEntity, List<SysQueryUserPlanEntity>>,
-            ImplSysQueryUserPlanQueryPro.OrderByField<SysQueryUserPlanEntity, List<SysQueryUserPlanEntity>>,
-            ImplSysQueryUserPlanQueryPro.UpdateSetField,
-            ImplSysQueryUserPlanQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysQueryUserPlanQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSelectUserPlanQueryPro.WhereField<SysSelectUserPlanEntity, List<SysSelectUserPlanEntity>>,
+            ImplSysSelectUserPlanQueryPro.OrderByField<SysSelectUserPlanEntity, List<SysSelectUserPlanEntity>>,
+            ImplSysSelectUserPlanQueryPro.UpdateSetField,
+            ImplSysSelectUserPlanQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSelectUserPlanQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysQueryUserPlanEntity::class.java,
+        SysSelectUserPlanEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysQueryUserPlanQueryPro.WhereField(qs, SysQueryUserPlanEntity::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanQueryPro.OrderByField(qs, SysQueryUserPlanEntity::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserPlanQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserPlanQueryPro.WhereField(qs, SysSelectUserPlanEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserPlanQueryPro.OrderByField(qs, SysSelectUserPlanEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserPlanQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysSelectUserPlanQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserPlanQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysQueryUserPlanQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysQueryUserPlanQueryPro.TABLE_NAME)))
+val SysSelectUserPlanQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSelectUserPlanQueryPro.TABLE_NAME)))
 
-val SysQueryUserPlanQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysQueryUserPlanQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysQueryUserPlanQueryPro.WhereField<SysQueryUserPlanEntity, List<SysQueryUserPlanEntity>>(qs, SysQueryUserPlanEntity::class.java) },
-    { ImplSysQueryUserPlanQueryPro.FieldsGenerator() },
+val SysSelectUserPlanQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysSelectUserPlanQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysSelectUserPlanQueryPro.WhereField<SysSelectUserPlanEntity, List<SysSelectUserPlanEntity>>(qs, SysSelectUserPlanEntity::class.java) },
+    { ImplSysSelectUserPlanQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )

@@ -2,15 +2,15 @@
 
 package cn.cloudself.start.dao
 
-import cn.cloudself.start.entity.SysQueryUserTableColumnEntity
+import cn.cloudself.start.entity.SysSelectUserTableColumnEntity
 import java.util.Date
 import cn.cloudself.query.*
 import org.jetbrains.annotations.Contract;
 
 
-class ImplSysQueryUserTableColumnQueryPro {
+class ImplSysSelectUserTableColumnQueryPro {
     companion object {
-        const val TABLE_NAME = "sys_query_user_table_column"
+        const val TABLE_NAME = "sys_select_user_table_column"
         private fun createField(column: String) = Field(TABLE_NAME, column)
     }
 
@@ -22,7 +22,7 @@ class ImplSysQueryUserTableColumnQueryPro {
             { queryStructure -> ColumnLimiterField(queryStructure, field_clazz) }
         override val create_columns_limiter_field: CreateQueryField<ColumnsLimiterField<T, RUN_RES>> =
             { queryStructure -> ColumnsLimiterField(queryStructure, field_clazz) }
-        override fun getPayload() = SysQueryUserTableColumnQueryPro.payload
+        override fun getPayload() = SysSelectUserTableColumnQueryPro.payload
     }
 
     class WhereField<T, RUN_RES> constructor(queryStructure: QueryStructure, field_clazz: Class<T>): CommonField<T, RUN_RES>(queryStructure, field_clazz) {
@@ -49,11 +49,11 @@ class ImplSysQueryUserTableColumnQueryPro {
         fun sysUserId(sysUserIdList: List<Long>) = createWhereField("sys_user_id", sysUserIdList.toTypedArray())
         @Contract(pure = true)
         fun sysUserId(vararg sysUserIds: Long) = createWhereField("sys_user_id", sysUserIds.toTypedArray())
-        val sysQueryElementId = createWhereField("sys_query_element_id")
+        val sysSelectElementId = createWhereField("sys_select_element_id")
         @Contract(pure = true)
-        fun sysQueryElementId(sysQueryElementIdList: List<Long>) = createWhereField("sys_query_element_id", sysQueryElementIdList.toTypedArray())
+        fun sysSelectElementId(sysSelectElementIdList: List<Long>) = createWhereField("sys_select_element_id", sysSelectElementIdList.toTypedArray())
         @Contract(pure = true)
-        fun sysQueryElementId(vararg sysQueryElementIds: Long) = createWhereField("sys_query_element_id", sysQueryElementIds.toTypedArray())
+        fun sysSelectElementId(vararg sysSelectElementIds: Long) = createWhereField("sys_select_element_id", sysSelectElementIds.toTypedArray())
         val title = createWhereField("title")
         @Contract(pure = true)
         fun title(titleList: List<String>) = createWhereField("title", titleList.toTypedArray())
@@ -159,7 +159,7 @@ class ImplSysQueryUserTableColumnQueryPro {
         @Contract(pure = true)
         fun sysUserId() = createOrderByField("sys_user_id")
         @Contract(pure = true)
-        fun sysQueryElementId() = createOrderByField("sys_query_element_id")
+        fun sysSelectElementId() = createOrderByField("sys_select_element_id")
         @Contract(pure = true)
         fun title() = createOrderByField("title")
         @Contract(pure = true)
@@ -204,7 +204,7 @@ class ImplSysQueryUserTableColumnQueryPro {
         fun id() = getColumn(createField("id"), Long::class.java)
         fun pageTag() = getColumn(createField("page_tag"), String::class.java)
         fun sysUserId() = getColumn(createField("sys_user_id"), Long::class.java)
-        fun sysQueryElementId() = getColumn(createField("sys_query_element_id"), Long::class.java)
+        fun sysSelectElementId() = getColumn(createField("sys_select_element_id"), Long::class.java)
         fun title() = getColumn(createField("title"), String::class.java)
         fun dataIndex() = getColumn(createField("data_index"), String::class.java)
         fun type() = getColumn(createField("type"), String::class.java)
@@ -238,7 +238,7 @@ class ImplSysQueryUserTableColumnQueryPro {
         @Contract(pure = true)
         fun sysUserId() = createColumnsLimiterField("sys_user_id")
         @Contract(pure = true)
-        fun sysQueryElementId() = createColumnsLimiterField("sys_query_element_id")
+        fun sysSelectElementId() = createColumnsLimiterField("sys_select_element_id")
         @Contract(pure = true)
         fun title() = createColumnsLimiterField("title")
         @Contract(pure = true)
@@ -290,7 +290,7 @@ class ImplSysQueryUserTableColumnQueryPro {
         @Contract(pure = true)
         fun sysUserId(sysUserId: Any) = createUpdateSetField("sys_user_id", sysUserId)
         @Contract(pure = true)
-        fun sysQueryElementId(sysQueryElementId: Any) = createUpdateSetField("sys_query_element_id", sysQueryElementId)
+        fun sysSelectElementId(sysSelectElementId: Any) = createUpdateSetField("sys_select_element_id", sysSelectElementId)
         @Contract(pure = true)
         fun title(title: Any) = createUpdateSetField("title", title)
         @Contract(pure = true)
@@ -336,7 +336,7 @@ class ImplSysQueryUserTableColumnQueryPro {
         fun id() = this.also { fields.add(createField("id")) }
         fun pageTag() = this.also { fields.add(createField("page_tag")) }
         fun sysUserId() = this.also { fields.add(createField("sys_user_id")) }
-        fun sysQueryElementId() = this.also { fields.add(createField("sys_query_element_id")) }
+        fun sysSelectElementId() = this.also { fields.add(createField("sys_select_element_id")) }
         fun title() = this.also { fields.add(createField("title")) }
         fun dataIndex() = this.also { fields.add(createField("data_index")) }
         fun type() = this.also { fields.add(createField("type")) }
@@ -360,28 +360,28 @@ class ImplSysQueryUserTableColumnQueryPro {
 
 private fun createQuery(queryStructure: QueryStructure) =
     QueryPro<
-            SysQueryUserTableColumnEntity,
+            SysSelectUserTableColumnEntity,
             Long,
-            ImplSysQueryUserTableColumnQueryPro.WhereField<SysQueryUserTableColumnEntity, List<SysQueryUserTableColumnEntity>>,
-            ImplSysQueryUserTableColumnQueryPro.OrderByField<SysQueryUserTableColumnEntity, List<SysQueryUserTableColumnEntity>>,
-            ImplSysQueryUserTableColumnQueryPro.UpdateSetField,
-            ImplSysQueryUserTableColumnQueryPro.WhereField<Boolean, Boolean>,
-            ImplSysQueryUserTableColumnQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSelectUserTableColumnQueryPro.WhereField<SysSelectUserTableColumnEntity, List<SysSelectUserTableColumnEntity>>,
+            ImplSysSelectUserTableColumnQueryPro.OrderByField<SysSelectUserTableColumnEntity, List<SysSelectUserTableColumnEntity>>,
+            ImplSysSelectUserTableColumnQueryPro.UpdateSetField,
+            ImplSysSelectUserTableColumnQueryPro.WhereField<Boolean, Boolean>,
+            ImplSysSelectUserTableColumnQueryPro.WhereField<Boolean, Boolean>,
     > (
-        SysQueryUserTableColumnEntity::class.java,
+        SysSelectUserTableColumnEntity::class.java,
         queryStructure,
-        { qs: QueryStructure -> ImplSysQueryUserTableColumnQueryPro.WhereField(qs, SysQueryUserTableColumnEntity::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserTableColumnQueryPro.OrderByField(qs, SysQueryUserTableColumnEntity::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserTableColumnQueryPro.UpdateSetField(qs) },
-        { qs: QueryStructure -> ImplSysQueryUserTableColumnQueryPro.WhereField(qs, Boolean::class.java) },
-        { qs: QueryStructure -> ImplSysQueryUserTableColumnQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserTableColumnQueryPro.WhereField(qs, SysSelectUserTableColumnEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserTableColumnQueryPro.OrderByField(qs, SysSelectUserTableColumnEntity::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserTableColumnQueryPro.UpdateSetField(qs) },
+        { qs: QueryStructure -> ImplSysSelectUserTableColumnQueryPro.WhereField(qs, Boolean::class.java) },
+        { qs: QueryStructure -> ImplSysSelectUserTableColumnQueryPro.WhereField(qs, Boolean::class.java) },
     )
 
-val SysQueryUserTableColumnQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysQueryUserTableColumnQueryPro.TABLE_NAME)))
+val SysSelectUserTableColumnQueryPro = createQuery(QueryStructure(from = QueryStructureFrom(ImplSysSelectUserTableColumnQueryPro.TABLE_NAME)))
 
-val SysQueryUserTableColumnQueryProEx = QueryProEx(
-    QueryStructure(from = QueryStructureFrom(ImplSysQueryUserTableColumnQueryPro.TABLE_NAME)),
-    { qs: QueryStructure -> ImplSysQueryUserTableColumnQueryPro.WhereField<SysQueryUserTableColumnEntity, List<SysQueryUserTableColumnEntity>>(qs, SysQueryUserTableColumnEntity::class.java) },
-    { ImplSysQueryUserTableColumnQueryPro.FieldsGenerator() },
+val SysSelectUserTableColumnQueryProEx = QueryProEx(
+    QueryStructure(from = QueryStructureFrom(ImplSysSelectUserTableColumnQueryPro.TABLE_NAME)),
+    { qs: QueryStructure -> ImplSysSelectUserTableColumnQueryPro.WhereField<SysSelectUserTableColumnEntity, List<SysSelectUserTableColumnEntity>>(qs, SysSelectUserTableColumnEntity::class.java) },
+    { ImplSysSelectUserTableColumnQueryPro.FieldsGenerator() },
     { qs -> createQuery(qs) }
 )
