@@ -19,7 +19,7 @@ class SysSelectController @Autowired constructor(
     fun get(@PathVariable tag: String) = selectService.get(tag)
 
     @ApiOperation(value = "获取用户配置的查询方案或默认的查询方案")
-    @GetMapping("/{pageTag}")
+    @GetMapping("/{pageTag}/user-plan")
     fun getPlan(@PathVariable pageTag: String) = selectService.getPlan(pageTag)
 
     @LoginRequired(false)
