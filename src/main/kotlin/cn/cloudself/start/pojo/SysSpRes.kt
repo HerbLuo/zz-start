@@ -3,24 +3,24 @@ package cn.cloudself.start.pojo
 import cn.cloudself.start.entity.*
 import cn.cloudself.start.interactive.res.Async
 
-data class SysSelectRes(
+data class SysSpRes(
     val query: SysSpEntity,
     val elements: List<SysSpEleEntity>
 )
 
-data class SysSelectUserPlan(
+data class SysSpUsrPlan(
     val plan: SysSpUsrPlanEntity,
     val items: List<SysSpUsrPlanItemEntity>,
 )
 
-data class SysSelectUserPlanRes(
+data class SysSpUsrPlanRes(
     val pageTag: String,
-    val plans: List<SysSelectUserPlan>,
+    val plans: List<SysSpUsrPlan>,
     val elements: List<SysSpEleEntity>,
     val columns: List<SysSpUsrTblColEntity>,
 )
 
-data class SysSelectDataRes(
+data class SysSpDataRes(
     val hasNext: Boolean,
     val total: Async.Promise<Int>,
     val rows: List<Map<*, *>>,

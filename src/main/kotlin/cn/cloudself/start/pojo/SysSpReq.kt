@@ -12,23 +12,23 @@ package cn.cloudself.start.pojo
  *   { column_id: 0, operator: "()", value: [{ column_id: 2, column_sql: "name", condition: "like", value: 18 }] }
  * ]
  */
-data class SysSelectDataReqCondition(
+data class SysSpDataReqCondition(
     var operator: String,
     var value: Any?,
-    var conditions: List<SysSelectDataReqCondition>?,
+    var conditions: List<SysSpDataReqCondition>?,
     var alias: String,
 )
 
-data class SysSelectDataReqOrderBy(
+data class SysSpDataReqOrderBy(
     var alias: String,
     var asc: Boolean = true,
 )
 
-data class SysSelectDataReq(
+data class SysSpDataReq(
     var pageTag: String,
     var page: Int,
     var pageSize: Int,
-    var conditions: List<SysSelectDataReqCondition>,
+    var conditions: List<SysSpDataReqCondition>,
     var columns: List<String>?,
-    var orderBys: List<SysSelectDataReqOrderBy>,
+    var orderBys: List<SysSpDataReqOrderBy>,
 )

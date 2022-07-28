@@ -1,7 +1,7 @@
 package cn.cloudself.start.controller
 
 import cn.cloudself.start.annotation.LoginRequired
-import cn.cloudself.start.pojo.SysSelectDataReq
+import cn.cloudself.start.pojo.SysSpDataReq
 import cn.cloudself.start.service.ISysSelectService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -25,5 +25,5 @@ class SysSelectController @Autowired constructor(
     @LoginRequired(false)
     @ApiOperation(value = "使用查询方案查询")
     @PostMapping("/data")
-    fun getData(@RequestBody query: SysSelectDataReq) = this.selectService.getData(query)
+    fun getData(@RequestBody query: SysSpDataReq) = this.selectService.getData(query)
 }

@@ -15,14 +15,14 @@ import org.springframework.stereotype.Service
 
 @Service
 class SysSelectServiceImpl: ISysSelectService {
-    override fun get(tag: String): SysSelectRes {
+    override fun get(tag: String): SysSpRes {
         val sysSelect = SysSpQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
             ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
         val sysQueryElements = SysSpEleQueryPro.selectBy().sysSpId.equalsTo(sysSelect.id!!).run()
-        return SysSelectRes(sysSelect, sysQueryElements)
+        return SysSpRes(sysSelect, sysQueryElements)
     }
 
-    override fun getPlan(pageTag: String): SysSelectUserPlanRes {
+    override fun getPlan(pageTag: String): SysSpUsrPlanRes {
         val tag = getTag(pageTag)
 
         val userId = WebUtil.getUserIdNonNull()
@@ -42,10 +42,10 @@ class SysSelectServiceImpl: ISysSelectService {
             .run()
 
         val userPlans = userPlanList.map {
-            SysSelectUserPlan(it, userPlanItems.filter { item -> item.sysSpUsrPlanId == it.id })
+            SysSpUsrPlan(it, userPlanItems.filter { item -> item.sysSpUsrPlanId == it.id })
         }.ifEmpty {
             val defPlan = SysSpUsrPlanEntity(id = -1, name = i18n("默认方案").toString(), default = true)
-            listOf(SysSelectUserPlan(defPlan, listOf()))
+            listOf(SysSpUsrPlan(defPlan, listOf()))
         }
 
         val sysQueryColumns = SysSpUsrTblColQueryPro
@@ -53,10 +53,10 @@ class SysSelectServiceImpl: ISysSelectService {
             .and().sysUserId.equalsTo(userId)
             .run()
 
-        return SysSelectUserPlanRes(pageTag, userPlans, sysSelectElements, sysQueryColumns)
+        return SysSpUsrPlanRes(pageTag, userPlans, sysSelectElements, sysQueryColumns)
     }
 
-    override fun getData(selectReq: SysSelectDataReq): Async<SysSelectDataRes> {
+    override fun getData(selectReq: SysSpDataReq): Async<SysSpDataRes> {
         val pageTag = selectReq.pageTag
         val tag = getTag(pageTag)
         val sysSelect = SysSpQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
@@ -74,7 +74,7 @@ class SysSelectServiceImpl: ISysSelectService {
             .and().sysSpId.equalsTo(sysSelectId)
             .run()
 
-        fun parseConditions(conditions: List<SysSelectDataReqCondition>) {
+        fun parseConditions(conditions: List<SysSpDataReqCondition>) {
             var first = true
             for (condition in conditions) {
                 if (!first) {
@@ -146,7 +146,7 @@ class SysSelectServiceImpl: ISysSelectService {
                 count
             } else it.just(first + rows.size)
 
-            SysSelectDataRes(hasNext, totalCountPromise, rows)
+            SysSpDataRes(hasNext, totalCountPromise, rows)
         }
     }
 
