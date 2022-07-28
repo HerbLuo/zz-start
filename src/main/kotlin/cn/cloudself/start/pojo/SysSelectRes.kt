@@ -14,6 +14,7 @@ data class SysSelectUserPlan(
 )
 
 data class SysSelectUserPlanRes(
+    val pageTag: String,
     val plans: List<SysSelectUserPlan>,
     val elements: List<SysSelectElementEntity>,
     val columns: List<SysSelectUserTableColumnEntity>,

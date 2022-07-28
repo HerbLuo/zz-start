@@ -53,10 +53,10 @@ class SysSelectServiceImpl: ISysSelectService {
             .and().sysUserId.equalsTo(userId)
             .run()
 
-        return SysSelectUserPlanRes(userPlans, sysSelectElements, sysQueryColumns)
+        return SysSelectUserPlanRes(pageTag, userPlans, sysSelectElements, sysQueryColumns)
     }
 
-    override fun getData(selectReq: SysSelectReq): Async<SysSelectDataRes> {
+    override fun getData(selectReq: SysSelectDataReq): Async<SysSelectDataRes> {
         val pageTag = selectReq.pageTag
         val tag = getTag(pageTag)
         val sysSelect = SysSelectQueryPro.selectBy().tag.equalsTo(tag).runLimit1()
@@ -74,7 +74,7 @@ class SysSelectServiceImpl: ISysSelectService {
             .and().sysSelectId.equalsTo(sysSelectId)
             .run()
 
-        fun parseConditions(conditions: List<SysSelectReqCondition>) {
+        fun parseConditions(conditions: List<SysSelectDataReqCondition>) {
             var first = true
             for (condition in conditions) {
                 if (!first) {
