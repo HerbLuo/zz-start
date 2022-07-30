@@ -162,7 +162,7 @@
         <dependency>
             <groupId>cn.cloudself</groupId>
             <artifactId>query-pro</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

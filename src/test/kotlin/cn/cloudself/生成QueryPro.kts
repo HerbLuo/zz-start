@@ -3,6 +3,9 @@ import cn.cloudself.query.util.DbNameToJava
 import cn.cloudself.query.util.PathFrom
 import cn.cloudself.query.util.QueryProFileMaker
 
+val entityExMethods =
+    "    fun <T> copyTo(clazz: Class<T>) = clazz.getDeclaredConstructor().newInstance().also { BeanUtils.copyProperties(this, it) }"
+
 QueryProFileMaker
     .entityAndDaoMode(PathFrom.create().ktPackageName("cn.cloudself.start").daoPackage("dao").getResolver())
     /* 指定数据源 */
@@ -11,6 +14,7 @@ QueryProFileMaker
     .tables("*")
     .replaceMode()
     .swaggerSupport(true)
+    .entityExMethods(entityExMethods)
     .disableKtNoArgMode()
     .debug()
     .create()

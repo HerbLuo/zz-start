@@ -10,6 +10,7 @@ import cn.cloudself.start.interactive.res.Async
 import cn.cloudself.start.pojo.*
 import cn.cloudself.start.service.ISysSelectService
 import cn.cloudself.start.util.WebUtil
+import cn.cloudself.start.util.copyTo
 import cn.cloudself.start.util.i18n
 import org.springframework.stereotype.Service
 
@@ -26,10 +27,10 @@ class SysSelectServiceImpl: ISysSelectService {
         val tag = getTag(pageTag)
 
         val userId = WebUtil.getUserIdNonNull()
-        val sysQueryId = SysSpQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
+        val spId = SysSpQueryPro.selectBy().tag.equalsTo(tag).columnLimiter().id().firstOrNull()
             ?: throw PlanNotFindException("找不到tag: {}对应的查询方案配置", tag)
 
-        val sysSelectElements = SysSpEleQueryPro.selectBy().sysSpId.equalsTo(sysQueryId).run()
+        val spEleList = SysSpEleQueryPro.selectBy().sysSpId.equalsTo(spId).run()
 
         val userPlanList: List<SysSpUsrPlanEntity> = SysSpUsrPlanQueryPro
             .selectBy().pageTag.equalsTo(pageTag)
@@ -48,12 +49,20 @@ class SysSelectServiceImpl: ISysSelectService {
             listOf(SysSpUsrPlan(defPlan, listOf()))
         }
 
-        val sysQueryColumns = SysSpUsrTblColQueryPro
+        val tblCols = SysSpUsrTblColQueryPro
             .selectBy().pageTag.equalsTo(pageTag)
             .and().sysUserId.equalsTo(userId)
             .run()
+            .ifEmpty {
+                spEleList.map {
+                    val col = it.copyTo(SysSpUsrTblColEntity::class.java, "id")
+                    col.title = it.aliasCn
+                    col.dataIndex = it.alias
+                    col
+                }
+            }
 
-        return SysSpUsrPlanRes(pageTag, userPlans, sysSelectElements, sysQueryColumns)
+        return SysSpUsrPlanRes(pageTag, userPlans, spEleList, tblCols)
     }
 
     override fun getData(selectReq: SysSpDataReq): Async<SysSpDataRes> {
@@ -155,6 +164,6 @@ class SysSelectServiceImpl: ISysSelectService {
         if (splitterIndex < 0) {
             throw RequestBadException("pageTag命名不符合要求, 示例：'<tag>:<page>'")
         }
-        return pageTag.substring(0, splitterIndex);
+        return pageTag.substring(0, splitterIndex)
     }
 }
